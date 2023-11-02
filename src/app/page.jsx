@@ -1,7 +1,9 @@
+import ArticleCardList from "@/components/ArticleCardList";
+
 export default function Home() {
   return (
     <main>
-      Blog
+      <ArticleCardList />
     </main>
-  )
+  );
 }

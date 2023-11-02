@@ -1,6 +1,7 @@
 import { Merriweather } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const merry = Merriweather({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <section>{children}</section>
         </main>
+        <Footer />
       </body>
     </html>
   );
