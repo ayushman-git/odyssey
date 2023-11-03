@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { BsArrowRight } from "react-icons/bs";
+
 export default function ArticleCard() {
   return (
     <article className="flex">
@@ -13,7 +15,7 @@ export default function ArticleCard() {
         <h2 className="text-lg font-bold">
           Looking through the lens of infrared
         </h2>
-        <h3 className="uppercase text-sm tracking-widest font-bold mb-4 mt-1">
+        <h3 className="uppercase text-sm tracking-widest font-bold mb-4 mt-1 text-gray-600">
           Case Study
         </h3>
         <p className="text-sm leading-6">
@@ -25,8 +27,9 @@ export default function ArticleCard() {
           the fascinating world of infrared imaging, we'll uncover the science
           behind this captivating technology.
         </p>
-        <footer className="flex justify-end mt-2">
-          <a href="#" className="text-sm">Read More</a>
+        <footer className="flex justify-end items-center mt-2 cursor-pointer">
+          <a className="text-sm">Read More</a>
+          <BsArrowRight size="1.125rem" className="ml-2" />
         </footer>
       </div>
     </article>

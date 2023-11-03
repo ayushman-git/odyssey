@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import SearchBox from "./SearchBox";
+import SearchResultList from "./SearchResultList";
 
 export default function Navbar() {
   const [searchString, setSearchString] = useState("");
@@ -16,9 +17,11 @@ export default function Navbar() {
         />
       </nav>
       <hr />
-      <div className="absolute top-0 max-w-screen-lg">
-        Hello
-      </div>
+      {searchString && (
+        <div className="absolute bototm-0 max-w-screen-lg  w-full bg-gray-100 p-8 rounded-b-xl">
+          <SearchResultList />
+        </div>
+      )}
     </div>
   );
 }
