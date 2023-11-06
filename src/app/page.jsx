@@ -1,8 +1,8 @@
 import ArticleCardList from "@/components/ArticleCardList";
-import Page from "@/app/articles/page.mdx"
+import { meta } from "@/app/articles/page.mdx";
 
 export default function Home() {
-  console.log({Page})
+  console.log({meta})
   return (
     <div>
       <ArticleCardList />
