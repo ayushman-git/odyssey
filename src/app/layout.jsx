@@ -3,7 +3,6 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BgPattern from "@/assets/images/bg_pattern.png";
-console.log({ BgPattern });
 
 const merry = Merriweather({
   subsets: ["latin"],

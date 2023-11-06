@@ -21,6 +21,7 @@ export default function Footer() {
               <li
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={() => openLink(link)}
+                key={name}
               >
                 <a className="text-blue-500">{name}</a>
                 <FiExternalLink className="cursor-pointer text-blue-500" />

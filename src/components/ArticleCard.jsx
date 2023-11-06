@@ -10,6 +10,7 @@ export default function ArticleCard() {
         height={200}
         layout="responsive"
         className="mr-10 rounded"
+        alt="Cover Image"
       />
       <div>
         <h2 className="text-lg font-bold">
