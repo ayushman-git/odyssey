@@ -1,4 +1,4 @@
-import { Heading } from "@/components/Heading";
+import { Heading } from "@/components/mdx/Heading";
 
 export function useMDXComponents(components) {
   return {
