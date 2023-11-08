@@ -9,10 +9,6 @@ export default async function Page({ params }) {
         src={cover_img}
         width={800}
         height={300}
-        style={{
-          aspectRatio: "2/1",
-          objectFit: "cover",
-        }}
         layout="responsive"
         objectFit="cover"
         className="mr-10 rounded"
