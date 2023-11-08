@@ -27,9 +27,13 @@ export function getArticles() {
     const fileContent = fs.readFileSync(fullPath, "utf-8");
     const parsedMatter = matter(fileContent);
     return {
-      fileName: slug,
+      slug: fileName,
       ...parsedMatter.data,
     };
   });
   return sortArticles(allArticlesData);
+}
+
+export function getArticle(slug) {
+
 }
