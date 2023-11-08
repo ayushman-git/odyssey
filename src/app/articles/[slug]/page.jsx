@@ -1,16 +1,10 @@
-import { getArticleData } from "@/lib/articles";
+import { getArticle } from "@/lib/posts";
 
 export default async function Page({ params }) {
-  const postData = await getArticleData(params.slug);
+  const postData = await getArticle(params.slug);
   return (
-    <>
-      {postData.title}
-      <br />
-      {postData.id}
-      <br />
-      {postData.date}
-      <br />
-      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-    </>
+    <article dangerouslySetInnerHTML={{__html: postData.htmlContent}}>
+
+    </article>
   );
 }

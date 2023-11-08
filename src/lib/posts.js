@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { remark } from "remark";
+import html from "remark-html";
 
 const articlesDir = path.join(process.cwd(), "src", "content");
 
@@ -11,11 +13,10 @@ const sortArticles = (articles) => {
 
     const prevDateObj = new Date(prevDate[2], prevDate[1] - 1, prevDate[0]);
     const nextDateObj = new Date(nextDate[2], nextDate[1] - 1, nextDate[0]);
-    console.log(prevDateObj, nextDateObj);
 
-    if(prevDateObj > nextDateObj) return -1
-    if(prevDateObj < nextDateObj) return 1
-    return 0
+    if (prevDateObj > nextDateObj) return -1;
+    if (prevDateObj < nextDateObj) return 1;
+    return 0;
   });
 };
 
@@ -34,6 +35,16 @@ export function getArticles() {
   return sortArticles(allArticlesData);
 }
 
-export function getArticle(slug) {
-
+export async function getArticle(slug) {
+  const file = path.join(articlesDir, `${slug}.mdx`);
+  const fileContent = fs.readFileSync(file, "utf-8");
+  const parsedMatter = matter(fileContent);
+  const processedContent = await remark()
+    .use(html)
+    .process(parsedMatter.content);
+  return {
+    slug,
+    ...parsedMatter.data,
+    htmlContent: processedContent.toString(),
+  };
 }
