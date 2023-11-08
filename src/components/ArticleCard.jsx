@@ -2,7 +2,6 @@ import Image from "next/image";
 import { BsArrowRight } from "react-icons/bs";
 
 export default function ArticleCard({ details }) {
-  console.log({details})
   return (
     <article className="flex">
       <Image
