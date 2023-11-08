@@ -7,6 +7,7 @@ export default async function Page({ params }) {
     <section className="py-8">
       <Image
         src={cover_img}
+        quality={100}
         width={800}
         height={300}
         layout="responsive"

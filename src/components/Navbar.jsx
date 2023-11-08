@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SearchBox from "./SearchBox";
 import SearchResultList from "./SearchResultList";
+import Link from "next/link";
 
 export default function Navbar() {
   const [searchString, setSearchString] = useState("");
@@ -10,7 +11,9 @@ export default function Navbar() {
   return (
     <div>
       <nav className="flex justify-between px-8 items-center py-4">
-        <h1 className="font-black text-lg">Odyssey</h1>
+        <Link href="/" className="font-black text-lg">
+          Odyssey
+        </Link>
         <SearchBox
           searchString={searchString}
           onChange={(e) => setSearchString(e.target.value)}
