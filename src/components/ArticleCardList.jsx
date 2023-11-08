@@ -6,9 +6,9 @@ export default function ArticleCardList() {
 
   return (
     <section className="flex flex-col gap-6 my-8">
-      {articles.map((article) => (
+      {/* {articles.map((article) => (
         <ArticleCard details={article} />
-      ))}
+      ))} */}
     </section>
   );
 }
