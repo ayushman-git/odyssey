@@ -1,5 +1,12 @@
-import { getArticle } from "@/lib/posts";
 import Image from "next/image";
+import { getArticle } from "@/lib/posts";
+
+export async function generateMetadata({ params }) {
+  const { title } = await getArticle(params.slug);
+  return {
+    title: `Odyssey | ${title}`,
+  };
+}
 
 export default async function Page({ params }) {
   const { htmlContent, title, cover_img, type } = await getArticle(params.slug);
