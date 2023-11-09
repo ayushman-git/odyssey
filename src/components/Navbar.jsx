@@ -34,7 +34,7 @@ export default function Navbar() {
   }, [searchString, searchedArticles]);
 
   return (
-    <div>
+    <div className="relative z-50">
       <nav className="flex justify-between px-8 items-center py-4">
         <Link href="/" className="font-black text-lg" onClick={resetState}>
           Odyssey
