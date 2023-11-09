@@ -35,7 +35,7 @@ export default function Navbar() {
       </nav>
       <hr />
       {showSearchResult && (
-        <div className="absolute bototm-0 max-w-screen-lg  w-full bg-gray-100 p-8 rounded-b-xl">
+        <div className="absolute max-w-screen-lg w-full bg-gray-100 p-8 rounded-b-xl z-100">
           <SearchResultList searchedArticles={searchedArticles} />
         </div>
       )}
