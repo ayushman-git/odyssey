@@ -6,8 +6,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "c4.wallpaperflare.com",
-        port: "",
+        hostname: "**",
       },
     ],
   },

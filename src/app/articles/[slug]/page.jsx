@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getArticle } from "@/lib/posts";
+import { BLUR_DATA_URLS } from "@/data/constants";
 
 export async function generateMetadata({ params }) {
   const { title } = await getArticle(params.slug);
@@ -20,6 +21,8 @@ export default async function Page({ params }) {
             borderRadius: "14px",
           }}
           layout="fill"
+          placeholder="blur"
+          blurDataURL={BLUR_DATA_URLS.COVER_IMG}
           objectFit="cover"
           className="mr-10 rounded"
           alt="Cover Image"
