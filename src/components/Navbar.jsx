@@ -1,12 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SearchBox from "./SearchBox";
 import SearchResultList from "./SearchResultList";
 import Link from "next/link";
+import { fetchSearchedArticles } from "@/api/search";
+import useDebounce from "@/hooks/useDebounce";
 
 export default function Navbar() {
   const [searchString, setSearchString] = useState("");
+  const [searchedArticles, setSearchedArticles] = useState([]);
+
+  const fetchSearchResult = async () => {
+    const result = await fetchSearchedArticles(searchString);
+    setSearchedArticles(result);
+  };
+
+  useDebounce(fetchSearchResult, [searchString], 500);
+
+  const showSearchResult = useMemo(() => {
+    return searchedArticles.length > 0 && searchString;
+  }, [searchString, searchedArticles]);
 
   return (
     <div>
@@ -20,9 +34,9 @@ export default function Navbar() {
         />
       </nav>
       <hr />
-      {searchString && (
+      {showSearchResult && (
         <div className="absolute bototm-0 max-w-screen-lg  w-full bg-gray-100 p-8 rounded-b-xl">
-          <SearchResultList />
+          <SearchResultList searchedArticles={searchedArticles} />
         </div>
       )}
     </div>
