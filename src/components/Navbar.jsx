@@ -6,8 +6,10 @@ import SearchResultList from "./SearchResultList";
 import Link from "next/link";
 import { fetchSearchedArticles } from "@/api/search";
 import useDebounce from "@/hooks/useDebounce";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const path = usePathname();
   const [searchString, setSearchString] = useState("");
   const [searchedArticles, setSearchedArticles] = useState([]);
 
@@ -18,6 +20,15 @@ export default function Navbar() {
 
   useDebounce(fetchSearchResult, [searchString], 500);
 
+  useEffect(() => {
+    resetState();
+  }, [path]);
+
+  const resetState = () => {
+    setSearchString("");
+    setSearchedArticles([]);
+  };
+
   const showSearchResult = useMemo(() => {
     return searchedArticles.length > 0 && searchString;
   }, [searchString, searchedArticles]);
@@ -25,7 +36,7 @@ export default function Navbar() {
   return (
     <div>
       <nav className="flex justify-between px-8 items-center py-4">
-        <Link href="/" className="font-black text-lg">
+        <Link href="/" className="font-black text-lg" onClick={resetState}>
           Odyssey
         </Link>
         <SearchBox
