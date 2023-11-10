@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
+import CustomMDX from "@/components/mdx/mdx-remote";
 
 export async function generateMetadata({ params }) {
   const { title } = await getArticle(params.slug);
@@ -10,7 +11,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const { htmlContent, title, cover_img, type } = await getArticle(params.slug);
+  const { title, cover_img, type, fileContent } = await getArticle(params.slug);
   return (
     <section className="py-8 relative">
       <div className="w-full h-96 relative">
@@ -30,7 +31,7 @@ export default async function Page({ params }) {
       </div>
       <h1 className="text-2xl font-black mt-4">{title}</h1>
       <h2 className="font-black mt-2">{type}</h2>
-      <article dangerouslySetInnerHTML={{ __html: htmlContent }}></article>
+      <CustomMDX source={fileContent} />
     </section>
   );
 }

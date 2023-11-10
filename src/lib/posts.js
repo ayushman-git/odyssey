@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+import CustomMDX from "@/components/mdx/mdx-remote";
 
 const articlesDir = path.join(process.cwd(), "src", "content");
 
@@ -39,12 +40,10 @@ export async function getArticle(slug) {
   const file = path.join(articlesDir, `${slug}.mdx`);
   const fileContent = fs.readFileSync(file, "utf-8");
   const parsedMatter = matter(fileContent);
-  const processedContent = await remark()
-    .use(html)
-    .process(parsedMatter.content);
+
   return {
     slug,
     ...parsedMatter.data,
-    htmlContent: processedContent.toString(),
+    fileContent,
   };
 }
