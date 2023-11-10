@@ -16,7 +16,7 @@ export default async function Page({ params }) {
   return (
     <>
       <div className="absolute w-full top-0">
-        <LinearProgress percentage={10} />
+        <LinearProgress />
       </div>
       <section className="py-8 relative">
         <div className="w-full h-96 relative">
