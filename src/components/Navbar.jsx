@@ -44,7 +44,7 @@ export default function Navbar() {
           onChange={(e) => setSearchString(e.target.value)}
         />
       </nav>
-      <hr />
+      <hr className="border-t-[1px] border-gray-700" />
       {showSearchResult && (
         <div className="absolute max-w-screen-lg w-full bg-gray-100 p-8 rounded-b-xl z-100">
           <SearchResultList searchedArticles={searchedArticles} />

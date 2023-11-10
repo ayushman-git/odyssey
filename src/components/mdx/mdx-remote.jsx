@@ -9,6 +9,8 @@ const components = {
   h2: Heading.H2,
   blockquote: Blockquote,
   em: Typography.Em,
+  p: Typography.P,
+  code: Typography.Code
 };
 
 export default function CustomMDX(props) {
