@@ -3,7 +3,7 @@ import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import LinearProgress from "@/components/LinearProgress";
-import TimeToRead from "@/components/TimeToRead";
+import DetailChips from "@/components/DetailChips";
 
 export async function generateMetadata({ params }) {
   const { title } = await getArticle(params.slug);
@@ -13,7 +13,9 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const { title, cover_img, type, fileContent } = await getArticle(params.slug);
+  const { title, cover_img, type, fileContent, date } = await getArticle(
+    params.slug
+  );
   return (
     <>
       <div className="absolute w-full top-0">
@@ -36,10 +38,8 @@ export default async function Page({ params }) {
           />
         </div>
         <h1 className="text-2xl font-black mt-4">{title}</h1>
-        <h2 className="text-gray-700 font-bold tracking-wider mt-2 uppercase">
-          {type}
-        </h2>
-        <TimeToRead />
+
+        <DetailChips type={type} date={date} />
         <section className="py-8">
           <CustomMDX source={fileContent} />
         </section>

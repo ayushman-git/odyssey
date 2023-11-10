@@ -1,8 +1,11 @@
 "use client";
 
+import { formatDateString } from "@/utils";
+import { Chip } from "@mui/material";
 import { useEffect, useState } from "react";
+import BaseChip from "./BaseChip";
 
-export default function TimeToRead() {
+export default function DetailChips({ type, date }) {
   const [timeToRead, setTimeToRead] = useState(0);
 
   useEffect(() => {
@@ -22,5 +25,16 @@ export default function TimeToRead() {
 
     return words / (AVERAGE_WORDS_PER_MIN * TECHNICAL_ARTICLE_MULIPLIER);
   };
-  return <h3>{Math.round(timeToRead)} min read</h3>;
+  return (
+    <header className="flex gap-2 my-3">
+      <BaseChip label={type} color="primary" />
+      <BaseChip label={`${formatDateString(date)}`} variant="outlined" />
+      {timeToRead > 0 && (
+        <BaseChip
+          label={`${Math.round(timeToRead)} min read`}
+          variant="outlined"
+        />
+      )}
+    </header>
+  );
 }
