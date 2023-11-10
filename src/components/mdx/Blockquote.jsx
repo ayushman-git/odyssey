@@ -1,8 +1,7 @@
-import React from "react";
-
 export default function Blockquote({ children }) {
+  console.log(children);
   return (
-    <blockquote className="border-l-2 border-green-600 bg-slate-200 italic">
+    <blockquote className="text-lg border-l-4 border-black bg-slate-50 italic p-10 leading-7 text-gray-700">
       {children}
     </blockquote>
   );

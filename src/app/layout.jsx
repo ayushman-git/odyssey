@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
           backgroundSize: 80,
         }}
       >
-        <main className="max-w-screen-lg w-full">
+        <main className="max-w-screen-md w-full">
           <Navbar />
           <section>{children}</section>
         </main>
