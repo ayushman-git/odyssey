@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
           backgroundSize: 80,
         }}
       >
+        <div id="linear-progress" className="sticky top-0 w-full z-50"></div>
         <main className="max-w-screen-md w-full">
           <Navbar />
           <section>{children}</section>
