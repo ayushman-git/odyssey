@@ -3,6 +3,7 @@ import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import LinearProgress from "@/components/LinearProgress";
+import TimeToRead from "@/components/TimeToRead";
 
 export async function generateMetadata({ params }) {
   const { title } = await getArticle(params.slug);
@@ -38,6 +39,7 @@ export default async function Page({ params }) {
         <h2 className="text-gray-700 font-bold tracking-wider mt-2 uppercase">
           {type}
         </h2>
+        <TimeToRead />
         <section className="py-8">
           <CustomMDX source={fileContent} />
         </section>
