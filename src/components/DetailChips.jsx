@@ -1,9 +1,10 @@
 "use client";
 
 import { formatDateString } from "@/utils";
-import { Chip } from "@mui/material";
 import { useEffect, useState } from "react";
 import BaseChip from "./BaseChip";
+import { AiFillClockCircle } from "react-icons/ai";
+import { BiSolidCalendarAlt } from "react-icons/bi";
 
 export default function DetailChips({ type, date }) {
   const [timeToRead, setTimeToRead] = useState(0);
@@ -28,9 +29,14 @@ export default function DetailChips({ type, date }) {
   return (
     <header className="flex gap-2 my-3">
       <BaseChip label={type} color="primary" />
-      <BaseChip label={`${formatDateString(date)}`} variant="outlined" />
+      <BaseChip
+        icon={<BiSolidCalendarAlt color="#3b82f6" size={16} />}
+        label={`${formatDateString(date)}`}
+        variant="outlined"
+      />
       {timeToRead > 0 && (
         <BaseChip
+          icon={<AiFillClockCircle color="#3b82f6" size={16} />}
           label={`${Math.round(timeToRead)} min read`}
           variant="outlined"
         />
