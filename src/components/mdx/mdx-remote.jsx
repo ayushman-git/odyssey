@@ -14,6 +14,9 @@ const components = {
 export default function CustomMDX(props) {
   return (
     <MDXRemote
+      options={{
+        parseFrontmatter: true,
+      }}
       {...props}
       components={{ ...components, ...(props.components || {}) }}
     />

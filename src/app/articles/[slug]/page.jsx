@@ -30,8 +30,10 @@ export default async function Page({ params }) {
         />
       </div>
       <h1 className="text-2xl font-black mt-4">{title}</h1>
-      <h2 className="font-black mt-2">{type}</h2>
-      <CustomMDX source={fileContent} />
+      <h2 className="text-gray-700 font-bold tracking-wider mt-2 uppercase">{type}</h2>
+      <section className="py-8">
+        <CustomMDX source={fileContent} />
+      </section>
     </section>
   );
 }
