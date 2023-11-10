@@ -27,7 +27,7 @@ export default function DetailChips({ type, date }) {
     return words / (AVERAGE_WORDS_PER_MIN * TECHNICAL_ARTICLE_MULIPLIER);
   };
   return (
-    <header className="flex gap-2 my-3">
+    <header className="flex gap-3 my-3">
       <BaseChip
         sx={{ backgroundColor: "black" }}
         label={type}
