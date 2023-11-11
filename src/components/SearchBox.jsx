@@ -1,9 +1,10 @@
 import useClickOutside from "@/hooks/useClickOutside";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 
 export default function SearchBox({ searchString, onChange }) {
   const [showSearchField, setShowSearchField] = useState(false);
+  const [key, setKey] = useState(null);
   const inputRef = useRef(null);
   useClickOutside(inputRef, handleClickOutside);
 
@@ -20,6 +21,12 @@ export default function SearchBox({ searchString, onChange }) {
       handleSearchTrigger();
     }
   };
+
+  useEffect(() => {
+    const platform = navigator?.userAgentData?.platform.toLowerCase();
+    if (platform === "windows") setKey("Ctrl");
+    if (platform === "macos") setKey("⌘");
+  }, []);
 
   useEffect(() => {
     addEventListener("keydown", handleShortcut);
@@ -46,9 +53,11 @@ export default function SearchBox({ searchString, onChange }) {
           className="mr-8 border-b-2 bg-transparent border-black focus:outline-none text-gray-600 text-sm"
         />
       )}
-      <span className="mr-2">
-        <kbd>⌘</kbd> + <kbd>k</kbd>
-      </span>
+      {key && (
+        <span className="mr-2">
+          <kbd>{key}</kbd> + <kbd>k</kbd>
+        </span>
+      )}
       <BsSearch
         size="1.125rem"
         className="cursor-pointer"
