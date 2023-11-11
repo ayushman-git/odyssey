@@ -6,9 +6,23 @@ import LinearProgress from "@/components/LinearProgress";
 import DetailChips from "@/components/DetailChips";
 
 export async function generateMetadata({ params }) {
-  const { title } = await getArticle(params.slug);
+  const { title, cover_img } = await getArticle(params.slug);
   return {
     title: `Odyssey | ${title}`,
+    openGraph: {
+      title: title,
+      description: "A Voyage into the Heart of Silicon",
+      siteName: "Odyssey",
+      images: [
+        {
+          url: cover_img,
+          width: 800,
+          height: 600,
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
   };
 }
 
