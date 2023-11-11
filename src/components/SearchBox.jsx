@@ -29,7 +29,7 @@ export default function SearchBox({ searchString, onChange }) {
           value={searchString}
           onChange={onChange}
           type="text"
-          className="mr-8 border-b-2 bg-transparent border-black"
+          className="mr-8 border-b-2 bg-transparent border-black focus:outline-none text-gray-600 text-sm"
         />
       )}
       <BsSearch
