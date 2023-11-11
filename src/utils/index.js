@@ -32,3 +32,7 @@ function addOrdinalSuffix(number) {
       return `${number}th`;
   }
 }
+
+export const underscoreDelimiter = (str) => {
+  return str.toLowerCase().replaceAll(" ", "_");
+};
