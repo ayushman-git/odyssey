@@ -1,9 +1,15 @@
+import useClickOutside from "@/hooks/useClickOutside";
 import { useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 
 export default function SearchBox({ searchString, onChange }) {
   const [showSearchField, setShowSearchField] = useState(false);
   const inputRef = useRef(null);
+  useClickOutside(inputRef, handleClickOutside);
+
+  function handleClickOutside() {
+    if (showSearchField) setShowSearchField(false);
+  }
 
   const handleSearchTrigger = () => {
     setShowSearchField((prev) => !prev);
