@@ -26,6 +26,7 @@ export default function SearchBox({ searchString, onChange }) {
     } else {
       inputRef.current.focus();
     }
+    return () => removeEventListener("keydown", handleShortcut);
   }, [showSearchField]);
 
   return (
