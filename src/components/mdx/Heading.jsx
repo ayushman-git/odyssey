@@ -9,7 +9,7 @@ export const Heading = {
         id={underscoreDelimiter(children)}
       >
         <a href={`#${underscoreDelimiter(children)}`}>{children}</a>
-        <BiLink className="opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+        <BiLink href={`#${underscoreDelimiter(children)}`} className="opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
       </h1>
     );
   },
