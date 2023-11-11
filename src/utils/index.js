@@ -4,15 +4,16 @@ export const openLink = (link) => {
 
 export const formatDateString = (dateString) => {
   const options = { day: "numeric", month: "short" };
-  const date = new Date(dateString);
+  const [day, month, year] = dateString.split("-");
+  const date = new Date(`${month}/${day}/${year}`);
 
-  const day = date.toLocaleDateString("en-US", { day: "numeric" });
-  const month = date.toLocaleDateString("en-US", { month: "short" });
+  const formattedDay = date.toLocaleDateString("en-GB", { day: "numeric" });
+  const formattedMonth = date.toLocaleDateString("en-GB", { month: "short" });
 
   // Add ordinal suffix to the day
-  const dayWithOrdinal = addOrdinalSuffix(day);
+  const dayWithOrdinal = addOrdinalSuffix(formattedDay);
 
-  return `${dayWithOrdinal} ${month}`;
+  return `${dayWithOrdinal} ${formattedMonth}`;
 };
 
 function addOrdinalSuffix(number) {
