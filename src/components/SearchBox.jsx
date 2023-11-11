@@ -46,14 +46,14 @@ export default function SearchBox({ searchString, onChange }) {
           className="mr-8 border-b-2 bg-transparent border-black focus:outline-none text-gray-600 text-sm"
         />
       )}
+      <span className="mr-2">
+        <kbd>⌘</kbd> + <kbd>k</kbd>
+      </span>
       <BsSearch
         size="1.125rem"
         className="cursor-pointer"
         onClick={handleSearchTrigger}
       />
-      <span className="ml-2">
-        <kbd>⌘</kbd> + <kbd>k</kbd>
-      </span>
     </div>
   );
 }
