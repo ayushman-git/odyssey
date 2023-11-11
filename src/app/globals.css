@@ -8,6 +8,6 @@ html {
 
 @layer base {
   kbd {
-    @apply inline-flex items-center justify-center px-2 py-1 bg-gray-100 rounded-md shadow-sm text-gray-800 font-medium;
+    @apply inline-flex items-center justify-center px-2 py-1 bg-gray-100 rounded-md shadow-sm text-gray-600 font-medium;
   }
 }

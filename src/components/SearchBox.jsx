@@ -54,7 +54,7 @@ export default function SearchBox({ searchString, onChange }) {
         />
       )}
       {key && (
-        <span className="mr-2">
+        <span className="mr-2 text-sm text-gray-700">
           <kbd>{key}</kbd> + <kbd>k</kbd>
         </span>
       )}
