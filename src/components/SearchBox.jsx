@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 
 export default function SearchBox({ searchString, onChange }) {
   const [showSearchField, setShowSearchField] = useState(false);
+  const inputRef = useRef(null);
 
   const handleSearchTrigger = () => {
     setShowSearchField((prev) => !prev);
@@ -15,6 +16,8 @@ export default function SearchBox({ searchString, onChange }) {
           value: "",
         },
       });
+    } else {
+      inputRef.current.focus();
     }
   }, [showSearchField]);
 
@@ -22,6 +25,7 @@ export default function SearchBox({ searchString, onChange }) {
     <div className="flex items-center">
       {showSearchField && (
         <input
+          ref={inputRef}
           value={searchString}
           onChange={onChange}
           type="text"
