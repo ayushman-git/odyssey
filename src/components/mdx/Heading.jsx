@@ -7,7 +7,7 @@ export const Heading = {
         className="text-2xl font-bold my-4 cursor-pointer"
         id={underscoreDelimiter(children)}
       >
-        {children}
+        <a href={`#${underscoreDelimiter(children)}`}>{children}</a>
       </h1>
     );
   },
