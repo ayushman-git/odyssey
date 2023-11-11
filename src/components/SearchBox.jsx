@@ -9,7 +9,14 @@ export default function SearchBox({ searchString, onChange }) {
     setShowSearchField((prev) => !prev);
   };
 
+  const handleShortcut = (e) => {
+    if (e.metaKey && e.key === "k") {
+      handleSearchTrigger();
+    }
+  };
+
   useEffect(() => {
+    addEventListener("keydown", handleShortcut);
     if (!showSearchField) {
       onChange({
         target: {
@@ -37,6 +44,9 @@ export default function SearchBox({ searchString, onChange }) {
         className="cursor-pointer"
         onClick={handleSearchTrigger}
       />
+      <span className="ml-2">
+        <kbd>⌘</kbd> + <kbd>k</kbd>
+      </span>
     </div>
   );
 }
