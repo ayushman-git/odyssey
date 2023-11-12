@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import BaseChip from "./BaseChip";
 import { AiFillClockCircle } from "react-icons/ai";
 import { BiSolidCalendarAlt } from "react-icons/bi";
+import { Avatar } from "@mui/material";
+import AuthorAvatar from "@/assets/images/ayushman.png";
 
 export default function DetailChips({ type, date }) {
   const [timeToRead, setTimeToRead] = useState(0);
@@ -27,7 +29,8 @@ export default function DetailChips({ type, date }) {
     return words / (AVERAGE_WORDS_PER_MIN * TECHNICAL_ARTICLE_MULIPLIER);
   };
   return (
-    <header className="flex gap-3 my-3">
+    <header className="flex gap-3 my-3 items-center">
+      <Avatar alt="avatar" src={AuthorAvatar.src} sx={{ height: "44px", width: "44px" }} />
       <BaseChip
         sx={{ backgroundColor: "black" }}
         label={type}

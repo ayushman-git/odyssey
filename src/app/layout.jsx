@@ -20,11 +20,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         className={`${merry.className} grid place-items-center`}
-        style={{
-          backgroundImage: `url(${BgPattern.src})`,
-          backgroundRepeat: "repeat",
-          backgroundSize: 80,
-        }}
+        // style={{
+        //   backgroundImage: `url(${BgPattern.src})`,
+        //   backgroundRepeat: "repeat",
+        //   backgroundSize: 80,
+        // }}
       >
         <div id="linear-progress" className="sticky top-0 w-full z-50"></div>
         <main className="max-w-screen-md w-full">
