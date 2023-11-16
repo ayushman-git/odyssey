@@ -3,6 +3,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { Heading } from "./Heading";
 import Blockquote from "./Blockquote";
 import { Typography } from "./Typography";
+import AsideTitles from "../AsideTitles";
 
 const components = {
   h1: Heading.H1,
@@ -24,19 +25,7 @@ export default function CustomMDX(props) {
     />
   );
 
-  const renderAsideList = (list) => {
-    return list.map((item) => (
-      <>
-        <li className="my-2">{item.title}</li>
-        {item.subheadings &&
-          item.subheadings.length > 0 &&
-          renderAsideList(item.subheadings)}
-      </>
-    ));
-  };
-
   const extractHeadings = (content) => {
-    console.log({ content });
     const regex = /^(#+)\s+(.*)$/gm;
     const matches = content.matchAll(regex);
     const headings = [];
@@ -61,9 +50,7 @@ export default function CustomMDX(props) {
     }
 
     return (
-      <aside className="sticky top-10 w-60 -ml-72">
-        <ul className="text-xs">{renderAsideList(headings)}</ul>
-      </aside>
+      <AsideTitles headings={headings} />
     );
   };
 
