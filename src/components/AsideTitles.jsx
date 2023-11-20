@@ -12,7 +12,7 @@ export default function AsideTitles({ headings }) {
               className="text-gray-500 "
               href={`#${underscoreDelimiter(item.title)}`}
             >
-              <li className="my-2">{item.title}</li>
+              <li className="my-3">{item.title}</li>
             </a>
           )}
           {item.subheadings &&
@@ -25,7 +25,9 @@ export default function AsideTitles({ headings }) {
 
   return (
     <aside className="sticky top-10 w-60 -ml-72 h-0 bottom-24">
-      <ul className="text-xs">{renderAsideList(headings)}</ul>
+        <h3 className="font-black mb-3">Table of Contents</h3>
+        <hr className="mb-6" />
+      <ul className="text-sm">{renderAsideList(headings)}</ul>
     </aside>
   );
 }
