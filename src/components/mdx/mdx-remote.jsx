@@ -26,6 +26,8 @@ export default function CustomMDX(props) {
   );
 
   const extractHeadings = (content) => {
+    if(!props.showAside) return;
+
     const regex = /^(#+)\s+(.*)$/gm;
     const matches = content.matchAll(regex);
     const headings = [];

@@ -27,7 +27,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const { title, cover_img, type, fileContent, date } = await getArticle(
+  const { title, cover_img, type, fileContent, date, showAside } = await getArticle(
     params.slug
   );
   return (
@@ -55,7 +55,7 @@ export default async function Page({ params }) {
 
         <DetailChips type={type} date={date} />
         <section className="py-8">
-          <CustomMDX source={fileContent} />
+          <CustomMDX source={fileContent} showAside={showAside} />
         </section>
       </section>
     </>
