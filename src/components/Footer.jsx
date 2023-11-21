@@ -6,8 +6,8 @@ import { FiExternalLink } from "react-icons/fi";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-black text-white grid place-items-center py-12 rounded-t-3xl">
-      <div className="max-w-screen-lg w-full flex gap-10">
+    <footer className="w-full bg-black text-white grid place-items-center py-24 rounded-t-3xl">
+      <div className="max-w-screen-md w-full flex gap-10">
         <aside className="w-full">
           <h1 className="text-lg font-black">Odyssey</h1>
           <h3 className="opacity-60 text-sm mt-2">
@@ -41,7 +41,6 @@ export default function Footer() {
           </div>
         </section>
       </div>
-      <hr className="max-w-screen-lg my-10" />
     </footer>
   );
 }
