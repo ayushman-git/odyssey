@@ -18,14 +18,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${merry.className} grid place-items-center`}
-        // style={{
-        //   backgroundImage: `url(${BgPattern.src})`,
-        //   backgroundRepeat: "repeat",
-        //   backgroundSize: 80,
-        // }}
-      >
+      <body className={`${merry.className} grid place-items-center`}>
         <div id="linear-progress" className="sticky top-0 w-full z-50"></div>
         <main className="max-w-screen-md w-full">
           <Navbar />

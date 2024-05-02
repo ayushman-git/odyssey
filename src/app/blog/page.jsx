@@ -1,9 +1,12 @@
+import React from "react";
 import ArticleCardList from "@/components/ArticleCardList";
 
-export default function Home() {
+function Blog() {
   return (
     <div>
-      hello
+      <ArticleCardList />
     </div>
   );
 }
+
+export default Blog;

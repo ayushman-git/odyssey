@@ -5,7 +5,7 @@ import { BsArrowRight } from "react-icons/bs";
 
 export default function ArticleCard({ details }) {
   return (
-    <Link href={`/articles/${details.slug}`}>
+    <Link href={`/blog/articles/${details.slug}`}>
       <article className="flex cursor-pointer gap-6">
         <div className="w-1/3 h-48 relative">
           <Image
