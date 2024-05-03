@@ -1,5 +1,6 @@
 import { Merriweather } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/LandingPage/Navbar";
 
 const merry = Merriweather({
   subsets: ["latin"],
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${merry.className}`}>
+        <Navbar />
         <section>{children}</section>
       </body>
     </html>
