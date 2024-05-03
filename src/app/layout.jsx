@@ -1,8 +1,5 @@
 import { Merriweather } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import BgPattern from "@/assets/images/bg_pattern.png";
 
 const merry = Merriweather({
   subsets: ["latin"],
@@ -18,13 +15,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${merry.className} grid place-items-center`}>
-        <div id="linear-progress" className="sticky top-0 w-full z-50"></div>
-        <main className="max-w-screen-md w-full">
-          <Navbar />
-          <section>{children}</section>
-        </main>
-        <Footer />
+      <body className={`${merry.className}`}>
+        <section>{children}</section>
       </body>
     </html>
   );
