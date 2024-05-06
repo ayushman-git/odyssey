@@ -1,7 +1,10 @@
+import Link from "next/link";
+
 const { default: styled } = require("styled-components");
 
-export const StyledLink = styled.a`
+export const StyledLink = styled(Link)`
   position: relative;
+  padding: 0.2rem;
   display: block;
   overflow: hidden; // Ensures no overflow if transformations exceed boundaries
 

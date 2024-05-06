@@ -35,7 +35,7 @@ export default function Navbar() {
 
   return (
     <div className="relative z-50">
-      <nav className="flex justify-between px-8 items-center py-4">
+      <div className="flex justify-between px-8 items-center py-4">
         <Link href="/" className="font-black text-lg" onClick={resetState}>
           Odyssey
         </Link>
@@ -43,7 +43,7 @@ export default function Navbar() {
           searchString={searchString}
           onChange={(e) => setSearchString(e.target.value)}
         />
-      </nav>
+      </div>
       <hr className="border-t-[1px] border-gray-700" />
       {showSearchResult && (
         <div className="absolute max-w-screen-lg w-full bg-gray-100 p-8 rounded-b-xl z-100">

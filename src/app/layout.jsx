@@ -1,10 +1,9 @@
-import { Merriweather } from "next/font/google";
 import "./globals.css";
+import { Work_Sans } from "next/font/google";
 import Navbar from "@/components/LandingPage/Navbar";
 
-const merry = Merriweather({
+const workSans = Work_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
   style: ["normal", "italic"],
 });
 
@@ -16,8 +15,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${merry.className}`}>
-        <Navbar />
+      <body className={`${workSans.className}`}>
+        <nav className="grid place-items-center pt-4 px-4">
+          <Navbar />
+        </nav>
         <section>{children}</section>
       </body>
     </html>
