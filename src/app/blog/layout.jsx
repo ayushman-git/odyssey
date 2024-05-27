@@ -13,7 +13,7 @@ function BlogLayout({ children }) {
   return (
     <div className={`grid place-items-center ${merry.className}`}>
       <div id="linear-progress" className="sticky top-0 w-full z-50"></div>
-      <main className="max-w-screen-md w-full">
+      <main className="max-w-screen-md w-full pb-44">
         <Navbar />
         <section>{children}</section>
       </main>
