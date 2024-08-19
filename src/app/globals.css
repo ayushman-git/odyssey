@@ -13,7 +13,19 @@ html {
 }
 
 ::selection {
-  background-color: #B2EBF2;
-  color: #1A1A1A;
+  background-color: #b2ebf2;
+  color: #1a1a1a;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.grid-background {
+  background-color: white; /* Optional: background color */
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.2) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px);
+  border-radius: 8px;
+  background-size: 12px 12px;
 }

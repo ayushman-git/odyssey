@@ -37,3 +37,12 @@ function addOrdinalSuffix(number) {
 export const underscoreDelimiter = (str) => {
   return str.toLowerCase().replaceAll(" ", "_");
 };
+
+export const convertToSlug = (str) => {
+  return str
+    .toLowerCase()               // Convert to lowercase
+    .trim()                      // Trim leading/trailing whitespace
+    .replace(/[\s_]+/g, '-')     // Replace spaces and underscores with hyphens
+    .replace(/[^\w\-]+/g, '')    // Remove all non-word characters
+    .replace(/\-\-+/g, '-');     // Replace multiple hyphens with a single hyphen
+}

@@ -1,7 +1,7 @@
 export const ARTICLE_TYPES = {
-  CASE_STUDY: "Case Study",
-  BOOK_REVIEW: "Book Review",
-  PROGRAMMING: "Programming",
+  "case-study": "Case Study",
+  "book-review": "Book Review",
+  "tech": "Tech",
 };
 
 export const BLUR_DATA_URLS = {

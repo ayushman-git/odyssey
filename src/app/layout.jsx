@@ -1,6 +1,7 @@
 import "./globals.css";
-import { Work_Sans } from "next/font/google";
+import { Work_Sans, Dancing_Script } from "next/font/google";
 import Navbar from "@/components/LandingPage/Navbar";
+import Footer from "@/components/Footer";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -15,12 +16,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${workSans.className}`}>
-        <nav className="grid place-items-center pt-4 px-4">
+      <div className={`grid place-items-center ${workSans.className}`}>
+        <div id="linear-progress" className="sticky top-0 w-full z-50"></div>
+        <main className="max-w-screen-md w-full pb-44">
           <Navbar />
-        </nav>
-        <section>{children}</section>
-      </body>
+          <section>{children}</section>
+        </main>
+        <Footer />
+      </div>
     </html>
   );
 }

@@ -1,11 +1,13 @@
 import { BLUR_DATA_URLS } from "@/data/constants";
+import { convertToSlug } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 
 export default function ArticleCard({ details }) {
+  console.log({details})
   return (
-    <Link href={`/blog/articles/${details.slug}`}>
+    <Link href={`/${convertToSlug(details.type)}/${details.slug}`}>
       <article className="flex cursor-pointer gap-6">
         <div className="w-1/3 h-48 relative">
           <Image
