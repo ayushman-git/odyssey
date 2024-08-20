@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <div className={`grid place-items-center ${workSans.className}`}>
         <div id="linear-progress" className="sticky top-0 w-full z-50"></div>
-        <main className="max-w-screen-md w-full pb-44">
+        <main className="max-w-screen-md w-full pb-44 sm:px-10 px-6">
           <Navbar />
           <section>{children}</section>
         </main>
