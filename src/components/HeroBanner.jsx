@@ -1,10 +1,18 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
 
 function HeroBanner() {
   return (
-    <div className="flex my-24">
+    <motion.div
+      className="flex sm:flex-row flex-col my-24 gap-4"
+      initial={{ opacity: 0, translateY: -20 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <section className="flex-1 gap-4">
-        <h1 className="text-7xl font-bold mb-4">Odyssey.</h1>
+        <h1 className="text-7xl font-bold sm:mb-4 mb-2">Odyssey.</h1>
         <h2 className="text-2xl font-normal">Created by Ayushman</h2>
       </section>
       <aside className="flex-1">
@@ -14,7 +22,7 @@ function HeroBanner() {
           perspectives!
         </h3>
       </aside>
-    </div>
+    </motion.div>
   );
 }
 

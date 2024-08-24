@@ -46,3 +46,11 @@ export const convertToSlug = (str) => {
     .replace(/[^\w\-]+/g, '')    // Remove all non-word characters
     .replace(/\-\-+/g, '-');     // Replace multiple hyphens with a single hyphen
 }
+
+export const generateInt = (start, end) => {
+  return Math.floor(Math.random() * (end - start) + start);
+};
+
+export const generateFloat = (start, end) => {
+  return Math.random() * (end - start) + start;
+};

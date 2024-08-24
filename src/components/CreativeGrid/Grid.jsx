@@ -1,40 +1,35 @@
-import Image from "next/image";
+"use client";
+
 import React from "react";
+import Image from "next/image";
+
+import { motion } from "framer-motion";
+import { generateFloat, generateInt } from "@/utils";
 
 function Grid({ img, vid, gridArea }) {
+  // create a utility method 
   return (
-    <div
-      className="w-full relative h-full rounded-3xl overflow-hidden"
+    <motion.div
+      className="w-full relative h-full rounded-3xl overflow-hidden "
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      initial={{ opacity: 0, translateX: generateInt(-40, 40) }}
+      animate={{ opacity: 1, translateX: 0 }}
+      transition={{ duration: generateFloat(0.5, 1.5) }}
       style={{
         gridArea: gridArea,
       }}
     >
       {img && (
-        <Image src={img} layout="fill" objectFit="cover" alt="Cover Image" />
+        <Image
+          className=""
+          src={img}
+          layout="fill"
+          objectFit="cover"
+          alt="Cover Image"
+        />
       )}
-      {vid && (
-        <video
-          autoPlay
-          loop
-          preload="none"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        >
-          <source
-            src={
-              "https://videos.pexels.com/video-files/20728739/20728739-hd_1080_1920_25fps.mp4"
-            }
-            type="video/mp4"
-          />
-        </video>
-      )}
-    </div>
+    </motion.div>
   );
 }
 

@@ -16,14 +16,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <div className={`grid place-items-center ${inter.className}`}>
-        <div id="linear-progress" className="sticky top-0 w-full z-50"></div>
-        <Navbar />
-        <main className="max-w-screen-md w-full pb-44 sm:px-0 px-6">
-          <section>{children}</section>
-        </main>
-        <Footer />
-      </div>
+      <body>
+        <div className={`grid place-items-center ${inter.className}`}>
+          <div id="linear-progress" className="sticky top-0 w-full z-50"></div>
+          <Navbar />
+          <main className="max-w-screen-md w-full pb-44 sm:px-0 px-6">
+            <section>{children}</section>
+          </main>
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }
