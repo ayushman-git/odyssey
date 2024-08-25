@@ -45,10 +45,6 @@ export default function ArticleCard({ details }) {
           <h2 className="sm:text-2xl text-3xl font-semibold">
             {details.title}
           </h2>
-          {/* <footer className="flex justify-end items-center mt-2 cursor-pointer">
-            <p className="text-sm">Read More</p>
-            <BsArrowRight size="1.125rem" className="ml-2" />
-          </footer> */}
         </div>
       </motion.article>
     </Link>

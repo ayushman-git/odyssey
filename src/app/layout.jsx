@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
               className="sticky top-0 w-full z-50"
             ></div>
             <Navbar />
-            <main className="max-w-screen-md w-full pb-44 sm:px-0 px-6">
+            <main className="max-w-screen-md w-full pb-32 sm:px-0 px-6">
               <section>{children}</section>
             </main>
             <Footer />
