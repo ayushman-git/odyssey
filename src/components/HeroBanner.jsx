@@ -16,7 +16,7 @@ function HeroBanner() {
         <h2 className="text-2xl font-normal">Created by Ayushman</h2>
       </section>
       <aside className="flex-1">
-        <h3 className="font-medium text-lg">
+        <h3 className="font-medium text-lg dark:text-gray-300">
           Odyssey is a blog exploring the cosmos, tech insights, and thoughtful
           book reviews, where curiosity meets creativity. Dive into diverse
           perspectives!

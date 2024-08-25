@@ -1,3 +1,42 @@
+import Carina from "@/assets/images/grid/carina.webp";
+import Sand from "@/assets/images/grid/sand.webp";
+import Abstract from "@/assets/images/grid/abstract.webp";
+import Astronaut from "@/assets/images/grid/astronaut.webp";
+import Jupiter from "@/assets/images/grid/jupiter.webp";
+import Cute from "@/assets/images/grid/cute.webp";
+import Sky from "@/assets/images/grid/sky.webp";
+
+export const GRID_IMAGES = [
+  {
+    src: Carina,
+    gridArea: "1 / 1 / 2 / -1",
+  },
+  {
+    src: Abstract,
+    gridArea: "2 / 1 / 3 / 2",
+  },
+  {
+    src: Sand,
+    gridArea: "2 / 2 / 3 / -1",
+  },
+  {
+    src: Astronaut,
+    gridArea: "3 / 6 / -1 / -1",
+  },
+  {
+    src: Jupiter,
+    gridArea: "3 / 1 / 4 / -2",
+  },
+  {
+    src: Cute,
+    gridArea: "4 / 1 / -1 / 2",
+  },
+  {
+    src: Sky,
+    gridArea: "4 / 2 / -1 / -2",
+  },
+];
+
 export const ARTICLE_TYPES = {
   "case-study": "Case Study",
   "book-review": "Book Review",

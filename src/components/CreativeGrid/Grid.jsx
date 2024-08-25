@@ -6,8 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { generateFloat, generateInt } from "@/utils";
 
-function Grid({ img, vid, gridArea }) {
-  // create a utility method 
+function Grid({ img, vid, gridArea, onLoadingComplete }) {
   return (
     <motion.div
       className="w-full relative h-full rounded-3xl overflow-hidden "
@@ -22,8 +21,9 @@ function Grid({ img, vid, gridArea }) {
     >
       {img && (
         <Image
-          className=""
+          onLoadingComplete={onLoadingComplete}
           src={img}
+          placeholder="blur"
           layout="fill"
           objectFit="cover"
           alt="Cover Image"
