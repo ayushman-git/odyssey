@@ -9,7 +9,6 @@ export default function AsideTitles({ headings }) {
   const handleIntersection = (entries, observer, id) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        console.log("IN", id);
         setCurrentSectionInView(id);
       }
     });
@@ -53,7 +52,7 @@ export default function AsideTitles({ headings }) {
   };
 
   return (
-    <aside className="sticky top-10 w-60 -ml-72 h-0 bottom-24">
+    <aside className="sticky top-32 w-60 -ml-72 h-0 bottom-24">
       <h3 className="font-black mb-3">Table of Contents</h3>
       <hr className="mb-6" />
       <ul className="text-sm">{renderAsideList(headings)}</ul>

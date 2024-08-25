@@ -5,7 +5,7 @@ import CreativeGrid from "@/components/CreativeGrid";
 
 function Home() {
   return (
-    <div>
+    <div className="max-w-screen-md">
       <HeroBanner />
       <CreativeGrid />
       <ArticleCardList />

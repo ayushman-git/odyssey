@@ -1,5 +1,7 @@
-import { Chip } from "@mui/material";
+"use client";
 
-export default function BaseChip(props) {
-  return <Chip {...props} className="rounded-lg border border-black" />;
+import { motion } from "framer-motion";
+
+export default function BaseChip({ label }) {
+  return <motion.span>{label}</motion.span>;
 }

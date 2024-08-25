@@ -16,17 +16,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      style={{
+        scrollBehavior: "smooth",
+      }}
+    >
       <body>
         <CustomThemeProvider>
           <div className={`grid place-items-center ${inter.className}`}>
-            <div
-              id="linear-progress"
-              className="sticky top-0 w-full z-50"
-            ></div>
             <Navbar />
-            <main className="max-w-screen-md w-full pb-32 sm:px-0 px-6">
-              <section>{children}</section>
+            <main className="w-full pb-32 sm:px-0 px-6">
+              <section className="w-full grid place-items-center overflow-hidden">
+                {children}
+              </section>
             </main>
             <Footer />
           </div>

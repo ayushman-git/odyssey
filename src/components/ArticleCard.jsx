@@ -12,11 +12,23 @@ export default function ArticleCard({ details }) {
     <Link href={`/${convertToSlug(details.type)}/${details.slug}`}>
       <motion.article
         transition={{
-          duration: 0.2,
+          duration: 0.5,
         }}
         whileHover={{
           scale: 1.01,
           filter: "brightness(1.05) contrast(1.1)",
+        }}
+        initial={{
+          translateY: 80,
+          opacity: 0,
+        }}
+        whileInView={{
+          translateY: 0,
+          opacity: 1,
+        }}
+        viewport={{
+          once: true,
+          margin: "-10%",
         }}
         className="flex cursor-pointer flex-col rounded-3xl border border-black dark:border-gray-700 overflow-hidden"
       >

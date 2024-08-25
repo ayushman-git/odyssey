@@ -1,12 +1,11 @@
 "use client";
 
-import { formatDateString } from "@/utils";
 import { useEffect, useState } from "react";
+
+import { formatDateString } from "@/utils";
 import BaseChip from "./BaseChip";
 import { AiFillClockCircle } from "react-icons/ai";
 import { BiSolidCalendarAlt } from "react-icons/bi";
-import { Avatar } from "@mui/material";
-import AuthorAvatar from "@/assets/images/ayushman.png";
 
 export default function DetailChips({ type, date }) {
   const [timeToRead, setTimeToRead] = useState(0);
@@ -30,22 +29,15 @@ export default function DetailChips({ type, date }) {
   };
   return (
     <header className="flex gap-3 my-3 items-center">
-      <Avatar alt="avatar" src={AuthorAvatar.src} sx={{ height: "44px", width: "44px" }} />
-      <BaseChip
-        sx={{ backgroundColor: "black" }}
-        label={type}
-        color="primary"
-      />
+      <BaseChip sx={{ backgroundColor: "black" }} label={type} />
       <BaseChip
         icon={<BiSolidCalendarAlt color="#000" size={16} />}
         label={`${formatDateString(date)}`}
-        variant="outlined"
       />
       {timeToRead > 0 && (
         <BaseChip
           icon={<AiFillClockCircle color="#000" size={16} />}
           label={`${Math.round(timeToRead)} min read`}
-          variant="outlined"
         />
       )}
     </header>

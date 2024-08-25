@@ -3,10 +3,20 @@
 import React from "react";
 import Image from "next/image";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { generateFloat, generateInt } from "@/utils";
 
-function Grid({ img, vid, gridArea, onLoadingComplete }) {
+function Grid({ img, gridArea, onLoadingComplete }) {
+  const { scrollYProgress } = useScroll();
+
+  // Use useTransform to map the scrollYProgress to a usable translateX value
+  const translateX = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, generateInt(-200, 200)]
+  );
+
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
   return (
     <motion.div
       className="w-full relative h-full rounded-3xl overflow-hidden "
@@ -17,6 +27,8 @@ function Grid({ img, vid, gridArea, onLoadingComplete }) {
       transition={{ duration: generateFloat(0.5, 1.5) }}
       style={{
         gridArea: gridArea,
+        translateX,
+        opacity,
       }}
     >
       {img && (
