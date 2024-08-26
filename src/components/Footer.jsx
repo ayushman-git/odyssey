@@ -49,7 +49,7 @@ export default function Footer() {
           once: true,
           margin: "-20%",
         }}
-        className="text-5xl font-bold text-center leading-normal cursor-pointer group"
+        className="sm:text-5xl text-3xl font-bold text-center leading-normal cursor-pointer group"
       >
         Curiosity never killed the{" "}
         <span className="relative">
