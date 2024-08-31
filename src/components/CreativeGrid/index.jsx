@@ -9,8 +9,8 @@ function CreativeGrid() {
       className="grid grid-cols-6 grid-rows-3 gap-4 mb-12"
       style={{ gridTemplateRows: "repeat(4, 102px)" }}
     >
-      {GRID_IMAGES.map(({ src, gridArea }) => (
-        <Grid key={src} img={src} gridArea={gridArea} />
+      {GRID_IMAGES.map(({ src, gridArea }, index) => (
+        <Grid key={index} img={src} gridArea={gridArea} />
       ))}
     </div>
   );

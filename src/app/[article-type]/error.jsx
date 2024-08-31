@@ -23,7 +23,7 @@ export default function Error({ error, reset }) {
           src={Illustration}
           width={400}
           height={400}
-          layout="responsive"
+          style={{ width: "100%", height: "auto" }}
         />
       </aside>
     </section>

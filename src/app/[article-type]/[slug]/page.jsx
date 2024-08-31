@@ -39,11 +39,13 @@ export default async function Page({ params }) {
           <Image
             src={cover_img}
             quality={100}
-            layout="fill"
+            fill
             placeholder="blur"
             blurDataURL={BLUR_DATA_URLS.COVER_IMG}
-            objectFit="cover"
             alt="Cover Image"
+            style={{
+              objectFit: "cover",
+            }}
           />
         </div>
         <article className="max-w-screen-md">

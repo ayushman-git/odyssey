@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Odyssey",
+  title: "Odyssey | Ayushman",
   description: "A Voyage into the Heart of Silicon",
 };
 

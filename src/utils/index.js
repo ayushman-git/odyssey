@@ -54,3 +54,16 @@ export const generateInt = (start, end) => {
 export const generateFloat = (start, end) => {
   return Math.random() * (end - start) + start;
 };
+
+
+export const throttle = (callback, delay) => {
+  let lastCall = 0;
+  return function (...args) {
+    const now = new Date().getTime();
+    if (now - lastCall < delay) {
+      return;
+    }
+    lastCall = now;
+    return callback(...args);
+  };
+}
