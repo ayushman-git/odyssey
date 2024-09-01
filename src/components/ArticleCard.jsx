@@ -68,15 +68,27 @@ export default function ArticleCard({ details }) {
               blurDataURL={BLUR_DATA_URLS.COVER_IMG}
               alt="Cover Image"
             />
-            <div
-              className="absolute top-4 left-4 rounded-xl backdrop-blur-lg"
-              style={{
-                background: "rgba(0, 0, 0, 0.4)",
-              }}
-            >
-              <h3 className="sm:text-sm text-xl tracking-wide font-medium text-gray-200 px-4 py-2">
+            <div className="absolute top-4 left-4 flex items-center">
+              <h3
+                className={`rounded-xl backdrop-blur-lg sm:text-sm text-xl tracking-wide font-medium text-gray-200 px-4 py-2 ${
+                  details.disabled ? "rounded-r-none" : ""
+                }`}
+                style={{
+                  background: "rgba(0, 0, 0, 0.4)",
+                }}
+              >
                 {details.type}
               </h3>
+              {details.disabled && (
+                <h3
+                  style={{
+                    background: "linear-gradient(90deg, rgba(255, 255, 255, 0.596) 0%, #ebebeb 40%)",
+                  }}
+                  className="rounded-r-xl backdrop-blur-lg sm:text-sm text-xl tracking-wide font-medium text-gray-900 px-4 py-2"
+                >
+                  Coming soon
+                </h3>
+              )}
             </div>
           </div>
           <div className="flex-1 p-6">

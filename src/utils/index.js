@@ -13,7 +13,7 @@ export const formatDateString = (dateString) => {
   // Add ordinal suffix to the day
   const dayWithOrdinal = addOrdinalSuffix(formattedDay);
 
-  return `${dayWithOrdinal} ${formattedMonth}`;
+  return `${dayWithOrdinal} ${formattedMonth}, ${year}`;
 };
 
 function addOrdinalSuffix(number) {

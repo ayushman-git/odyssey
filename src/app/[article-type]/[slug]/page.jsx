@@ -4,6 +4,7 @@ import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import LinearProgress from "@/components/LinearProgress";
 import DetailChips from "@/components/DetailChips";
+import { formatDateString } from "@/utils";
 
 export async function generateMetadata({ params }) {
   const { title, cover_img } = await getArticle(params.slug);
@@ -49,9 +50,15 @@ export default async function Page({ params }) {
           />
         </div>
         <article className="max-w-screen-md">
-          <h1 className="text-4xl font-black mt-8">{title}</h1>
-
-          <DetailChips type={type} date={date} />
+          <div className="mt-6">
+            <p className="text-[#aaa] text-sm font-light">
+              {formatDateString(date)}
+            </p>
+          </div>
+          <h1 className="text-4xl font-semibold mt-4">{title}</h1>
+          <div className="bg-[#b7d9b7] dark:bg-[#516e51] w-max px-4 py-1 rounded-xl my-4">
+            <p className="text-sm font-light">{type}</p>
+          </div>
           <section className="py-8">
             <CustomMDX source={fileContent} showAside={showAside} />
           </section>

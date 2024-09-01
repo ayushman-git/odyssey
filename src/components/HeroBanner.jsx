@@ -28,10 +28,10 @@ function HeroBanner() {
           Odyssey.
         </motion.h1>
         <motion.h2
-          className="text-2xl font-normal"
+          className="text-2xl font-normal decoration-black decoration-wavy"
           style={{ translateX: createdX, opacity }}
         >
-          Created by Ayushman
+          Crafted by Ayushman
         </motion.h2>
       </section>
       <aside className="flex-1">
@@ -39,9 +39,8 @@ function HeroBanner() {
           className="font-medium text-lg dark:text-gray-300"
           style={{ translateX: descX, opacity }}
         >
-          Odyssey is a blog exploring the cosmos, tech insights, and thoughtful
-          book reviews, where curiosity meets creativity. Dive into diverse
-          perspectives!
+          I write about the crossroads of comos, technology and literature, sharing
+          insights that provoke thought and inspire innovation.
         </motion.h3>
       </aside>
     </motion.div>
