@@ -5,7 +5,7 @@ export const Heading = {
   H1: ({ children }) => {
     return (
       <h1
-        className="text-2xl font-bold my-4 cursor-pointer flex items-center gap-2 group scroll-mt-20"
+        className="text-3xl font-semibold my-4 cursor-pointer flex items-center gap-2 group scroll-mt-20"
         id={underscoreDelimiter(children)}
       >
         <a href={`#${underscoreDelimiter(children)}`}>{children}</a>
@@ -13,5 +13,5 @@ export const Heading = {
       </h1>
     );
   },
-  H2: ({ children }) => <h2 className="text-xl font-bold">{children}</h2>,
+  H2: ({ children }) => <h2 className="text-2xl font-semibold">{children}</h2>,
 };
