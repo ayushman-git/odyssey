@@ -4,6 +4,8 @@ import { Heading } from "./Heading";
 import Blockquote from "./Blockquote";
 import { Typography } from "./Typography";
 import AsideTitles from "../AsideTitles";
+import Figcaption from "./BaseElements/Figcaption";
+import AreciboCountingGrid from "../ArticleBased/DecodingArecibo/AreciboCountingGrid";
 
 const components = {
   h1: Heading.H1,
@@ -11,7 +13,6 @@ const components = {
   blockquote: Blockquote,
   em: Typography.Em,
   p: Typography.P,
-  code: Typography.Code,
 };
 
 export default function CustomMDX(props) {
@@ -21,12 +22,12 @@ export default function CustomMDX(props) {
         parseFrontmatter: true,
       }}
       {...props}
-      components={{ ...components, ...(props.components || {}) }}
+      components={{ ...components, ...(props.components || {}), Figcaption, AreciboCountingGrid }}
     />
   );
 
   const extractHeadings = (content) => {
-    if(!props.showAside) return;
+    if (!props.showAside) return;
 
     const regex = /^(#+)\s+(.*)$/gm;
     const matches = content.matchAll(regex);
@@ -51,9 +52,7 @@ export default function CustomMDX(props) {
       headings.push({ ...currentHeading });
     }
 
-    return (
-      <AsideTitles headings={headings} />
-    );
+    return <AsideTitles headings={headings} />;
   };
 
   return (
