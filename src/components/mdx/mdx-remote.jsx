@@ -13,6 +13,9 @@ const components = {
   blockquote: Blockquote,
   em: Typography.Em,
   p: Typography.P,
+  ol: Typography.Ol,
+  ul: Typography.Ul,
+  b: Typography.B,
 };
 
 export default function CustomMDX(props) {
