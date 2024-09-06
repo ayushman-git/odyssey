@@ -49,7 +49,7 @@ export default async function Page({ params }) {
             }}
           />
         </div>
-        <article className="max-w-screen-md">
+        <article className="max-w-screen-md sm:px-0 px-6">
           <div className="mt-6">
             <p className="text-[#aaa] text-sm font-light">
               {formatDateString(date)}

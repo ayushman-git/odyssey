@@ -47,8 +47,8 @@ export default function RootLayout({ children }) {
         <CustomThemeProvider>
           <div className={`grid place-items-center ${inter.className}`}>
             <Navbar />
-            <main className="w-full pb-32 sm:px-0 px-6">
-              <section className="w-full grid place-items-center overflow-hidden">
+            <main className="w-full pb-32">
+              <section className="w-full grid place-items-center">
                 {children}
               </section>
             </main>

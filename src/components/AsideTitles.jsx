@@ -43,16 +43,13 @@ export default function AsideTitles({ headings }) {
               <li className="my-3">{item.title}</li>
             </a>
           )}
-          {item.subheadings &&
-            item.subheadings.length > 0 &&
-            renderAsideList(item.subheadings)}
         </Fragment>
       );
     });
   };
 
   return (
-    <aside className="sticky top-32 w-60 -ml-72 h-0 bottom-24">
+    <aside className="sticky top-32 w-60 -ml-72 h-0">
       <h3 className="font-black mb-3">Table of Contents</h3>
       <hr className="mb-6" />
       <ul className="text-sm">{renderAsideList(headings)}</ul>
