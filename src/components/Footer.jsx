@@ -77,7 +77,7 @@ export default function Footer() {
       </motion.div>
       <div className="max-w-screen-md w-full flex gap-10 mt-12">
         <section className="w-full">
-          <ul className="flex items-center justify-center gap-2">
+          <ul className="flex items-center justify-center gap-2 flex-wrap">
             {profiles.map(({ name, link }) => (
               <motion.li
                 className="flex items-center gap-2 cursor-pointer"
