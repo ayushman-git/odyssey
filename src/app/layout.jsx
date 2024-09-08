@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/LandingPage/Navbar";
 import Footer from "@/components/Footer";
 import CustomThemeProvider from "@/lib/CustomThemeProvider";
+import GoogleAnalytics from "@/lib/GoogleAnalyticsProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
+      <GoogleAnalytics />
       <body>
         <CustomThemeProvider>
           <div className={`grid place-items-center ${inter.className}`}>
