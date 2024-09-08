@@ -49,7 +49,7 @@ export default function AsideTitles({ headings }) {
   };
 
   return (
-    <aside className="sticky top-32 w-60 -ml-72 h-0 mb-80">
+    <aside className="sticky top-32 w-60 -ml-72 h-0">
       <h3 className="font-black mb-3">Table of Contents</h3>
       <hr className="mb-6" />
       <ul className="text-sm">{renderAsideList(headings)}</ul>
