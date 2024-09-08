@@ -16,10 +16,13 @@ export const Typography = {
     </section>
   ),
   Ol: ({ children }) => (
-    <ol className="list-decimal list-inside">{children}</ol>
+    <ol className="list-decimal list-inside dark:text-gray-400">{children}</ol>
   ),
   Ul: ({ children }) => (
-    <ul className="list-inside list-disc">{children}</ul>
+    <ul className="list-inside list-disc dark:text-gray-400">{children}</ul>
   ),
   B: ({ children }) => <b className="font-bold">{children}</b>,
+  Code: ({ children }) => (
+    <code className="dark:text-gray-400">{children}</code>
+  ),
 };

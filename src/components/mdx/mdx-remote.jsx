@@ -5,6 +5,7 @@ import Blockquote from "./Blockquote";
 import { Typography } from "./Typography";
 import AsideTitles from "../AsideTitles";
 import Figcaption from "./BaseElements/Figcaption";
+import Block from "./BaseElements/Block";
 import AreciboCountingGrid from "../ArticleBased/DecodingArecibo/AreciboCountingGrid";
 
 const components = {
@@ -16,6 +17,7 @@ const components = {
   ol: Typography.Ol,
   ul: Typography.Ul,
   b: Typography.B,
+  code: Typography.Code,
 };
 
 export default function CustomMDX(props) {
@@ -25,7 +27,7 @@ export default function CustomMDX(props) {
         parseFrontmatter: true,
       }}
       {...props}
-      components={{ ...components, ...(props.components || {}), Figcaption, AreciboCountingGrid }}
+      components={{ ...components, ...(props.components || {}), Figcaption, Block, AreciboCountingGrid }}
     />
   );
 

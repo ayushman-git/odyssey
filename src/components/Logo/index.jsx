@@ -10,7 +10,7 @@ const maven = Maven_Pro({
 function Logo() {
   return (
     <Link href="/">
-      <h1 className={`cursor-pointer font-medium text-2xl ${maven.className}`}>a.</h1>
+      <h1 className={`cursor-pointer font-medium text-3xl ${maven.className}`}>a.</h1>
     </Link>
   );
 }
