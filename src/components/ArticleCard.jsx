@@ -58,7 +58,7 @@ export default function ArticleCard({ details }) {
             details.disabled ? "border-dashed cursor-default" : ""
           }`}
         >
-          <div className="relative h-[600px]">
+          <div className="relative sm:h-[600px] h-[400px]">
             <Image
               src={details.cover_img}
               fill
@@ -70,7 +70,7 @@ export default function ArticleCard({ details }) {
             />
             <div className="absolute top-4 left-4 flex items-center">
               <h3
-                className={`rounded-xl backdrop-blur-lg sm:text-sm text-xl tracking-wide font-medium text-gray-200 px-4 py-2 ${
+                className={`rounded-xl backdrop-blur-lg text-sm tracking-wide font-medium text-gray-200 px-4 py-2 ${
                   details.disabled ? "rounded-r-none" : ""
                 }`}
                 style={{
@@ -84,7 +84,7 @@ export default function ArticleCard({ details }) {
                   style={{
                     background: "linear-gradient(90deg, rgba(255, 255, 255, 0.596) 0%, #ebebeb 40%)",
                   }}
-                  className="rounded-r-xl backdrop-blur-lg sm:text-sm text-xl tracking-wide font-medium text-gray-900 px-4 py-2"
+                  className="rounded-r-xl backdrop-blur-lg text-sm tracking-wide font-medium text-gray-900 px-4 py-2"
                 >
                   Coming soon
                 </h3>

@@ -2,7 +2,7 @@ export const Typography = {
   Em: ({ children }) => <em className="font-bold">{children}</em>,
   P: ({ children }) => (
     <p
-      className="my-4 sm:font-light font-normal sm:text-lg text-gray-500 sm:text-black dark:text-gray-400 text-2xl"
+      className="my-4 sm:font-light font-normal text-gray-500 sm:text-black dark:text-gray-400"
       style={{
         lineHeight: "42px !important",
       }}
