@@ -5,6 +5,7 @@ import { Fragment, useEffect, useState } from "react";
 
 export default function AsideTitles({ headings }) {
   const [currentSectionInView, setCurrentSectionInView] = useState(null);
+  const [isTableOfContentVisible, setIsTableOfContentVisible] = useState(true);
 
   const handleIntersection = (entries, observer, id) => {
     entries.forEach((entry) => {
@@ -14,7 +15,29 @@ export default function AsideTitles({ headings }) {
     });
   };
 
+  const handleTableOfContentVisibility = (entries) => {
+    entries.forEach((entry) => {
+      // Set visibility based on whether the table of contents is fully in view
+      setIsTableOfContentVisible(entry.intersectionRatio === 1);
+    });
+  };
+
   useEffect(() => {
+    spawnIntersectionObserverForTitles();
+    spawnIntersectionObserverForTableOfContent();
+  }, []);
+
+  const spawnIntersectionObserverForTableOfContent = () => {
+    const tableOfContentElement = document.getElementById("table-of-content");
+
+    const observer = new IntersectionObserver(handleTableOfContentVisibility, {
+      threshold: 1,
+    });
+
+    observer.observe(tableOfContentElement);
+  };
+
+  const spawnIntersectionObserverForTitles = () => {
     headings.forEach(({ title }) => {
       const id = underscoreDelimiter(title);
       const headingElement = document.getElementById(id);
@@ -29,7 +52,7 @@ export default function AsideTitles({ headings }) {
 
       observer.observe(headingWrapperElement);
     });
-  }, []);
+  };
 
   const renderAsideList = (list) => {
     return list.map((item) => {
@@ -37,7 +60,11 @@ export default function AsideTitles({ headings }) {
         <Fragment key={item.title}>
           {item.title && (
             <a
-              className={currentSectionInView === underscoreDelimiter(item.title) ? `text-blue-500 font-bold` : `text-gray-500`}
+              className={
+                currentSectionInView === underscoreDelimiter(item.title)
+                  ? `text-blue-500 font-bold`
+                  : `text-gray-500`
+              }
               href={`#${underscoreDelimiter(item.title)}`}
             >
               <li className="my-3">{item.title}</li>
@@ -49,7 +76,12 @@ export default function AsideTitles({ headings }) {
   };
 
   return (
-    <aside className="sticky top-32 w-60 -ml-72 h-0">
+    <aside
+      className={`sticky top-32 w-60 -ml-72 h-0 ${
+        isTableOfContentVisible ? "opacity-100" : "opacity-0"
+      }`}
+      id="table-of-content"
+    >
       <h3 className="font-black mb-3">Table of Contents</h3>
       <hr className="mb-6" />
       <ul className="text-sm">{renderAsideList(headings)}</ul>

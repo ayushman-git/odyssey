@@ -1,0 +1,67 @@
+---
+author: Ayushman
+title: "From Toyota's Assembly Lines to India's Streets: The QR Code Journey"
+type: Case Study
+date: 03-11-2024
+cover_img: https://i.imgur.com/4Z9nz7r.png
+showAside: true
+introduction: In India, QR codes have become as common as auto-rickshaws dodging through traffic. No matter however small or remote you find a shop, chances are that they will have these pixelated printouts ready for you to make the payment. Yes, those are QR codes, and they've become as essential as a smartphone in the hands of every shopkeeper—integral and universally embraced.
+---
+
+<Block>
+# Introduction
+In India, QR codes have become as common as auto-rickshaws dodging through traffic. No matter however small or remote you find a shop, chances are that they will have these pixelated printouts ready for you to make the payment. Yes, those are QR codes, and they've become as essential as a smartphone in the hands of every shopkeeper—integral and universally embraced. 
+
+Unlike traditional barcodes, which store information in a single direction (horizontally), QR codes store data both horizontally and vertically. This structure lets them encode much more data, from URLs and text to contact information and payment details.
+
+This two-dimensional structure is what gives QR codes their distinctive square shape with patterns of black and white modules. A QR code is blazingly fast, thanks to some nifty techniques, it can store lots of data (upto 23,624 bits) and it can error correct itself if some part of the QR is missing. Things like these make the adoption of QR code so rampant.
+</Block>
+<Block>
+# History
+Back in 1994, a couple of ingenious engineers at Denso Wave (a Toyota subsidiary) were wrestling with a problem: how to make tracking car parts on assembly lines more efficient. Barcodes were used extensively at that time but they had few limitations. They only stores tiny bit of information and forced workers to scan multiple barcodes for a single automotive component. Enter Masahiro Hara and his small team, who decided it make tracking of automotive component seamless and they introduced QR codes. A two-dimensional marvel that could pack in a whopping 7,000 characters, including kanji (漢字).
+
+With its distinctive square shape and those funky patterns in the corners (called position detection patterns), the QR code allowed scanners to read data from any angle at lightning speed. Imagine upgrading from a bicycle to a starship in the world of data handling. This simple yet intuitive encoding and decoding of data helped Toyota to massive boost their manufacturing.
+
+But the QR code didn't stop there. Someone thought, "If we can manage car parts with these codes, why not use them to pay the vegetable vendor at the local mandi?" And so, QR codes leaped from the Aichi Prefecture (HQ of Denso Wave) into bustling markets and remote villages. Now, they're not just tracking car parts; they're revolutionising commerce in India and many other developing countries.
+</Block>
+
+<Block>
+# Deconstructing QR Codes
+
+The Arecibo Message begins with a basic sequence: counting from 1 to 10. But instead of using the numbers we see every day, it uses binary code, which is like a special language made up of only two symbols: 1s and 0s. Binary is the fundamental language of computers, and it’s also a universal way to represent numbers, making it ideal for communicating across space, where the language or even the way of thinking might be entirely different.
+
+## Position Markers: The QR Code's Guiding Stars
+
+Ever wondered how your phone miraculously deciphers a QR code even when you're holding it at a bizarre angle? Meet the **Position Markers**—the three large squares chilling in the corners of every QR code. Think of them as the QR code's very own GPS satellites, ensuring your scanner doesn't get lost in a sea of tiny squares.
+
+These markers are like the North Star for your scanner, helping it figure out which way is up, down, left, or right—no matter how you're holding your phone. Even if you're scanning sideways like a curious parrot **🦜**, these squares have got your back. They reduce the chances of misreading the code, which is especially handy when the QR code is wrapped around a steaming cup of chai or printed on a slightly crumpled receipt from your favourite street vendor.
+
+- Each position marker is a square-in-a-square-in-a-square—a 7x7 black square, surrounded by a white border, which is then enclosed by another black border. It's like the matryoshka doll of squares!
+- The innermost black square is known as the **Finder Pattern**—think of it as the QR code's homing beacon that your scanner locks onto amidst the sea of tiny squares.
+- Once these three key markers are identified, your scanner establishes a coordinate grid to map out all the tiny modules (the black and white squares). This grid allows the scanner to accurately read the data encoded within the QR code.
+- Whether you're tilting your phone or scanning from an angle to avoid glare, the position markers help correct any rotational issues. They ensure that, no matter how you hold your device, the scanner reads the code accurately.
+
+## Alignment Pattern
+It's a small square, typically nestled near the bottom-right corner of larger QR codes (Version 2 and up). In more expansive codes, you'll find multiple Alignment Patterns strategically placed like seasoned coaches on a sports field.
+
+When your QR code is scanned at an odd angle, wrapped around a coffee cup, or crumpled in your pocket, the Alignment Pattern swoops in to save the day. It helps the scanner straighten things out, correcting any perspective wonkiness so your data doesn't end up looking like a Picasso painting. In larger QR codes, these Alignment Patterns are sprinkled throughout, much like checkpoints in a marathon, ensuring everything stays on track from start to finish.
+
+## Timing Patterns: The QR Code's Built-In Gridlines
+
+Timing patterns are sequences of alternating black and white modules that run both horizontally and vertically between the **position markers**. Think of them as the QR code's gridlines, laying out the precise design so your scanner knows exactly where to read. It's the QR code's way of laying down a coordinate grid, much like a Cartesian plane, providing precise "x" and "y" axes for your scanner to navigate.
+
+These patterns help the scanner determine the size of the data grid—the number of rows and columns—essentially acting like the gridlines on graph paper.
+
+- The horizontal timing pattern connects the two position markers at the top, while the vertical one links the top-left and bottom-left markers.
+- By counting the modules in the timing patterns, the scanner can figure out the version of the QR code and adjust its decoding algorithm accordingly.
+
+## Version
+The Timing Patterns tells us about the version of the QR code. The versioning in QR ranges from 1 to 40, 1 being the smallest and 40 being able to store humongous amount of data.
+
+The Version Information is an **18-bit binary sequence** encoded using a **BCH (Bose-Chaudhuri-Hocquenghem) error-correcting code**. Think of it as the QR code's way of proofreading its own genetic instructions to errors.
+
+- For versions **7 and above**, the Version Information is strategically placed in two locations:
+    - **Above the bottom-left position marker.**
+    - **To the left of the top-right position marker.**
+- For versions **1 to 6**, the QR code is small enough that explicit version information isn't needed. The scanner can determine the version based on the size of Timing Patterns.
+</Block>
