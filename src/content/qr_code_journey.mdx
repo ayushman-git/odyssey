@@ -2,7 +2,7 @@
 author: Ayushman
 title: "From Toyota's Assembly Lines to India's Streets: The QR Code Journey"
 type: Case Study
-date: 03-11-2024
+date: 29-01-2025
 cover_img: https://i.imgur.com/4Z9nz7r.png
 showAside: true
 introduction: In India, QR codes have become as common as auto-rickshaws dodging through traffic. No matter however small or remote you find a shop, chances are that they will have these pixelated printouts ready for you to make the payment. Yes, those are QR codes, and they've become as essential as a smartphone in the hands of every shopkeeper—integral and universally embraced.
@@ -64,4 +64,73 @@ The Version Information is an **18-bit binary sequence** encoded using a **BCH (
     - **Above the bottom-left position marker.**
     - **To the left of the top-right position marker.**
 - For versions **1 to 6**, the QR code is small enough that explicit version information isn't needed. The scanner can determine the version based on the size of Timing Patterns.
+
+## Data Encoding: Turning Information into Binary Patterns
+
+**Modules and Bits** <br />
+Each little square in the QR code grid, known as a module, represents a bit of data—black for 1, white for 0. Think of modules as the QR code's version of binary Morse code, dotting and dashing your data into a scannable pattern.
+
+**Encoding Modes** <br />
+QR codes are versatile—they use different modes to efficiently encode various types of data:
+- **Numeric Mode:** Handles only numbers, storing up to 7,089 digits. That's enough to include your entire contact list's phone numbers.
+- **Alphanumeric Mode:** Accommodates numbers and letters (up to 4,296 characters). Perfect for encoding website URLs or short messages.
+- **Byte Mode**: For more complex data like ASCII and UTF-8 characters, storing up to 2,953 bytes. Ideal when you need to include email addresses, passwords, or other special characters.
+- **Kanji Mode**: Specifically designed for Japanese Kanji characters, storing up to 1,817 characters. A nod to the QR code's Japanese origins.
+
+**Data Masking** <br />
+To keep scanners from getting confused by patterns that resemble the positioning markers or by large blocks of the same colour, QR codes use data masking. Think of it as applying a filter that rearranges the modules to avoid misleading patterns while preserving the underlying data.
+</Block>
+<Block>
+# Error Correction: How QR Codes Stay Readable Even When Damaged
+Ever wondered how a QR code still works even after it's been scratched, smudged, or partially obscured? The magic lies in Error Correction, a feature that makes QR codes remarkably robust and reliable. Let's dive deep into how this works.
+
+## Reed-Solomon Error Correction
+At the heart of QR code error correction is the Reed-Solomon algorithm, a mathematical method used in various data transmission and storage technologies, from CDs and DVDs to deep-space communications. In QR codes, Reed-Solomon error correction allows for the reconstruction of data even when parts of the code are missing or damaged.
+
+Imagine You're Building a Castle with Blocks. You have a set of colourful blocks to build a castle. Each block is important to make the castle look complete.
+
+But sometimes:
+- Blocks might get lost.
+- Blocks might get broken.
+
+To make sure your castle can still be built even if some blocks are missing, you have extra special blocks that can **replace any block you lose**.
+- These extra blocks are like **magic blocks**.
+- They can **fit anywhere** and **become any colour** you need.
+
+This way, **your castle always gets built**, even if some blocks are missing or broken.
+
+QR codes work kind of like your block castle.
+- **The QR code is the castle**.
+- **The tiny black and white squares are the blocks**.
+- **Reed-Solomon error correction is the magic extra blocks**.
+
+**When creating a QR code:**
+- We add extra **helper squares** (magic blocks).
+- If some squares get smudged or dirty, the helper squares **fill in the missing pieces**.
+
+## Error Correction Levels
+QR codes offer four levels of error correction to balance data capacity and resilience:
+1. **Level L (Low):**
+- **Approximate Recovery Capability:** Can correct up to 7% of errors.
+- **Use Case:** Ideal when data capacity is a priority, and the environment is controlled (e.g., scanning from screens).
+2. **Level M (Medium):**
+- **Approximate Recovery Capability**: Can correct up to **15%** of errors.
+- **Use Case**: Suitable for general use, offering a balance between capacity and error correction.
+3. **Level Q (Quartile):**
+- **Approximate Recovery Capability**: Can correct up to **25%** of errors.
+- **Use Case**: Good for codes that may suffer moderate damage or are printed on uneven surfaces.
+4. **Level H (High):**
+- **Approximate Recovery Capability:** Can correct up to 30% of errors.
+- **Use Case:** Best for harsh conditions where the code might be significantly damaged (e.g., industrial settings).
+
+**Note:** Increasing the error correction level adds more redundant data, which reduces the amount of space available for actual information.
+</Block>
+
+<Block> 
+## Conclusion
+From Toyota's assembly lines to the bustling markets of India, QR codes have come a long way—evolving from a specialized tool for tracking car parts into a ubiquitous payment and information-sharing system. Along the way, they've proven just how powerful a simple square can be when backed by smart engineering and thoughtful design.
+
+It's easy to look at a QR code and see just black and white squares, but beneath that unassuming grid lies a blend of robust mathematics, error correction, and clever encoding. This synergy of design and tech ensures QR codes remain both highly accessible and remarkably reliable.
+
+Their versatility, efficiency, and resilience remind us that making things appear simple often demands the greatest ingenuity and care. What seems straightforward to the user—just point and scan—belies the careful planning and problem-solving at play behind the scenes. And with continued evolution and adoption, QR codes will likely remain at the heart of digital interactions for years to come, exemplifying how even the most routine technologies can reflect some of our most brilliant ideas. 
 </Block>
