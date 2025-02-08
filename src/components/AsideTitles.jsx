@@ -25,7 +25,7 @@ export default function AsideTitles({ headings }) {
   useEffect(() => {
     spawnIntersectionObserverForTitles();
     spawnIntersectionObserverForTableOfContent();
-  }, []);
+  }, [headings]);
 
   const spawnIntersectionObserverForTableOfContent = () => {
     const tableOfContentElement = document.getElementById("table-of-content");
@@ -41,16 +41,16 @@ export default function AsideTitles({ headings }) {
     headings.forEach(({ title }) => {
       const id = underscoreDelimiter(title);
       const headingElement = document.getElementById(id);
-      const headingWrapperElement = headingElement.parentElement;
+      if (headingElement) {
+        const observer = new IntersectionObserver(
+          (entries, observer) => handleIntersection(entries, observer, id),
+          {
+            threshold: 0.5,
+          }
+        );
 
-      const observer = new IntersectionObserver(
-        (entries, observer) => handleIntersection(entries, observer, id),
-        {
-          threshold: 0.5,
-        }
-      );
-
-      observer.observe(headingWrapperElement);
+        observer.observe(headingElement);
+      }
     });
   };
 
