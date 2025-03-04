@@ -5,7 +5,7 @@ import NavButton from "./NavButton";
 
 const Navigation = ({ logo }) => {
   return (
-    <nav className="flex items-center justify-between px-6 py-4">
+    <nav className="flex items-center justify-between">
       {logo}
       <ul className="flex space-x-4">
         <li>
