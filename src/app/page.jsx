@@ -1,5 +1,6 @@
 import React from "react";
 import { Meow_Script } from "next/font/google";
+import dynamic from 'next/dynamic';
 import Navigation from "../components/Navigation";
 import ClientStars from "../components/ClientStars";
 import HomeContent from "../components/HomeContent";
@@ -7,6 +8,16 @@ import "@/styles/globals.css";
 import SectionDivider from "@/components/SectionDivider";
 import WhatIDo from "@/components/WhatIDo";
 import MyStack from "@/components/MyStack";
+
+// Import ProjectGallery with dynamic loading to avoid SSR issues
+const ProjectGallery = dynamic(() => import('@/components/ProjectGallery'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-96 flex items-center justify-center">
+      <div className="text-white opacity-60">Loading projects...</div>
+    </div>
+  ),
+});
 
 const meowScript = Meow_Script({
   weight: "400",
@@ -45,7 +56,6 @@ export default function Home() {
         <ClientStars />
         <HomeContent meowScriptClassName={meowScript.className} />
       </section>
-      {/* <SectionDivider /> */}
 
       <div className="bg-black px-6 md:px-16 lg:px-24 py-10 pt-16 pb-20 relative z-20">
         <WhatIDo />
@@ -54,6 +64,11 @@ export default function Home() {
         className="py-10 relative z-20 bg-black bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08),transparent_70%)]"
       >
         <MyStack />
+      </div>
+      
+      {/* Project Gallery Section */}
+      <div className="px-6 md:px-16 lg:px-24 py-20 relative z-20 bg-black">
+        <ProjectGallery />
       </div>
     </div>
   );

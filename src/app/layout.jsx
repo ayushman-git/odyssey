@@ -2,6 +2,13 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import CustomThemeProvider from "@/lib/CustomThemeProvider";
 import GoogleAnalytics from "@/lib/GoogleAnalyticsProvider";
+import dynamic from 'next/dynamic';
+
+// Import the CustomCursor component with no SSR
+const CustomCursor = dynamic(
+  () => import('../components/CustomCursor'),
+  { ssr: false }
+);
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,8 +16,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Odyssey | Ayushman",
-  description: "A Voyage into the Heart of Silicon",
+  title: "Ayushman | Developer Portfolio",
+  description: "Personal portfolio showcasing my projects and skills",
 };
 
 export default function RootLayout({ children }) {
@@ -46,6 +53,7 @@ export default function RootLayout({ children }) {
       <GoogleAnalytics />
       <body className={inter.className}>
         <CustomThemeProvider>{children}</CustomThemeProvider>
+        <CustomCursor />
       </body>
     </html>
   );
