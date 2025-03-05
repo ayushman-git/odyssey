@@ -6,6 +6,7 @@ import HomeContent from "../components/HomeContent";
 import "@/styles/globals.css";
 import SectionDivider from "@/components/SectionDivider";
 import WhatIDo from "@/components/WhatIDo";
+import MyStack from "@/components/MyStack";
 
 const meowScript = Meow_Script({
   weight: "400",
@@ -48,6 +49,11 @@ export default function Home() {
 
       <div className="bg-black px-6 md:px-16 lg:px-24 py-10 pt-16 pb-20 relative z-20">
         <WhatIDo />
+      </div>
+      <div 
+        className="px-6 md:px-16 lg:px-24 py-10 relative z-20 bg-black"
+      >
+        <MyStack />
       </div>
     </div>
   );
