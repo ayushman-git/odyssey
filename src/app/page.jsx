@@ -51,7 +51,7 @@ export default function Home() {
         <WhatIDo />
       </div>
       <div 
-        className="px-6 md:px-16 lg:px-24 py-10 relative z-20 bg-black"
+        className="py-10 relative z-20 bg-black bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08),transparent_70%)]"
       >
         <MyStack />
       </div>

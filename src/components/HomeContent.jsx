@@ -101,7 +101,7 @@ export default function HomeContent({ meowScriptClassName }) {
               onMouseEnter={(e) => handleButtonHover(e, true)}
               onMouseLeave={(e) => handleButtonHover(e, false)}
             >
-              Contact Me
+              Resume
             </button>
           </div>
 
