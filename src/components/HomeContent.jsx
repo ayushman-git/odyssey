@@ -1,8 +1,10 @@
-'use client';
+"use client";
 
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import SocialLinks from "./SocialLinks";
+import WhatIDo from "./WhatIDo";
+import SectionDivider from "./SectionDivider";
 
 export default function HomeContent({ meowScriptClassName }) {
   const introRef = useRef(null);
@@ -62,49 +64,52 @@ export default function HomeContent({ meowScriptClassName }) {
   };
 
   return (
-    <div className="relative z-10 flex flex-col h-[80vh] justify-center">
-      <div>
-        <p
-          ref={introRef}
-          className="text-purple-400 font-medium mb-3 opacity-0"
-        >
-          Hello, I'm
-        </p>
-        <h1
-          ref={headingRef}
-          className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-6 opacity-0"
-        >
-          Full-Stack Engineer
-        </h1>
-        <p
-          ref={descriptionRef}
-          className="text-gray-300 text-xl md:text-2xl max-w-2xl mb-8 opacity-0 md:leading-relaxed"
-        >
-          Crafting elegant frontends, architecting robust backends, and
-          building exceptional digital experiences that solve real problems.
-        </p>
-
-        <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
-          <button
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 opacity-0"
-            onMouseEnter={(e) => handleButtonHover(e, true)}
-            onMouseLeave={(e) => handleButtonHover(e, false)}
+    <>
+      {/* Hero Section */}
+      <div className="relative z-10 flex flex-col h-[80vh] justify-center">
+        <div>
+          <p
+            ref={introRef}
+            className="text-gray-400 font-medium mb-4 opacity-0"
           >
-            View My Work
-          </button>
-          <button
-            className="border border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-black transition-all duration-300 opacity-0"
-            onMouseEnter={(e) => handleButtonHover(e, true)}
-            onMouseLeave={(e) => handleButtonHover(e, false)}
+            Hello, I'm
+          </p>
+          <h1
+            ref={headingRef}
+            className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-8 opacity-0"
           >
-            Contact Me
-          </button>
-        </div>
+            Full-Stack Engineer
+          </h1>
+          <p
+            ref={descriptionRef}
+            className="text-gray-300 text-xl md:text-2xl max-w-2xl mb-10 opacity-0 md:leading-relaxed"
+          >
+            Crafting elegant frontends, architecting robust backends, and
+            building exceptional digital experiences that solve real problems.
+          </p>
 
-        <div ref={socialsRef} className="opacity-0">
-          <SocialLinks />
+          <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
+            <button
+              className="bg-white hover:bg-gray-800 text-black hover:text-white py-3 px-8 rounded-full transition-all duration-300 opacity-0"
+              onMouseEnter={(e) => handleButtonHover(e, true)}
+              onMouseLeave={(e) => handleButtonHover(e, false)}
+            >
+              View My Work
+            </button>
+            <button
+              className="border border-gray-800 text-white py-3 px-8 rounded-full hover:bg-white hover:text-black transition-all duration-300 opacity-0"
+              onMouseEnter={(e) => handleButtonHover(e, true)}
+              onMouseLeave={(e) => handleButtonHover(e, false)}
+            >
+              Contact Me
+            </button>
+          </div>
+
+          <div ref={socialsRef} className="opacity-0">
+            <SocialLinks />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
