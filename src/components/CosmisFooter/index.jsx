@@ -134,7 +134,7 @@ function CosmicFooter() {
   };
 
   return (
-    <div className="h-auto relative z-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="h-auto relative z-20 max-w-7xl mx-auto">
       <motion.footer
         ref={footerRef}
         initial="initial"
