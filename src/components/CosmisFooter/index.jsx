@@ -11,18 +11,16 @@ function CosmicFooter() {
 
   const handleSubscribe = (e) => {
     e.preventDefault();
-    // Add your newsletter subscription logic here
     console.log("Subscribing email:", email);
-    // Reset form after submission
     setEmail("");
   };
 
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="h-auto relative z-20">
+    <div className="h-auto relative z-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <footer
-        className="rounded-2xl bg-blue-700 relative overflow-hidden p-8 md:p-12"
+        className="rounded-2xl bg-blue-700 relative overflow-hidden p-6 sm:p-10 lg:p-16 mt-16 mb-8"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -41,47 +39,51 @@ function CosmicFooter() {
         
         <div className="relative z-10 text-white">
           {/* Main Content Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 mb-16">
             {/* About Column */}
             <div>
-              <h3 className="text-xl font-bold mb-4">About Me</h3>
-              <SocialLinks />
+              <h3 className="text-2xl font-bold mb-6 tracking-tight">About Me</h3>
+              <p className="text-base text-white/90 leading-relaxed mb-6">
+                I create digital experiences that are both beautiful and functional, 
+                with a focus on clean design and intuitive user interfaces.
+              </p>
+              <SocialLinks className="mt-6" />
             </div>
             
             {/* Portfolio Links Column */}
             <div>
-              <h3 className="text-xl font-bold mb-4">Portfolio</h3>
-              <ul className="space-y-2 text-white/80">
-                <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-                <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
-                <li><Link href="/skills" className="hover:text-white transition-colors">Skills & Expertise</Link></li>
-                <li><Link href="/resume" className="hover:text-white transition-colors">Resume</Link></li>
-                <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+              <h3 className="text-2xl font-bold mb-6 tracking-tight">Portfolio</h3>
+              <ul className="space-y-3 text-base text-white/90">
+                <li><Link href="/" className="hover:text-white transition-colors inline-block py-1">Home</Link></li>
+                <li><Link href="/projects" className="hover:text-white transition-colors inline-block py-1">Projects</Link></li>
+                <li><Link href="/skills" className="hover:text-white transition-colors inline-block py-1">Skills & Expertise</Link></li>
+                <li><Link href="/resume" className="hover:text-white transition-colors inline-block py-1">Resume</Link></li>
+                <li><Link href="/blog" className="hover:text-white transition-colors inline-block py-1">Blog</Link></li>
               </ul>
             </div>
             
             {/* Contact Info Column */}
             <div>
-              <h3 className="text-xl font-bold mb-4">Let's Connect</h3>
-              <address className="not-italic text-white/80 space-y-2">
-                <p>Based in <span className="text-white">San Francisco, CA</span></p>
-                <p>Available for <span className="text-white">freelance & full-time opportunities</span></p>
-                <p>Email: <a href="mailto:hello@yourname.com" className="hover:text-white transition-colors">hello@yourname.com</a></p>
+              <h3 className="text-2xl font-bold mb-6 tracking-tight">Let's Connect</h3>
+              <address className="not-italic text-base text-white/90 space-y-3 mb-8">
+                <p className="leading-relaxed">Based in <span className="text-white font-medium">San Francisco, CA</span></p>
+                <p className="leading-relaxed">Available for <span className="text-white font-medium">freelance & full-time opportunities</span></p>
+                <p className="leading-relaxed">Email: <a href="mailto:hello@yourname.com" className="text-white hover:underline transition-colors">hello@yourname.com</a></p>
               </address>
               
               {/* Contact Form Mini */}
-              <form onSubmit={handleSubscribe} className="mt-4 flex flex-col space-y-2">
+              <form onSubmit={handleSubscribe} className="mt-6 space-y-3">
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="px-4 py-2 rounded text-blue-900 focus:outline-none focus:ring-2 focus:ring-white"
+                  className="w-full px-5 py-3 rounded-lg text-blue-900 focus:outline-none focus:ring-2 focus:ring-white/50"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
                 <button 
                   type="submit"
-                  className="px-4 py-2 bg-white text-blue-700 rounded font-medium hover:bg-blue-50 transition-colors"
+                  className="w-full px-5 py-3 bg-white text-blue-700 rounded-lg font-semibold hover:bg-blue-50 transition-all"
                 >
                   Get In Touch
                 </button>
@@ -90,23 +92,23 @@ function CosmicFooter() {
           </div>
           
           {/* CTA Section */}
-          <div className="text-center pb-8 border-b border-white/20">
-            <h1 className="font-semibold text-white text-3xl mb-4">
+          <div className="text-center py-12 border-t border-b border-white/20">
+            <h1 className="font-bold text-white text-4xl mb-6 tracking-tight">
               Interested in working together?
             </h1>
             <Link 
               href="/contact" 
-              className="inline-block px-6 py-3 bg-white text-blue-700 rounded-full font-bold hover:bg-blue-50 transition-colors"
+              className="inline-block px-8 py-4 bg-white text-blue-700 rounded-full font-bold text-lg hover:bg-blue-50 transition-colors"
             >
               Start a Conversation
             </Link>
           </div>
           
           {/* Copyright Section */}
-          <div className="pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-white/70">
-            <p>© {currentYear} Ayushman Gupta. All rights reserved.</p>
-            <div className="mt-4 md:mt-0">
-              <p>Designed & Built with ❤️</p>
+          <div className="pt-12 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-base text-white/80 font-medium">© {currentYear} Ayushman Gupta. All rights reserved.</p>
+            <div className="mt-6 md:mt-0">
+              <p className="text-base text-white/80">Designed & Built with ❤️</p>
             </div>
           </div>
         </div>
