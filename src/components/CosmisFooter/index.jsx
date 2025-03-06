@@ -1,14 +1,91 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import topographyBg from "@/assets/svgs/topography.svg";
 import SocialLinks from "../SocialLinks";
 import Link from "next/link";
+import { motion, useAnimation, useInView } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register ScrollTrigger plugin
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 function CosmicFooter() {
   const [isHovered, setIsHovered] = useState(false);
   const [email, setEmail] = useState("");
+  const footerRef = useRef(null);
+  const footerInView = useInView(footerRef, { once: true, amount: 0.2 });
+  const controls = useAnimation();
+  
+  // Add mouse position tracking states
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [footerDimensions, setFooterDimensions] = useState({ width: 0, height: 0 });
 
+  // Update footer dimensions on mount and resize
+  useEffect(() => {
+    if (!footerRef.current) return;
+    
+    const updateDimensions = () => {
+      const { width, height } = footerRef.current.getBoundingClientRect();
+      setFooterDimensions({ width, height });
+    };
+    
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+  
+  // Handle mouse movement
+  const handleMouseMove = (e) => {
+    if (!footerRef.current || !isHovered) return;
+    
+    const { left, top } = footerRef.current.getBoundingClientRect();
+    const x = e.clientX - left;
+    const y = e.clientY - top;
+    
+    // Convert position to percentages for easier translation calculation
+    setMousePosition({
+      x: (x / footerDimensions.width) - 0.5,  // -0.5 to 0.5
+      y: (y / footerDimensions.height) - 0.5  // -0.5 to 0.5
+    });
+  };
+  
+  // Enhanced background pattern animation with GSAP, now including mouse position
+  useEffect(() => {
+    if (!footerRef.current) return;
+    
+    const patternEl = footerRef.current.querySelector('.pattern-bg');
+    
+    // Apply opacity and scale based on hover state
+    gsap.to(patternEl, { 
+      opacity: isHovered ? 0.4 : 0,
+      scale: isHovered ? 1.1 : 1,
+      duration: 0.4,
+      ease: "power2.inOut"
+    });
+    
+    // Apply position based on mouse position
+    if (isHovered) {
+      gsap.to(patternEl, {
+        x: mousePosition.x * 25, // Move by up to 25px in each direction
+        y: mousePosition.y * 25,
+        duration: 0.8,
+        ease: "power1.out"
+      });
+    }
+  }, [isHovered, mousePosition.x, mousePosition.y]);
+  
+  // Animate content when in view
+  useEffect(() => {
+    if (footerInView) {
+      controls.start('visible');
+    }
+  }, [controls, footerInView]);
+  
   const handleSubscribe = (e) => {
     e.preventDefault();
     console.log("Subscribing email:", email);
@@ -16,103 +93,211 @@ function CosmicFooter() {
   };
 
   const currentYear = new Date().getFullYear();
+  
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0, 
+      opacity: 1,
+      transition: { 
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
+  };
+
+  const fadeInVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { duration: 0.8 }
+    }
+  };
+
+  // Add footer scale animation
+  const footerVariants = {
+    initial: { y: 100, opacity: 0 },
+    animate: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
+    hover: { scale: 1.01, transition: { duration: 0.4, ease: "easeOut" } }
+  };
 
   return (
     <div className="h-auto relative z-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <footer
-        className="rounded-2xl bg-blue-700 relative overflow-hidden p-6 sm:p-10 lg:p-16 mt-16 mb-8"
+      <motion.footer
+        ref={footerRef}
+        initial="initial"
+        animate="animate"
+        whileHover="hover"
+        variants={footerVariants}
+        className="rounded-2xl bg-blue-700 relative overflow-hidden p-5 sm:p-8 lg:p-12 mt-12 mb-6"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onMouseMove={handleMouseMove}
       >
-        {/* Background div with repeating pattern */}
+        {/* Background div with repeating pattern - updated for mouse tracking */}
         <div
-          className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
-            isHovered ? "opacity-40" : "opacity-0"
-          }`}
+          className="pattern-bg absolute inset-0 w-full h-full opacity-0"
           style={{
             backgroundImage: `url(${topographyBg.src})`,
             backgroundRepeat: 'repeat',
             backgroundSize: '400px 400px',
-            mixBlendMode: "soft-light"
+            mixBlendMode: "soft-light",
+            transformOrigin: "center center",
+            willChange: "transform, opacity"
           }}
         />
         
         <div className="relative z-10 text-white">
-          {/* Main Content Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 mb-16">
-            {/* About Column */}
-            <div>
-              <h3 className="text-2xl font-bold mb-6 tracking-tight">About Me</h3>
-              <p className="text-base text-white/90 leading-relaxed mb-6">
-                I create digital experiences that are both beautiful and functional, 
-                with a focus on clean design and intuitive user interfaces.
-              </p>
-              <SocialLinks className="mt-6" />
-            </div>
+          {/* Main Content Section - Streamlined */}
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate={controls}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 mb-10"
+          >
+            {/* Social Links Column */}
+            <motion.div variants={itemVariants}>
+              <motion.h3 
+                variants={itemVariants}
+                className="text-xl font-bold mb-4 tracking-tight"
+              >
+                Connect
+              </motion.h3>
+              <motion.div variants={itemVariants}>
+                <SocialLinks className="mt-2" />
+              </motion.div>
+              <motion.address 
+                variants={containerVariants}
+                className="not-italic text-sm text-white/90 mt-4"
+              >
+                <motion.p variants={itemVariants} className="leading-relaxed">
+                  Email: <a href="mailto:hello@yourname.com" className="text-white hover:underline transition-colors">hello@yourname.com</a>
+                </motion.p>
+                <motion.p variants={itemVariants} className="leading-relaxed mt-1">
+                  Based in <span className="text-white font-medium">San Francisco, CA</span>
+                </motion.p>
+              </motion.address>
+            </motion.div>
             
             {/* Portfolio Links Column */}
-            <div>
-              <h3 className="text-2xl font-bold mb-6 tracking-tight">Portfolio</h3>
-              <ul className="space-y-3 text-base text-white/90">
-                <li><Link href="/" className="hover:text-white transition-colors inline-block py-1">Home</Link></li>
-                <li><Link href="/projects" className="hover:text-white transition-colors inline-block py-1">Projects</Link></li>
-                <li><Link href="/skills" className="hover:text-white transition-colors inline-block py-1">Skills & Expertise</Link></li>
-                <li><Link href="/resume" className="hover:text-white transition-colors inline-block py-1">Resume</Link></li>
-                <li><Link href="/blog" className="hover:text-white transition-colors inline-block py-1">Blog</Link></li>
-              </ul>
-            </div>
+            <motion.div variants={itemVariants}>
+              <motion.h3 
+                variants={itemVariants}
+                className="text-xl font-bold mb-4 tracking-tight"
+              >
+                Portfolio
+              </motion.h3>
+              <motion.ul 
+                variants={containerVariants}
+                className="space-y-2 text-sm text-white/90"
+              >
+                {["Home", "Projects", "Skills & Expertise", "Resume", "Blog"].map((item, i) => (
+                  <motion.li 
+                    key={item} 
+                    variants={itemVariants}
+                    custom={i}
+                    className="relative flex items-center group"
+                  >
+                    <span 
+                      className="absolute left-0 w-0 h-[2px] bg-white rounded-full opacity-0 
+                      group-hover:w-3 group-hover:opacity-100 transition-all duration-300 ease-out"
+                    />
+                    <Link 
+                      href={item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+&\s+|\s+/g, "-")}`} 
+                      className="hover:text-white inline-block py-1 pl-0 
+                      group-hover:pl-5 transition-all duration-300 ease-in-out transform"
+                      style={{ transformOrigin: "left center" }}
+                    >
+                      {item}
+                    </Link>
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </motion.div>
             
-            {/* Contact Info Column */}
-            <div>
-              <h3 className="text-2xl font-bold mb-6 tracking-tight">Let's Connect</h3>
-              <address className="not-italic text-base text-white/90 space-y-3 mb-8">
-                <p className="leading-relaxed">Based in <span className="text-white font-medium">San Francisco, CA</span></p>
-                <p className="leading-relaxed">Available for <span className="text-white font-medium">freelance & full-time opportunities</span></p>
-                <p className="leading-relaxed">Email: <a href="mailto:hello@yourname.com" className="text-white hover:underline transition-colors">hello@yourname.com</a></p>
-              </address>
-              
-              {/* Contact Form Mini */}
-              <form onSubmit={handleSubscribe} className="mt-6 space-y-3">
-                <input
+            {/* Contact Form Mini */}
+            <motion.div variants={itemVariants}>
+              <motion.h3 
+                variants={itemVariants}
+                className="text-xl font-bold mb-4 tracking-tight"
+              >
+                Get In Touch
+              </motion.h3>
+              <motion.form 
+                variants={itemVariants}
+                onSubmit={handleSubscribe} 
+                className="space-y-2"
+              >
+                <motion.input
+                  whileFocus={{ scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   type="email"
                   placeholder="Your email"
-                  className="w-full px-5 py-3 rounded-lg text-blue-900 focus:outline-none focus:ring-2 focus:ring-white/50"
+                  className="w-full px-4 py-2 rounded-lg text-blue-900 focus:outline-none focus:ring-2 focus:ring-white/50"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   type="submit"
-                  className="w-full px-5 py-3 bg-white text-blue-700 rounded-lg font-semibold hover:bg-blue-50 transition-all"
+                  className="w-full px-4 py-2 bg-white text-blue-700 rounded-lg font-semibold hover:bg-blue-50 transition-all"
                 >
-                  Get In Touch
-                </button>
-              </form>
-            </div>
-          </div>
-          
-          {/* CTA Section */}
-          <div className="text-center py-12 border-t border-b border-white/20">
-            <h1 className="font-bold text-white text-4xl mb-6 tracking-tight">
-              Interested in working together?
-            </h1>
-            <Link 
-              href="/contact" 
-              className="inline-block px-8 py-4 bg-white text-blue-700 rounded-full font-bold text-lg hover:bg-blue-50 transition-colors"
-            >
-              Start a Conversation
-            </Link>
-          </div>
+                  Start a Conversation
+                </motion.button>
+              </motion.form>
+            </motion.div>
+          </motion.div>
           
           {/* Copyright Section */}
-          <div className="pt-12 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-base text-white/80 font-medium">© {currentYear} Ayushman Gupta. All rights reserved.</p>
-            <div className="mt-6 md:mt-0">
-              <p className="text-base text-white/80">Designed & Built with ❤️</p>
-            </div>
-          </div>
+          <motion.div 
+            variants={fadeInVariants}
+            initial="hidden"
+            animate={controls}
+            className="pt-6 border-t border-white/20 flex flex-col sm:flex-row justify-between items-center"
+          >
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={controls}
+              variants={{
+                visible: { 
+                  opacity: 1,
+                  transition: { delay: 0.7 }
+                }
+              }}
+              className="text-sm text-white/80 font-medium"
+            >
+              © {currentYear} Ayushman Gupta. All rights reserved.
+            </motion.p>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={controls}
+              variants={{
+                visible: { 
+                  opacity: 1,
+                  transition: { delay: 0.8 }
+                }
+              }}
+              className="mt-4 sm:mt-0"
+            >
+              <p className="text-sm text-white/80">Designed & Built with ❤️</p>
+            </motion.div>
+          </motion.div>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 }
