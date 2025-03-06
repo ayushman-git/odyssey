@@ -29,7 +29,7 @@ const SocialLinks = () => {
   const handleLinkHover = (index, isEntering) => {
     gsap.to(linksRef.current[index], {
       scale: isEntering ? 1.2 : 1,
-      color: isEntering ? "#ffffff" : "#9ca3af",
+      color: isEntering ? "#ffffff" : "#ffffff",
       duration: 0.3,
       ease: "power2.out"
     });
@@ -51,7 +51,7 @@ const SocialLinks = () => {
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-gray-400 transition-colors duration-300"
+          className="text-white transition-colors duration-300"
           aria-label={link.label}
           onMouseEnter={() => handleLinkHover(index, true)}
           onMouseLeave={() => handleLinkHover(index, false)}

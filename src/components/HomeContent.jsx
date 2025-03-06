@@ -105,9 +105,9 @@ export default function HomeContent({ meowScriptClassName }) {
             </button>
           </div>
 
-          <div ref={socialsRef} className="opacity-0">
+          {/* <div ref={socialsRef} className="opacity-0">
             <SocialLinks />
-          </div>
+          </div> */}
         </div>
       </div>
     </>
