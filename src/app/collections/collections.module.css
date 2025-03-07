@@ -1,0 +1,178 @@
+.pageContainer {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #121212, #1a1a1a);
+  color: #e0e0e0;
+}
+
+.collectionsContainer {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  background: linear-gradient(45deg, #e0e0e0, #a0a0a0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+.pageSubtitle {
+  text-align: center;
+  color: #a0a0a0;
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
+.yearSummary {
+  text-align: center;
+  margin: 1rem 0 3rem;
+  padding: 1rem;
+  border-radius: 12px;
+  animation: fadeIn 0.5s ease;
+}
+
+.yearHeading {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0;
+  opacity: 0.1;
+  color: #ffffff;
+}
+
+.itemCount {
+  margin-top: -1rem;
+  font-size: 1.1rem;
+  color: #a0a0a0;
+}
+
+.yearSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+}
+
+.yearButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  color: #a0a0a0;
+}
+
+.yearButton:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.activeYear {
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.collectionsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.categorySection {
+  margin-bottom: 2rem;
+}
+
+.categoryTitle {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.collectionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.noContent {
+  text-align: center;
+  padding: 6rem 1rem;
+  color: #a0a0a0;
+  border-radius: 12px;
+  background-color: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.emptyStateIcon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.resetButton {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid #444;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border-radius: 24px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.resetButton:hover {
+  border-color: #a0a0a0;
+  color: #ffffff;
+  background-color: #333333;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .collectionsContainer {
+    padding: 2rem 1rem;
+  }
+  
+  .pageTitle {
+    font-size: 2rem;
+  }
+  
+  .pageSubtitle {
+    font-size: 1rem;
+  }
+  
+  .yearSelector {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .collectionGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .categoryTitle {
+    font-size: 1.3rem;
+  }
+  
+  .yearHeading {
+    font-size: 2rem;
+  }
+}
