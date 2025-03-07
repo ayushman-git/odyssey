@@ -6,7 +6,6 @@
 
 .yearTimeline {
   display: flex;
-  overflow-x: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   cursor: grab;

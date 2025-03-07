@@ -8,7 +8,11 @@ export const collectionsData = {
       creator: 'James Clear', 
       coverImage: 'https://m.media-amazon.com/images/I/81wgcld4wxL._AC_UF1000,1000_QL80_.jpg', 
       year: '2023',
-      category: 'books'
+      category: 'books',
+      pages: 320,
+      genre: 'Self-Help',
+      rating: 4.5,
+      description: 'A proven framework for improving every day through tiny changes in behavior.'
     },
     { 
       id: 2, 
@@ -16,7 +20,11 @@ export const collectionsData = {
       creator: 'Yuval Noah Harari', 
       coverImage: 'https://m.media-amazon.com/images/I/713jIoMO3UL._AC_UF1000,1000_QL80_.jpg', 
       year: '2022',
-      category: 'books'
+      category: 'books',
+      pages: 464,
+      genre: 'History',
+      rating: 4.7,
+      description: 'A brief history of humankind, exploring the ways in which biology and history have defined us.'
     },
     { 
       id: 3, 
@@ -24,8 +32,36 @@ export const collectionsData = {
       creator: 'Daniel Kahneman', 
       coverImage: 'https://m.media-amazon.com/images/I/61fdrEuPJwL._AC_UF1000,1000_QL80_.jpg', 
       year: '2021',
-      category: 'books'
+      category: 'books',
+      pages: 499,
+      genre: 'Psychology',
+      rating: 4.6,
+      description: 'An exploration of the two systems that drive the way we think and make choices.'
     },
+    {
+      id: 4,
+      title: 'The Alchemist',
+      creator: 'Paulo Coelho',
+      coverImage: 'https://m.media-amazon.com/images/I/71aFt4+OTOL._AC_UF1000,1000_QL80_.jpg',
+      year: '2022',
+      category: 'books',
+      pages: 197,
+      genre: 'Fiction',
+      rating: 4.7,
+      description: 'A fable about following your dreams and listening to your heart.'
+    },
+    {
+      id: 5,
+      title: 'Dune',
+      creator: 'Frank Herbert',
+      coverImage: 'https://m.media-amazon.com/images/I/91KP35vI3HL._AC_UF1000,1000_QL80_.jpg',
+      year: '2021',
+      category: 'books',
+      pages: 688,
+      genre: 'Science Fiction',
+      rating: 4.7,
+      description: 'Set on the desert planet Arrakis, a stunning blend of adventure and mysticism.'
+    }
   ],
   movies: [
     { 
