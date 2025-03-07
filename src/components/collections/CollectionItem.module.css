@@ -1,9 +1,9 @@
-/* Base styles for all cards */
+/* Base styles for all cards - more compact */
 .itemCard {
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
   background: #222222;
   height: 100%;
@@ -11,18 +11,19 @@
   flex-direction: column;
   position: relative;
   border: 1px solid #333;
+  max-width: 100%;
 }
 
 .itemCard:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   border-color: #444;
 }
 
 .imageContainer {
   position: relative;
   width: 100%;
-  padding-top: 150%; /* 2:3 aspect ratio for covers */
+  padding-top: 140%; /* Reduced aspect ratio for more compact look */
   overflow: hidden;
 }
 
@@ -36,7 +37,7 @@
 }
 
 .itemInfo {
-  padding: 1rem;
+  padding: 0.7rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -44,9 +45,9 @@
 }
 
 .itemTitle {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -57,31 +58,31 @@
 }
 
 .itemCreator {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #a0a0a0;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 
 .itemYear {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #777777;
   margin-top: auto;
 }
 
-/* Category icon for default cards */
+/* Category icon for default cards - reduced size */
 .categoryIcon {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
+  top: 0.5rem;
+  right: 0.5rem;
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   transition: transform 0.2s ease;
   z-index: 2;
 }
@@ -111,20 +112,20 @@
 }
 
 .bookCard .itemInfo {
-  padding: 0.75rem;
+  padding: 0.6rem;
   background-color: #1a1a1a;
 }
 
 .bookCard .itemTitle {
-  font-size: 0.9rem;
-}
-
-.bookCard .itemCreator {
   font-size: 0.8rem;
 }
 
-.bookCard .itemYear {
+.bookCard .itemCreator {
   font-size: 0.75rem;
+}
+
+.bookCard .itemYear {
+  font-size: 0.7rem;
 }
 
 .bookCover {
@@ -469,10 +470,35 @@
   .bookCard:hover .bookCover {
     transform: rotateY(-15deg);
   }
+
+  .itemTitle {
+    font-size: 0.85rem;
+  }
+
+  .itemCreator {
+    font-size: 0.75rem;
+  }
+
+  .itemYear {
+    font-size: 0.7rem;
+  }
+
+  .itemInfo {
+    padding: 0.6rem;
+  }
 }
 
 @media (max-width: 480px) {
   .bookSpine {
     display: none;
+  }
+
+  .itemTitle {
+    font-size: 0.8rem;
+    -webkit-line-clamp: 1;
+  }
+
+  .itemCreator {
+    font-size: 0.7rem;
   }
 }
