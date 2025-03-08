@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import CollectionItem from './CollectionItem';
 
-export default function CategorySection({ category, label, items }) {
+export default function CategoryGridSection({ category, label, items }) {
   const sectionRef = useRef(null);
   
   return (
@@ -20,7 +20,7 @@ export default function CategorySection({ category, label, items }) {
       </div>
       
       <motion.div 
-        className="flex flex-wrap"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2 md:gap-4"
         layout
       >
         {items.map(item => (
@@ -30,7 +30,6 @@ export default function CategorySection({ category, label, items }) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
-            className="flex-grow-0"
           >
             <CollectionItem item={item} category={category} />
           </motion.div>
