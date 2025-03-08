@@ -13,10 +13,10 @@ export default function CollectionItem({ item, category }) {
   return (
     <>
       <div 
-        className="flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg cursor-pointer transition-transform duration-200 hover:translate-y-[-3px] w-32 h-52 m-2 overflow-hidden"
+        className="relative flex flex-col bg-white rounded shadow-md hover:shadow-lg cursor-pointer transition-all duration-200 hover:translate-y-[-3px] w-32 h-44 m-2 overflow-hidden group"
         onClick={() => setIsModalOpen(true)}
       >
-        <div className="relative w-full h-36">
+        <div className="relative w-full h-full">
           {item.coverImage && !imageError ? (
             <Image
               src={item.coverImage}
@@ -32,10 +32,18 @@ export default function CollectionItem({ item, category }) {
               {categoryIcon}
             </div>
           )}
-        </div>
-        <div className="p-2">
-          <h3 className="text-sm font-semibold mb-1 truncate leading-tight">{item.title}</h3>
-          <p className="text-xs text-gray-600 truncate">{item.creator}</p>
+          
+          {/* Hover overlay with details */}
+          <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-2">
+            <h3 className="text-sm font-semibold text-white truncate leading-tight">{item.title}</h3>
+            <p className="text-xs text-gray-300 truncate">{item.creator}</p>
+            {item.rating && (
+              <div className="flex items-center mt-1">
+                <span className="text-yellow-400 text-xs mr-1">★</span>
+                <span className="text-xs text-gray-300">{item.rating}/5</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

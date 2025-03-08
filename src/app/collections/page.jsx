@@ -1,128 +1,92 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { collectionsData, categoryLabels } from '@/data/collectionsData';
+import CategoryGridSection from '@/components/collections/CategoryGridSection';
 import YearSelector from '@/components/collections/YearSelector';
-import CategorySection from '@/components/collections/CategorySection';
-import styles from './collections.module.css';
+import YearProgress from '@/components/collections/YearProgress';
+import StatsSummary from '@/components/collections/StatsSummary';
 
-export default function Collections() {
-  // Get the current year
-  const currentYear = new Date().getFullYear().toString();
+export default function CollectionsPage() {
+  const [selectedYear, setSelectedYear] = useState('all');
   
-  // Get all unique years from the collection items, sorted in descending order
+  // Extract all unique years from the collections data
   const years = useMemo(() => {
     const allYears = new Set();
     
-    Object.values(collectionsData).forEach(categoryItems => {
-      categoryItems.forEach(item => {
-        allYears.add(item.year);
+    Object.values(collectionsData).forEach(items => {
+      items.forEach(item => {
+        if (item.year) allYears.add(item.year);
       });
     });
     
-    return [...allYears].sort((a, b) => b.localeCompare(a));
+    return [...allYears].sort((a, b) => b - a); // Sort years in descending order
   }, []);
   
-  // State for the selected year filter
-  const [selectedYear, setSelectedYear] = useState(currentYear);
-  
-  // Filter and flatten all collections based on the selected year
+  // Filter collections by selected year
   const filteredCollections = useMemo(() => {
-    const flattened = [];
+    if (selectedYear === 'all') {
+      return collectionsData;
+    }
+    
+    const filtered = {};
     
     Object.entries(collectionsData).forEach(([category, items]) => {
-      const filteredItems = selectedYear === 'all' 
-        ? items
-        : items.filter(item => item.year === selectedYear);
-      
-      if (filteredItems.length > 0) {
-        flattened.push({
-          category,
-          label: categoryLabels[category],
-          items: filteredItems
-        });
-      }
+      filtered[category] = items.filter(item => item.year === selectedYear);
     });
     
-    return flattened;
+    return filtered;
   }, [selectedYear]);
-  
-  // Get total count of items for the selected year
-  const totalItems = useMemo(() => {
-    return filteredCollections.reduce((acc, { items }) => acc + items.length, 0);
-  }, [filteredCollections]);
-  
+
   return (
-    <div className={styles.pageContainer}>
-      <motion.div 
-        className={styles.collectionsContainer}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <motion.h1 
-          className={styles.pageTitle}
-          initial={{ y: -20 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          My Life Collections
-        </motion.h1>
-        
-        <motion.p 
-          className={styles.pageSubtitle}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          A curated archive of books, films, experiences, and memories
-        </motion.p>
-        
-        <YearSelector 
-          years={years} 
-          selectedYear={selectedYear} 
-          setSelectedYear={setSelectedYear} 
-        />
-        
-        {selectedYear !== 'all' && (
-          <div className={styles.yearSummary}>
-            <h2 className={styles.yearHeading}>{selectedYear}</h2>
-            <p className={styles.itemCount}>
-              {totalItems} {totalItems === 1 ? 'item' : 'items'}
-            </p>
-          </div>
-        )}
-        
-        {filteredCollections.length > 0 ? (
-          <div className={styles.collectionsWrapper}>
-            {filteredCollections.map(({ category, label, items }) => (
-              <CategorySection 
-                key={category}
-                category={category}
-                label={label}
-                items={items}
-              />
-            ))}
-          </div>
-        ) : (
-          <motion.div 
-            className={styles.noContent}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold">My Collections</h1>
+      </div>
+
+      {/* Year selector */}
+      <YearSelector 
+        years={years}
+        selectedYear={selectedYear}
+        setSelectedYear={setSelectedYear}
+      />
+      
+      {/* Year progress */}
+      <YearProgress selectedYear={selectedYear} />
+      
+      {/* Stats summary */}
+      <StatsSummary 
+        collections={filteredCollections} 
+        selectedYear={selectedYear} 
+      />
+      
+      {/* Display message if no items for the selected year */}
+      {Object.values(filteredCollections).every(items => items.length === 0) && (
+        <div className="text-center py-12">
+          <p className="text-xl text-gray-500">No items found for {selectedYear}</p>
+          <button
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            onClick={() => setSelectedYear('all')}
           >
-            <div className={styles.emptyStateIcon}>📭</div>
-            <p>No collections found for {selectedYear}</p>
-            <button 
-              className={styles.resetButton}
-              onClick={() => setSelectedYear('all')}
-            >
-              View all collections
-            </button>
-          </motion.div>
-        )}
-      </motion.div>
+            Show All Items
+          </button>
+        </div>
+      )}
+      
+      {/* Render collections in grid view */}
+      {Object.entries(filteredCollections).map(([category, items]) => {
+        // Only render categories that have items after filtering
+        if (items.length === 0) return null;
+        
+        return (
+          <CategoryGridSection 
+            key={category}
+            category={category}
+            label={categoryLabels[category]}
+            items={items}
+          />
+        );
+      })}
     </div>
   );
 }
