@@ -5,7 +5,9 @@ import { collectionsData, categoryLabels } from '@/data/collectionsData';
 import CategoryGridSection from '@/components/collections/CategoryGridSection';
 import YearSelector from '@/components/collections/YearSelector';
 import YearProgress from '@/components/collections/YearProgress';
-import StatsSummary from '@/components/collections/StatsSummary';
+import StatsVisualization from '@/components/collections/StatsVisualization';
+import CollectionInsights from '@/components/collections/CollectionInsights';
+import EmptyState from '@/components/collections/EmptyState';
 
 export default function CollectionsPage() {
   const [selectedYear, setSelectedYear] = useState('all');
@@ -38,9 +40,14 @@ export default function CollectionsPage() {
     return filtered;
   }, [selectedYear]);
 
+  // Check if there are any items for the selected year
+  const hasItems = useMemo(() => {
+    return !Object.values(filteredCollections).every(items => items.length === 0);
+  }, [filteredCollections]);
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">My Collections</h1>
       </div>
 
@@ -51,42 +58,42 @@ export default function CollectionsPage() {
         setSelectedYear={setSelectedYear}
       />
       
-      {/* Year progress */}
-      <YearProgress selectedYear={selectedYear} />
-      
-      {/* Stats summary */}
-      <StatsSummary 
-        collections={filteredCollections} 
-        selectedYear={selectedYear} 
-      />
-      
-      {/* Display message if no items for the selected year */}
-      {Object.values(filteredCollections).every(items => items.length === 0) && (
-        <div className="text-center py-12">
-          <p className="text-xl text-gray-500">No items found for {selectedYear}</p>
-          <button
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            onClick={() => setSelectedYear('all')}
-          >
-            Show All Items
-          </button>
-        </div>
-      )}
-      
-      {/* Render collections in grid view */}
-      {Object.entries(filteredCollections).map(([category, items]) => {
-        // Only render categories that have items after filtering
-        if (items.length === 0) return null;
-        
-        return (
-          <CategoryGridSection 
-            key={category}
-            category={category}
-            label={categoryLabels[category]}
-            items={items}
+      {/* Only show progress, stats, and insights if there are items */}
+      {hasItems ? (
+        <>
+          {/* Year progress */}
+          <YearProgress selectedYear={selectedYear} />
+          
+          {/* Interactive visualization */}
+          <StatsVisualization 
+            collections={filteredCollections} 
+            selectedYear={selectedYear} 
           />
-        );
-      })}
+          
+          {/* Collection insights */}
+          <CollectionInsights 
+            collections={filteredCollections} 
+            selectedYear={selectedYear} 
+          />
+          
+          {/* Render collections in grid view */}
+          {Object.entries(filteredCollections).map(([category, items]) => {
+            // Only render categories that have items after filtering
+            if (items.length === 0) return null;
+            
+            return (
+              <CategoryGridSection 
+                key={category}
+                category={category}
+                label={categoryLabels[category]}
+                items={items}
+              />
+            );
+          })}
+        </>
+      ) : (
+        <EmptyState selectedYear={selectedYear} setSelectedYear={setSelectedYear} />
+      )}
     </div>
   );
 }
