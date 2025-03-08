@@ -60,9 +60,9 @@ export default function Home() {
         <HomeContent meowScriptClassName={meowScript.className} />
       </section>
 
-      <div className="bg-black px-6 md:px-16 lg:px-24 py-10 pt-16 pb-20 relative z-20">
+      {/* <div className="bg-black px-6 md:px-16 lg:px-24 py-10 pt-16 pb-20 relative z-20">
         <WhatIDo />
-      </div>
+      </div> */}
       <div className="py-10 relative z-20 bg-black bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08),transparent_70%)]">
         <MyStack />
       </div>

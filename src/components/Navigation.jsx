@@ -3,8 +3,11 @@
 import React from "react";
 import NavButton from "./NavButton";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const Navigation = ({ logo }) => {
+  const router = useRouter();
+  
   // Animation variants
   const navVariants = {
     hidden: { 
@@ -29,7 +32,7 @@ const Navigation = ({ logo }) => {
 
   return (
     <motion.nav 
-      className="flex items-center justify-between"
+      className="flex items-center justify-between relative z-30"
       initial="hidden"
       animate="visible"
       variants={navVariants}
@@ -44,7 +47,10 @@ const Navigation = ({ logo }) => {
           </NavButton>
         </motion.li>
         <motion.li variants={itemVariants}>
-          <NavButton onClick={() => console.log('Blog clicked')}>
+          <NavButton onClick={() => {
+            console.log('Blog clicked');
+            router.push('/blog');
+          }}>
             Blog
           </NavButton>
         </motion.li>
