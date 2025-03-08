@@ -1,0 +1,97 @@
+.yearSelectorContainer {
+  margin: 2rem 0 3rem;
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.yearTimeline {
+  display: flex;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  cursor: grab;
+  padding: 0 10%;
+  position: relative;
+  z-index: 1;
+}
+
+.yearTimeline::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.yearTimeline:active {
+  cursor: grabbing;
+}
+
+.yearButton {
+  padding: 0.75rem 1.5rem;
+  margin: 0 0.5rem;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  border-radius: 24px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+  color: #a0a0a0;
+}
+
+.yearButton:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.activeYear {
+  font-weight: 600;
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+}
+
+.timelineDecoration {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1.5rem;
+}
+
+.timelineTrack {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #333333;
+  transform: translateY(-50%);
+}
+
+.timelineMarker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .yearSelectorContainer {
+    margin: 1.5rem 0 2rem;
+  }
+  
+  .yearButton {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+  
+  .yearTimeline {
+    padding: 0 5%;
+  }
+}

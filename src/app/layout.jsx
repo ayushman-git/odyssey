@@ -1,9 +1,14 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import Navbar from "@/components/LandingPage/Navbar";
-import Footer from "@/components/Footer";
 import CustomThemeProvider from "@/lib/CustomThemeProvider";
 import GoogleAnalytics from "@/lib/GoogleAnalyticsProvider";
+import dynamic from 'next/dynamic';
+
+// Import the CustomCursor component with no SSR
+const CustomCursor = dynamic(
+  () => import('../components/CustomCursor'),
+  { ssr: false }
+);
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,8 +16,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Odyssey | Ayushman",
-  description: "A Voyage into the Heart of Silicon",
+  title: "Ayushman | Developer Portfolio",
+  description: "Personal portfolio showcasing my projects and skills",
 };
 
 export default function RootLayout({ children }) {
@@ -25,7 +30,7 @@ export default function RootLayout({ children }) {
       }}
     >
       <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
@@ -46,18 +51,9 @@ export default function RootLayout({ children }) {
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <GoogleAnalytics />
-      <body>
-        <CustomThemeProvider>
-          <div className={`grid place-items-center ${inter.className}`}>
-            <Navbar />
-            <main className="w-full pb-32">
-              <section className="w-full grid place-items-center">
-                {children}
-              </section>
-            </main>
-            <Footer />
-          </div>
-        </CustomThemeProvider>
+      <body className={inter.className}>
+        <CustomThemeProvider>{children}</CustomThemeProvider>
+        <CustomCursor />
       </body>
     </html>
   );

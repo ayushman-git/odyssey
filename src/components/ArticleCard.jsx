@@ -26,7 +26,7 @@ export default function ArticleCard({ details }) {
         href={
           details.disabled
             ? "#"
-            : `/${convertToSlug(details.type)}/${details.slug}`
+            : `/blog/${convertToSlug(details.type)}/${details.slug}`
         } // Use a "#" if disabled to prevent navigation
         className={`${
           details.disabled ? "pointer-events-none text-gray-500" : ""
