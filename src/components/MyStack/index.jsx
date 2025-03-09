@@ -37,12 +37,14 @@ export default function MyStack() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <TypedConsole text={consoleText} />
+        <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center text-white">
+          Featured Projects
+        </h2>
       </motion.div>
 
       {/* Tree View */}
       <motion.div
-        className="w-full max-w-6xl px-4 md:px-6 relative"
+        className="w-full px-4 md:px-6 relative"
         style={{ y: yBg }}
       >
         {/* Glassmorphic panel background for tree view */}
@@ -57,7 +59,7 @@ export default function MyStack() {
         />
 
         <div className="relative">
-          <div className="h-[650px] md:h-[750px] lg:h-[800px]">
+          <div>
             <SkillTree data={skillTreeData} />
           </div>
         </div>

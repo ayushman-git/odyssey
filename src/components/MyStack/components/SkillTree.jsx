@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 
 const SkillTree = ({ data }) => {
   const svgRef = useRef(null);
+  const [tooltipData, setTooltipData] = useState(null);
 
   useEffect(() => {
     if (!data || !svgRef.current) return;
@@ -42,6 +43,8 @@ const SkillTree = ({ data }) => {
     
     // Add a subtle glow filter for enhanced visual
     const defs = svg.append("defs");
+    
+    // Standard glow filter
     const filter = defs.append("filter")
       .attr("id", "glow")
       .attr("x", "-50%")
@@ -56,16 +59,56 @@ const SkillTree = ({ data }) => {
     const feMerge = filter.append("feMerge");
     feMerge.append("feMergeNode").attr("in", "coloredBlur");
     feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+    
+    // Strong glow filter for hover state
+    const hoverFilter = defs.append("filter")
+      .attr("id", "hover-glow")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "200%")
+      .attr("height", "200%");
+    
+    hoverFilter.append("feGaussianBlur")
+      .attr("stdDeviation", "4")
+      .attr("result", "coloredBlur");
+    
+    const hoverMerge = hoverFilter.append("feMerge");
+    hoverMerge.append("feMergeNode").attr("in", "coloredBlur");
+    hoverMerge.append("feMergeNode").attr("in", "SourceGraphic");
 
-    // Append links with subtle animation
-    svg.append("g")
+    // Create tooltip div
+    const tooltip = d3.select(container.parentNode)
+      .append("div")
+      .attr("class", "absolute pointer-events-none bg-gray-900/90 text-white px-4 py-2 rounded-lg border border-gray-700 shadow-lg backdrop-blur-sm z-50 transition-opacity duration-200 opacity-0 max-w-[200px]")
+      .style("transform", "translate(-50%, -100%)")
+      .style("margin-top", "-10px");
+
+    // Function to get descendants of a node
+    const getDescendants = (node) => {
+      if (!node.children) return [];
+      return node.descendants().slice(1); // Get all descendants except the node itself
+    };
+
+    // Function to get path from root to node
+    const getPathToRoot = (node) => {
+      const path = [];
+      let current = node;
+      while (current.parent) {
+        path.push(current.parent);
+        current = current.parent;
+      }
+      return path;
+    };
+
+    // Append links
+    const links = svg.append("g")
       .attr("fill", "none")
-      .attr("stroke", "#4B5563") // Gray-600
       .attr("stroke-opacity", 0.6)
       .attr("stroke-width", 1)
       .selectAll()
       .data(root.links())
       .join("path")
+      .attr("stroke", "#4B5563") // Gray-600
       .attr("d", d3.linkRadial()
         .angle(d => d.x)
         .radius(d => d.y))
@@ -76,20 +119,161 @@ const SkillTree = ({ data }) => {
       .attr("stroke-dashoffset", function() {
         return this.getTotalLength();
       })
+      .attr("data-source", d => d.source.data.name)
+      .attr("data-target", d => d.target.data.name)
       .transition()
       .duration(1500)
       .delay((d, i) => i * 50)
       .attr("stroke-dashoffset", 0);
 
-    // Append nodes with animations
-    svg.append("g")
+    // Append nodes
+    const nodes = svg.append("g")
       .selectAll()
       .data(root.descendants())
       .join("circle")
+      .attr("class", "skill-node")
       .attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y},0)`)
       .attr("fill", d => d.data.color || (d.children ? "#3B82F6" : "#60A5FA")) // Blue shades
       .attr("r", 0)
       .attr("filter", "url(#glow)")
+      .attr("data-node", d => d.data.name)
+      .on("mouseover", function(event, d) {
+        const node = d3.select(this);
+        
+        // Highlight this node
+        node.transition()
+          .duration(200)
+          .attr("r", d.data.size || (d.children ? 6 : 4.5))
+          .attr("filter", "url(#hover-glow)");
+        
+        // Get all descendants
+        const descendants = getDescendants(d);
+        const descendantNodes = descendants.map(n => n.data.name);
+        
+        // Get path to root
+        const pathToRoot = getPathToRoot(d);
+        const ancestorNodes = pathToRoot.map(n => n.data.name);
+        
+        // Highlight related nodes
+        d3.selectAll(".skill-node")
+          .filter(n => descendantNodes.includes(n.data.name) || ancestorNodes.includes(n.data.name))
+          .transition()
+          .duration(200)
+          .attr("r", n => n.data.size || (n.children ? 5 : 4))
+          .attr("filter", "url(#hover-glow)");
+        
+        // Highlight links that connect to or from this node
+        d3.selectAll("path")
+          .filter(function() {
+            const link = d3.select(this);
+            const source = link.attr("data-source");
+            const target = link.attr("data-target");
+            
+            // Check if the link is connected to this node or its descendants
+            return source === d.data.name || 
+                  target === d.data.name || 
+                  descendantNodes.includes(source) || 
+                  descendantNodes.includes(target) ||
+                  ancestorNodes.includes(source) ||
+                  ancestorNodes.includes(target);
+          })
+          .transition()
+          .duration(200)
+          .attr("stroke", d.data.color || "#3B82F6")
+          .attr("stroke-width", 1.5)
+          .attr("stroke-opacity", 0.9);
+        
+        // Highlight the label
+        d3.selectAll(".skill-label")
+          .filter(n => n.data.name === d.data.name)
+          .transition()
+          .duration(200)
+          .style("font-weight", "bold")
+          .attr("stroke-width", 4);
+        
+        // Position and show tooltip
+        const tooltipX = event.pageX - container.getBoundingClientRect().left - window.scrollX;
+        const tooltipY = event.pageY - container.getBoundingClientRect().top - window.scrollY;
+        
+        // Prepare tooltip content
+        let tooltipContent = `
+          <div class="flex flex-col space-y-1">
+            <span class="font-medium text-sm">${d.data.name}</span>
+            ${d.data.description ? `<span class="text-xs text-gray-300">${d.data.description}</span>` : ''}
+            ${d.data.level ? 
+              `<div class="w-full bg-gray-700 rounded-full h-1.5 mt-1">
+                <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${d.data.level}%"></div>
+              </div>` : ''
+            }
+          </div>
+        `;
+        
+        // Update tooltip position and content
+        tooltip
+          .html(tooltipContent)
+          .style("left", `${tooltipX}px`)
+          .style("top", `${tooltipY}px`)
+          .transition()
+          .duration(200)
+          .style("opacity", 1);
+        
+        // Store tooltip data for React state
+        setTooltipData({
+          name: d.data.name,
+          description: d.data.description || null,
+          level: d.data.level || null,
+          x: tooltipX,
+          y: tooltipY
+        });
+      })
+      .on("mouseout", function(event, d) {
+        // Reset this node
+        d3.select(this)
+          .transition()
+          .duration(300)
+          .attr("r", d.data.size || (d.children ? 4 : 3))
+          .attr("filter", "url(#glow)");
+        
+        // Reset all nodes
+        d3.selectAll(".skill-node")
+          .transition()
+          .duration(300)
+          .attr("r", n => n.data.size || (n.children ? 4 : 3))
+          .attr("filter", "url(#glow)");
+        
+        // Reset all links
+        d3.selectAll("path")
+          .transition()
+          .duration(300)
+          .attr("stroke", "#4B5563")
+          .attr("stroke-width", 1)
+          .attr("stroke-opacity", 0.6);
+        
+        // Reset all labels
+        d3.selectAll(".skill-label")
+          .transition()
+          .duration(300)
+          .style("font-weight", "normal")
+          .attr("stroke-width", 3);
+        
+        // Hide tooltip
+        tooltip
+          .transition()
+          .duration(200)
+          .style("opacity", 0);
+        
+        setTooltipData(null);
+      })
+      .on("click", function(event, d) {
+        // Pulse animation on click
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr("r", d.data.size ? d.data.size * 1.5 : (d.children ? 8 : 6))
+          .transition()
+          .duration(300)
+          .attr("r", d.data.size || (d.children ? 4 : 3));
+      })
       .transition()
       .duration(800)
       .delay((d, i) => 500 + i * 50)
@@ -102,6 +286,7 @@ const SkillTree = ({ data }) => {
       .selectAll()
       .data(root.descendants())
       .join("text")
+      .attr("class", "skill-label")
       .attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y + (d.children ? 0 : 5)},0) rotate(${d.x >= Math.PI ? 180 : 0})`)
       .attr("dy", "0.31em")
       .attr("x", d => d.x < Math.PI === !d.children ? 6 : -6)
@@ -110,7 +295,6 @@ const SkillTree = ({ data }) => {
       .attr("stroke", "#111827") // Dark background
       .attr("fill", d => d.data.labelColor || "white")
       .attr("opacity", 0)
-      .attr("class", "skill-label")
       .style("font-size", d => d.depth === 0 ? "14px" : d.depth === 1 ? "12px" : "10px")
       .text(d => d.data.name)
       .transition()
@@ -140,12 +324,41 @@ const SkillTree = ({ data }) => {
 
     return () => {
       resizeObserver.unobserve(container);
+      d3.select(container.parentNode).select("div.absolute").remove(); // Remove tooltip on unmount
     };
   }, [data]);
 
   return (
-    <div className="w-full h-full flex justify-center items-center p-6">
+    <div className="w-full h-full flex justify-center items-center p-6 relative">
       <svg ref={svgRef} className="skill-tree-svg"></svg>
+      
+      {/* React-controlled tooltip (optional alternative to D3 tooltip) */}
+      {tooltipData && (
+        <div 
+          className="absolute pointer-events-none bg-gray-900/90 text-white px-4 py-2 rounded-lg border border-gray-700 shadow-lg backdrop-blur-sm z-50"
+          style={{
+            left: tooltipData.x,
+            top: tooltipData.y,
+            transform: 'translate(-50%, -100%)',
+            marginTop: '-10px',
+          }}
+        >
+          <div className="flex flex-col space-y-1">
+            <span className="font-medium text-sm">{tooltipData.name}</span>
+            {tooltipData.description && (
+              <span className="text-xs text-gray-300">{tooltipData.description}</span>
+            )}
+            {tooltipData.level && (
+              <div className="w-full bg-gray-700 rounded-full h-1.5 mt-1">
+                <div 
+                  className="bg-blue-500 h-1.5 rounded-full" 
+                  style={{ width: `${tooltipData.level}%` }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
