@@ -1,15 +1,14 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 
 // Import components
-import TypedConsole from './components/TypedConsole';
-import GlassmorphicPanel from './components/GlassmorphicPanel';
-import StatusIndicator from './components/StatusIndicator';
+import TypedConsole from "./components/TypedConsole";
+import SkillTree from "./components/SkillTree";
 
 // Import data
-import { techTools, skills } from './data/toolsData';
+import { skillTreeData } from "./data/skillTreeData";
 
 export default function MyStack() {
   const containerRef = useRef(null);
@@ -17,37 +16,14 @@ export default function MyStack() {
     target: containerRef,
     offset: ["start end", "end start"],
   });
-  
-  const [hoveredItem, setHoveredItem] = useState(null);
-  const [activeTab, setActiveTab] = useState('tools');
-  const [consoleText, setConsoleText] = useState('> Loading tech stack...');
 
-  // Update the console text when tab changes
-  useEffect(() => {
-    setConsoleText(`> Displaying ${activeTab === 'tools' ? 'tools & technologies' : 'skills & strengths'}...`);
-  }, [activeTab]);
+  const [consoleText] = useState("> Visualizing skill relationships...");
 
-  // Parallax effect for background and items
+  // Parallax effect for background
   const yBg = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  
-  const items = activeTab === 'tools' ? techTools : skills;
-  
-  // Animation variants for the grid items
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.05,
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    })
-  };
 
   return (
-    <motion.div 
+    <motion.div
       className="flex flex-col items-center w-full min-h-screen py-20"
       ref={containerRef}
       initial={{ opacity: 0 }}
@@ -55,27 +31,37 @@ export default function MyStack() {
       transition={{ duration: 0.8 }}
     >
       {/* Console-style header */}
-      <motion.div 
-        className="mb-12 font-mono text-sm md:text-base text-blue-400"
+      <motion.div
+        className="mb-8 font-mono text-sm md:text-base text-blue-400"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <TypedConsole text={consoleText} />
       </motion.div>
-      
-      <GlassmorphicPanel
-        yBg={yBg}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        items={items}
-        hoveredItem={hoveredItem}
-        setHoveredItem={setHoveredItem}
-        itemVariants={itemVariants}
-      />
-      
-      {/* Status line */}
-      <StatusIndicator />
+
+      {/* Tree View */}
+      <motion.div
+        className="w-full max-w-6xl px-4 md:px-6 relative"
+        style={{ y: yBg }}
+      >
+        {/* Glassmorphic panel background for tree view */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-black/90 backdrop-blur-lg rounded-3xl border border-gray-800/50 shadow-2xl shadow-blue-500/5"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{
+            boxShadow: "0 25px 50px -12px rgba(59, 130, 246, 0.15)",
+          }}
+        />
+
+        <div className="relative">
+          <div className="h-[650px] md:h-[750px] lg:h-[800px]">
+            <SkillTree data={skillTreeData} />
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
