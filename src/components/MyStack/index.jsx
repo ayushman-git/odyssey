@@ -38,7 +38,7 @@ export default function MyStack() {
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center text-white">
-          Featured Projects
+          My Toolkit
         </h2>
       </motion.div>
 
@@ -49,7 +49,7 @@ export default function MyStack() {
       >
         {/* Glassmorphic panel background for tree view */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-gray-900/80 to-black/90 backdrop-blur-lg rounded-3xl border border-gray-800/50 shadow-2xl shadow-blue-500/5"
+          className="absolute inset-0 backdrop-blur-lg rounded-3xl shadow-2xl shadow-blue-500/5"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
