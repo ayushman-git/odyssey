@@ -7,10 +7,7 @@ import Navigation from "../components/Navigation";
 import ClientStars from "../components/ClientStars";
 import HomeContent from "../components/HomeContent";
 import "@/styles/globals.css";
-import SectionDivider from "@/components/SectionDivider";
-import WhatIDo from "@/components/WhatIDo";
 import MyStack from "@/components/MyStack";
-import Footer from "@/components/Footer";
 import CosmicFooter from "@/components/CosmisFooter";
 import Contact from "../components/Contact";
 
