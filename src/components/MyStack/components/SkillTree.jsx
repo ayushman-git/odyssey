@@ -200,11 +200,6 @@ const SkillTree = ({ data }) => {
           <div class="flex flex-col space-y-1">
             <span class="font-medium text-sm">${d.data.name}</span>
             ${d.data.description ? `<span class="text-xs text-gray-300">${d.data.description}</span>` : ''}
-            ${d.data.level ? 
-              `<div class="w-full bg-gray-700 rounded-full h-1.5 mt-1">
-                <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${d.data.level}%"></div>
-              </div>` : ''
-            }
           </div>
         `;
         
@@ -221,7 +216,6 @@ const SkillTree = ({ data }) => {
         setTooltipData({
           name: d.data.name,
           description: d.data.description || null,
-          level: d.data.level || null,
           x: tooltipX,
           y: tooltipY
         });
@@ -347,14 +341,6 @@ const SkillTree = ({ data }) => {
             <span className="font-medium text-sm">{tooltipData.name}</span>
             {tooltipData.description && (
               <span className="text-xs text-gray-300">{tooltipData.description}</span>
-            )}
-            {tooltipData.level && (
-              <div className="w-full bg-gray-700 rounded-full h-1.5 mt-1">
-                <div 
-                  className="bg-blue-500 h-1.5 rounded-full" 
-                  style={{ width: `${tooltipData.level}%` }}
-                />
-              </div>
             )}
           </div>
         </div>

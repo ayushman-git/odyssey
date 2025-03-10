@@ -37,9 +37,12 @@ export default function MyStack() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center text-white">
+        <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-white">
           My Toolkit
         </h2>
+        <p className="text-center text-gray-400 mb-10 max-w-2xl mx-auto">
+          The technologies and frameworks I've mastered throughout my journey as a developer, organized by relationship.
+        </p>
       </motion.div>
 
       {/* Tree View */}
