@@ -63,6 +63,19 @@ export default function HomeContent({ meowScriptClassName }) {
     });
   };
 
+  // Handler to open resume PDF
+  const handleResumeClick = () => {
+    window.open('/ayushman_resume.pdf', '_blank');
+  };
+
+  // Simple scroll to projects function
+  const scrollToProjects = () => {
+    const projectsSection = document.querySelector('#projects');
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       {/* Hero Section */}
@@ -88,20 +101,31 @@ export default function HomeContent({ meowScriptClassName }) {
             building exceptional digital experiences that solve real problems.
           </p>
 
-          <div ref={ctaRef} className="flex flex-wrap gap-4 mb-12">
-            <button
-              className="bg-white hover:bg-gray-800 text-black hover:text-white py-3 px-8 rounded-full transition-all duration-300 opacity-0"
-              onMouseEnter={(e) => handleButtonHover(e, true)}
-              onMouseLeave={(e) => handleButtonHover(e, false)}
+          <div ref={ctaRef} className="flex flex-wrap gap-6 mb-12">
+            {/* Primary CTA - View My Work Button */}
+            <button 
+              className="group relative bg-white border border-white py-3 px-8 opacity-0 rounded-md hover:bg-transparent hover:text-white transition-all duration-300 text-black"
+              onClick={scrollToProjects}
             >
-              View My Work
+              <span className="flex items-center font-medium">
+                <span>View My Work</span>
+                <svg className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
             </button>
-            <button
-              className="border border-gray-800 text-white py-3 px-8 rounded-full hover:bg-white hover:text-black transition-all duration-300 opacity-0"
-              onMouseEnter={(e) => handleButtonHover(e, true)}
-              onMouseLeave={(e) => handleButtonHover(e, false)}
+
+            {/* Secondary CTA - Resume Button */}
+            <button 
+              className="group relative bg-transparent border border-gray-700 py-3 px-8 opacity-0 rounded-md hover:border-white transition-colors duration-300"
+              onClick={handleResumeClick}
             >
-              Resume
+              <span className="flex items-center text-white font-medium">
+                <span>Resume</span>
+                <svg className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-y-[-1px] group-hover:translate-x-[1px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
             </button>
           </div>
 

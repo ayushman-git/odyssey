@@ -5,7 +5,7 @@ import NavButton from "./NavButton";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-const Navigation = ({ logo }) => {
+const Navigation = ({ logo, contactRef }) => {
   const router = useRouter();
   
   // Animation variants
@@ -28,6 +28,10 @@ const Navigation = ({ logo }) => {
   const itemVariants = {
     hidden: { opacity: 0, y: -10 },
     visible: { opacity: 1, y: 0 }
+  };
+
+  const scrollToContact = () => {
+    contactRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -55,7 +59,7 @@ const Navigation = ({ logo }) => {
           </NavButton>
         </motion.li>
         <motion.li variants={itemVariants}>
-          <NavButton onClick={() => console.log('Contact clicked')}>
+          <NavButton onClick={scrollToContact}>
             Contact
           </NavButton>
         </motion.li>
