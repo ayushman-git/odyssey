@@ -1,17 +1,70 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Me from "@/assets/images/cover.jpg";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
 function Contact() {
+  const imageRef = useRef(null);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Delayed zoom animation that starts after scrolling down
+    gsap.fromTo(imageRef.current, 
+      { 
+        scale: 1.0,
+        rotate: 0, // Start with no rotation
+      },
+      {
+        scale: 1.4,
+        rotate: 1,
+        ease: "power1.inOut",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top center", // Animation starts when the top of the section reaches the center of viewport
+          end: "bottom top", 
+          scrub: 0.5,
+          // markers: true, // Uncomment for development to see trigger points
+          anticipatePin: 1, // Improves performance by pre-computing pin positions
+        }
+      }
+    );
+    
+    // Add a second animation to handle the initial state until scroll threshold is reached
+    gsap.to(imageRef.current, {
+      scale: 1.0, // Keep scale at 1 initially
+      rotate: 0,
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top bottom",
+        end: "top center", // This ends exactly where the zoom animation starts
+        scrub: true,
+      }
+    });
+    
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
   return (
     <div className="relative z-20">
       <h1 className="text-9xl text-center font-bold">Ayushman Gupta</h1>
-      <section className="flex justify-center">
+      <section ref={sectionRef} className="flex justify-center">
         <section className="relative max-w-[800px]">
           <p className="text-black absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 -rotate-90 whitespace-nowrap text-sm font-medium">
             New Delhi, India
           </p>
 
-          <img className="rounded-2xl" src={Me.src} alt="" srcset="" />
+          <div className="overflow-hidden rounded-2xl">
+            <img 
+              ref={imageRef} 
+              className="rounded-2xl w-full transform-gpu" 
+              src={Me.src} 
+              alt="Ayushman Gupta"
+            />
+          </div>
 
           <p className="text-black absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-6 rotate-90 whitespace-nowrap text-sm font-medium">
             Full Stack Developer
