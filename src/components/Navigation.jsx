@@ -7,27 +7,27 @@ import { useRouter } from "next/navigation";
 
 const Navigation = ({ logo, contactRef }) => {
   const router = useRouter();
-  
+
   // Animation variants
   const navVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
-      y: -20 
+      y: -20,
     },
-    visible: { 
+    visible: {
       opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.5,
         when: "beforeChildren",
-        staggerChildren: 0.1
-      } 
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: -10 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   const scrollToContact = () => {
@@ -35,34 +35,41 @@ const Navigation = ({ logo, contactRef }) => {
   };
 
   return (
-    <motion.nav 
+    <motion.nav
       className="flex items-center justify-between relative z-30"
       initial="hidden"
       animate="visible"
       variants={navVariants}
     >
-      <motion.div variants={itemVariants}>
-        {logo}
-      </motion.div>
+      <motion.div variants={itemVariants}>{logo}</motion.div>
       <ul className="flex space-x-4">
         <motion.li variants={itemVariants}>
-          <NavButton onClick={() => console.log('Projects clicked')}>
-            Projects
+          <NavButton onClick={() => console.log("Projects clicked")}>
+            About
           </NavButton>
         </motion.li>
+
         <motion.li variants={itemVariants}>
-          <NavButton onClick={() => {
-            console.log('Blog clicked');
-            router.push('/blog');
-          }}>
+          <NavButton onClick={scrollToContact}>Skills</NavButton>
+        </motion.li>
+        <motion.li variants={itemVariants}>
+          <NavButton
+            onClick={() => {
+              router.push("/blog");
+            }}
+          >
             Blog
           </NavButton>
         </motion.li>
-        <motion.li variants={itemVariants}>
-          <NavButton onClick={scrollToContact}>
-            Contact
+        {/* <motion.li variants={itemVariants}>
+          <NavButton
+            onClick={() => {
+              router.push("/collections");
+            }}
+          >
+            Collections
           </NavButton>
-        </motion.li>
+        </motion.li> */}
       </ul>
     </motion.nav>
   );

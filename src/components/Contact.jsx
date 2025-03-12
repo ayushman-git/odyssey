@@ -95,7 +95,7 @@ function Contact() {
           </div>
 
           <p className="text-black absolute z-10 right-0 top-1/2 transform -translate-y-1/2 translate-x-6 rotate-90 whitespace-nowrap text-sm font-medium">
-            Full Stack Developer
+            Full Stack Engineer
           </p>
         </section>
       </section>

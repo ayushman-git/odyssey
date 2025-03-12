@@ -19,73 +19,76 @@ function CosmicFooter() {
   const footerRef = useRef(null);
   const footerInView = useInView(footerRef, { once: true, amount: 0.2 });
   const controls = useAnimation();
-  
+
   // Add mouse position tracking states
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [footerDimensions, setFooterDimensions] = useState({ width: 0, height: 0 });
+  const [footerDimensions, setFooterDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
 
   // Update footer dimensions on mount and resize
   useEffect(() => {
     if (!footerRef.current) return;
-    
+
     const updateDimensions = () => {
       const { width, height } = footerRef.current.getBoundingClientRect();
       setFooterDimensions({ width, height });
     };
-    
+
     updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    
-    return () => window.removeEventListener('resize', updateDimensions);
+    window.addEventListener("resize", updateDimensions);
+
+    return () => window.removeEventListener("resize", updateDimensions);
   }, []);
-  
+
   // Handle mouse movement
   const handleMouseMove = (e) => {
     if (!footerRef.current || !isHovered) return;
-    
+
     const { left, top } = footerRef.current.getBoundingClientRect();
     const x = e.clientX - left;
     const y = e.clientY - top;
-    
+
     // Convert position to percentages for easier translation calculation
     setMousePosition({
-      x: (x / footerDimensions.width) - 0.5,  // -0.5 to 0.5
-      y: (y / footerDimensions.height) - 0.5  // -0.5 to 0.5
+      x: x / footerDimensions.width - 0.5, // -0.5 to 0.5
+      y: y / footerDimensions.height - 0.5, // -0.5 to 0.5
     });
   };
-  
+
   // Enhanced background pattern animation with GSAP, now including mouse position
   useEffect(() => {
     if (!footerRef.current) return;
-    
-    const patternEl = footerRef.current.querySelector('.pattern-bg');
-    
+
+    const patternEl = footerRef.current.querySelector(".pattern-bg");
+
     // Apply opacity and scale based on hover state
-    gsap.to(patternEl, { 
+    gsap.to(patternEl, {
       opacity: isHovered ? 0.4 : 0,
       scale: isHovered ? 1.1 : 1,
       duration: 0.4,
-      ease: "power2.inOut"
+      ease: "power2.inOut",
     });
-    
+
     // Apply position based on mouse position
     if (isHovered) {
       gsap.to(patternEl, {
         x: mousePosition.x * 25, // Move by up to 25px in each direction
         y: mousePosition.y * 25,
         duration: 0.8,
-        ease: "power1.out"
+        ease: "power1.out",
       });
     }
   }, [isHovered, mousePosition.x, mousePosition.y]);
-  
+
   // Animate content when in view
   useEffect(() => {
     if (footerInView) {
-      controls.start('visible');
+      controls.start("visible");
     }
   }, [controls, footerInView]);
-  
+
   const handleSubscribe = (e) => {
     e.preventDefault();
     console.log("Subscribing email:", email);
@@ -93,44 +96,48 @@ function CosmicFooter() {
   };
 
   const currentYear = new Date().getFullYear();
-  
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
-      transition: { 
+      transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
-    }
+        delayChildren: 0.1,
+      },
+    },
   };
-  
+
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
-      y: 0, 
+      y: 0,
       opacity: 1,
-      transition: { 
+      transition: {
         duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
   };
 
   const fadeInVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
-      transition: { duration: 0.8 }
-    }
+      transition: { duration: 0.8 },
+    },
   };
 
   // Add footer scale animation
   const footerVariants = {
     initial: { y: 100, opacity: 0 },
-    animate: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
-    hover: { scale: 1.01, transition: { duration: 0.4, ease: "easeOut" } }
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    },
+    hover: { scale: 1.0, transition: { duration: 0.4, ease: "easeOut" } },
   };
 
   return (
@@ -151,17 +158,17 @@ function CosmicFooter() {
           className="pattern-bg absolute inset-0 w-full h-full opacity-0"
           style={{
             backgroundImage: `url(${topographyBg.src})`,
-            backgroundRepeat: 'repeat',
-            backgroundSize: '400px 400px',
+            backgroundRepeat: "repeat",
+            backgroundSize: "400px 400px",
             mixBlendMode: "soft-light",
             transformOrigin: "center center",
-            willChange: "transform, opacity"
+            willChange: "transform, opacity",
           }}
         />
-        
+
         <div className="relative z-10 text-white">
           {/* Main Content Section - Streamlined */}
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={controls}
@@ -169,7 +176,7 @@ function CosmicFooter() {
           >
             {/* Social Links Column */}
             <motion.div variants={itemVariants}>
-              <motion.h3 
+              <motion.h3
                 variants={itemVariants}
                 className="text-xl font-bold mb-4 tracking-tight"
               >
@@ -178,46 +185,61 @@ function CosmicFooter() {
               <motion.div variants={itemVariants}>
                 <SocialLinks className="mt-2" />
               </motion.div>
-              <motion.address 
+              <motion.address
                 variants={containerVariants}
                 className="not-italic text-sm text-white/90 mt-4"
               >
-                <motion.p variants={itemVariants} className="leading-relaxed">
-                  Email: <a href="mailto:hello@yourname.com" className="text-white hover:underline transition-colors">hello@yourname.com</a>
-                </motion.p>
-                <motion.p variants={itemVariants} className="leading-relaxed mt-1">
-                  Based in <span className="text-white font-medium">San Francisco, CA</span>
+                <motion.p
+                  variants={itemVariants}
+                  className="leading-relaxed mt-1"
+                >
+                  Based in{" "}
+                  <span className="text-white font-medium">
+                    New Delhi, India
+                  </span>
                 </motion.p>
               </motion.address>
             </motion.div>
-            
+
             {/* Portfolio Links Column */}
             <motion.div variants={itemVariants}>
-              <motion.h3 
+              <motion.h3
                 variants={itemVariants}
                 className="text-xl font-bold mb-4 tracking-tight"
               >
                 Portfolio
               </motion.h3>
-              <motion.ul 
+              <motion.ul
                 variants={containerVariants}
                 className="space-y-2 text-sm text-white/90"
               >
-                {["Home", "Projects", "Skills & Expertise", "Resume", "Blog"].map((item, i) => (
-                  <motion.li 
-                    key={item} 
+                {[
+                  "Home",
+                  "Projects",
+                  "Skills & Expertise",
+                  "Resume",
+                  "Blog",
+                ].map((item, i) => (
+                  <motion.li
+                    key={item}
                     variants={itemVariants}
                     custom={i}
                     className="relative flex items-center group"
                   >
-                    <span 
+                    <span
                       className="absolute left-0 w-0 h-[2px] bg-white rounded-full opacity-0 
-                      group-hover:w-3 group-hover:opacity-100 transition-all duration-300 ease-out"
+                      group-hover:w-2 group-hover:opacity-100 transition-all duration-300 ease-out"
                     />
-                    <Link 
-                      href={item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+&\s+|\s+/g, "-")}`} 
+                    <Link
+                      href={
+                        item === "Home"
+                          ? "/"
+                          : `/${item
+                              .toLowerCase()
+                              .replace(/\s+&\s+|\s+/g, "-")}`
+                      }
                       className="hover:text-white inline-block py-1 pl-0 
-                      group-hover:pl-5 transition-all duration-300 ease-in-out transform"
+                      group-hover:pl-3 transition-all duration-300 ease-in-out transform"
                       style={{ transformOrigin: "left center" }}
                     >
                       {item}
@@ -226,18 +248,18 @@ function CosmicFooter() {
                 ))}
               </motion.ul>
             </motion.div>
-            
+
             {/* Contact Form Mini */}
             <motion.div variants={itemVariants}>
-              <motion.h3 
+              <motion.h3
                 variants={itemVariants}
                 className="text-xl font-bold mb-4 tracking-tight"
               >
                 Get In Touch
               </motion.h3>
-              <motion.form 
+              <motion.form
                 variants={itemVariants}
-                onSubmit={handleSubscribe} 
+                onSubmit={handleSubscribe}
                 className="space-y-2"
               >
                 <motion.input
@@ -250,7 +272,7 @@ function CosmicFooter() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   type="submit"
@@ -261,35 +283,35 @@ function CosmicFooter() {
               </motion.form>
             </motion.div>
           </motion.div>
-          
+
           {/* Copyright Section */}
-          <motion.div 
+          <motion.div
             variants={fadeInVariants}
             initial="hidden"
             animate={controls}
             className="pt-6 border-t border-white/20 flex flex-col sm:flex-row justify-between items-center"
           >
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               animate={controls}
               variants={{
-                visible: { 
+                visible: {
                   opacity: 1,
-                  transition: { delay: 0.7 }
-                }
+                  transition: { delay: 0.7 },
+                },
               }}
               className="text-sm text-white/80 font-medium"
             >
               © {currentYear} Ayushman Gupta. All rights reserved.
             </motion.p>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={controls}
               variants={{
-                visible: { 
+                visible: {
                   opacity: 1,
-                  transition: { delay: 0.8 }
-                }
+                  transition: { delay: 0.8 },
+                },
               }}
               className="mt-4 sm:mt-0"
             >
