@@ -13,32 +13,34 @@ const SkillTree = ({ data }) => {
     // Clear any existing SVG content
     d3.select(svgRef.current).selectAll("*").remove();
     
-    // Set up dimensions with extra padding to prevent cropping
+    // Set up dimensions with reduced height for a more compact view
     const container = svgRef.current.parentElement;
     const width = container.clientWidth;
-    const height = width;
+    // Make height slightly smaller for a more compact look
+    const height = width * 0.85;
     
-    // Center point with adjustments to prevent cropping
+    // Adjust center point for the more compact view
     const cx = width * 0.5;
-    const cy = height * 0.52; // Adjusted to move center point slightly up
+    const cy = height * 0.5;
     
-    // Reduce radius to leave more space for labels
-    const radius = Math.min(width, height) / 2.2;
+    // Reduce radius for a more compact tree
+    const radius = Math.min(width, height) / 2.5;
 
-    // Create a radial tree layout
+    // Create a more compact radial tree layout with tighter separation
     const tree = d3.tree()
       .size([2 * Math.PI, radius])
-      .separation((a, b) => (a.parent == b.parent ? 1.2 : 2.2) / a.depth);
+      // Reduce separation between nodes for compactness
+      .separation((a, b) => (a.parent == b.parent ? 1 : 1.8) / a.depth);
 
     // Process the data with d3 hierarchy
     const root = tree(d3.hierarchy(data)
       .sort((a, b) => d3.ascending(a.data.name, b.data.name)));
 
-    // Create the SVG container with a larger viewBox to prevent cropping
+    // Create the SVG container with reduced padding
     const svg = d3.select(svgRef.current)
       .attr("width", width)
       .attr("height", height)
-      .attr("viewBox", [-cx - 40, -cy - 40, width + 80, height + 80]) // Added extra padding
+      .attr("viewBox", [-cx - 30, -cy - 30, width + 60, height + 60]) // Reduced padding
       .attr("style", "width: 100%; height: auto; font: 10px sans-serif;");
     
     // Add a subtle glow filter for enhanced visual
@@ -53,7 +55,7 @@ const SkillTree = ({ data }) => {
       .attr("height", "200%");
     
     filter.append("feGaussianBlur")
-      .attr("stdDeviation", "2.5")
+      .attr("stdDeviation", "2")  // Reduced blur for cleaner look
       .attr("result", "coloredBlur");
     
     const feMerge = filter.append("feMerge");
@@ -69,7 +71,7 @@ const SkillTree = ({ data }) => {
       .attr("height", "200%");
     
     hoverFilter.append("feGaussianBlur")
-      .attr("stdDeviation", "4")
+      .attr("stdDeviation", "3") // Reduced hover glow
       .attr("result", "coloredBlur");
     
     const hoverMerge = hoverFilter.append("feMerge");
@@ -79,14 +81,23 @@ const SkillTree = ({ data }) => {
     // Create tooltip div
     const tooltip = d3.select(container.parentNode)
       .append("div")
-      .attr("class", "absolute pointer-events-none bg-gray-900/90 text-white px-4 py-2 rounded-lg border border-gray-700 shadow-lg backdrop-blur-sm z-50 transition-opacity duration-200 opacity-0 max-w-[200px]")
+      .attr("class", "absolute pointer-events-none bg-gray-900/90 text-white px-3 py-1 rounded-lg border border-gray-700 shadow-lg backdrop-blur-sm z-50 transition-opacity duration-200 opacity-0 max-w-[200px]")
       .style("transform", "translate(-50%, -100%)")
-      .style("margin-top", "-10px");
+      .style("margin-top", "-8px");
 
-    // Function to get descendants of a node
-    const getDescendants = (node) => {
-      if (!node.children) return [];
-      return node.descendants().slice(1); // Get all descendants except the node itself
+    // Function to get parent nodes instead of descendants
+    // This replaces the previous getDescendants function
+    const getParentNodes = (node) => {
+      const parentNodes = [];
+      let current = node;
+      
+      // If this node has a parent, start traversing up
+      while (current.parent) {
+        parentNodes.push(current.parent);
+        current = current.parent;
+      }
+      
+      return parentNodes;
     };
 
     // Function to get path from root to node
@@ -109,53 +120,47 @@ const SkillTree = ({ data }) => {
         .filter(n => n.data.name === d.data.name)
         .transition()
         .duration(200)
-        .attr("r", d.data.size || (d.children ? 6 : 4.5))
+        .attr("r", d.data.size || (d.children ? 5 : 3.5))
         .attr("filter", "url(#hover-glow)");
       
-      // Get all descendants
-      const descendants = getDescendants(d);
-      const descendantNodes = descendants.map(n => n.data.name);
+      // Get parent nodes for highlighting
+      const parentNodes = getParentNodes(d);
+      const parentNodeNames = parentNodes.map(n => n.data.name);
       
-      // Get path to root
-      const pathToRoot = getPathToRoot(d);
-      const ancestorNodes = pathToRoot.map(n => n.data.name);
-      
-      // Highlight related nodes
+      // Highlight parent nodes
       d3.selectAll(".skill-node")
-        .filter(n => descendantNodes.includes(n.data.name) || ancestorNodes.includes(n.data.name))
+        .filter(n => parentNodeNames.includes(n.data.name))
         .transition()
         .duration(200)
-        .attr("r", n => n.data.size || (n.children ? 5 : 4))
+        .attr("r", n => n.data.size || (n.children ? 4 : 3))
         .attr("filter", "url(#hover-glow)");
       
-      // Highlight links that connect to or from this node
+      // Highlight links that connect to parent nodes
       d3.selectAll("path")
         .filter(function() {
           const link = d3.select(this);
           const source = link.attr("data-source");
           const target = link.attr("data-target");
           
-          // Check if the link is connected to this node or its descendants
-          return source === d.data.name || 
-                target === d.data.name || 
-                descendantNodes.includes(source) || 
-                descendantNodes.includes(target) ||
-                ancestorNodes.includes(source) ||
-                ancestorNodes.includes(target);
+          // Check if the link connects the current node to its parent
+          // or connects among the parent nodes
+          return (source === d.data.name && parentNodeNames.includes(target)) || 
+                 (target === d.data.name && parentNodeNames.includes(source)) ||
+                 (parentNodeNames.includes(source) && parentNodeNames.includes(target));
         })
         .transition()
         .duration(200)
         .attr("stroke", d.data.color || "#3B82F6")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 1.2)
         .attr("stroke-opacity", 0.9);
       
-      // Highlight the label
+      // Highlight the parent labels
       d3.selectAll(".skill-label")
-        .filter(n => n.data.name === d.data.name)
+        .filter(n => n.data.name === d.data.name || parentNodeNames.includes(n.data.name))
         .transition()
         .duration(200)
         .style("font-weight", "bold")
-        .attr("stroke-width", 4);
+        .attr("stroke-width", 3);
       
       // Position and show tooltip
       const tooltipX = event.pageX - container.getBoundingClientRect().left - window.scrollX;
@@ -164,8 +169,8 @@ const SkillTree = ({ data }) => {
       // Prepare tooltip content
       let tooltipContent = `
         <div class="flex flex-col space-y-1">
-          <span class="font-medium text-sm">${d.data.name}</span>
-          ${d.data.description ? `<span class="text-xs text-gray-300">${d.data.description}</span>` : ''}
+          <span class="font-medium">${d.data.name}</span>
+          ${d.data.description ? `<span class="text-gray-300">${d.data.description}</span>` : ''}
         </div>
       `;
       
@@ -193,7 +198,7 @@ const SkillTree = ({ data }) => {
       d3.selectAll(".skill-node")
         .transition()
         .duration(300)
-        .attr("r", n => n.data.size || (n.children ? 4 : 3))
+        .attr("r", n => n.data.size || (n.children ? 3 : 2.5)) // Smaller nodes but keep text readable
         .attr("filter", "url(#glow)");
       
       // Reset all links
@@ -201,15 +206,15 @@ const SkillTree = ({ data }) => {
         .transition()
         .duration(300)
         .attr("stroke", "#4B5563")
-        .attr("stroke-width", 1)
-        .attr("stroke-opacity", 0.6);
+        .attr("stroke-width", 0.8) // Thinner links
+        .attr("stroke-opacity", 0.5);
       
       // Reset all labels
       d3.selectAll(".skill-label")
         .transition()
         .duration(300)
         .style("font-weight", "normal")
-        .attr("stroke-width", 3);
+        .attr("stroke-width", 2);
       
       // Hide tooltip
       tooltip
@@ -223,8 +228,8 @@ const SkillTree = ({ data }) => {
     // Append links
     const links = svg.append("g")
       .attr("fill", "none")
-      .attr("stroke-opacity", 0.6)
-      .attr("stroke-width", 1)
+      .attr("stroke-opacity", 0.5) // More transparent links
+      .attr("stroke-width", 0.8) // Thinner links
       .selectAll()
       .data(root.links())
       .join("path")
@@ -243,7 +248,7 @@ const SkillTree = ({ data }) => {
       .attr("data-target", d => d.target.data.name)
       .transition()
       .duration(1500)
-      .delay((d, i) => i * 50)
+      .delay((d, i) => i * 40) // Faster animation
       .attr("stroke-dashoffset", 0);
 
     // Append nodes
@@ -264,40 +269,46 @@ const SkillTree = ({ data }) => {
         d3.select(this)
           .transition()
           .duration(100)
-          .attr("r", d.data.size ? d.data.size * 1.5 : (d.children ? 8 : 6))
+          .attr("r", d.data.size ? d.data.size * 1.4 : (d.children ? 6 : 4))
           .transition()
           .duration(300)
-          .attr("r", d.data.size || (d.children ? 4 : 3));
+          .attr("r", d.data.size || (d.children ? 3 : 2.5));
       })
       .transition()
       .duration(800)
-      .delay((d, i) => 500 + i * 50)
-      .attr("r", d => d.data.size || (d.children ? 4 : 3));
+      .delay((d, i) => 400 + i * 40) // Faster animation
+      .attr("r", d => d.data.size || (d.children ? 3 : 2.5));
 
-    // Append labels with fade-in
+    // Append labels with original font sizes but more compact positioning
     svg.append("g")
       .attr("stroke-linejoin", "round")
-      .attr("stroke-width", 3)
+      .attr("stroke-width", 2) // Thinner stroke for cleaner look
       .selectAll()
       .data(root.descendants())
       .join("text")
       .attr("class", "skill-label")
-      .attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y + (d.children ? 0 : 5)},0) rotate(${d.x >= Math.PI ? 180 : 0})`)
+      // Position closer to nodes
+      .attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y + (d.children ? 0 : 6)},0) rotate(${d.x >= Math.PI ? 180 : 0})`)
       .attr("dy", "0.31em")
-      .attr("x", d => d.x < Math.PI === !d.children ? 6 : -6)
+      .attr("x", d => d.x < Math.PI === !d.children ? 6 : -6) // Keep readable offsets
       .attr("text-anchor", d => d.x < Math.PI === !d.children ? "start" : "end")
       .attr("paint-order", "stroke")
       .attr("stroke", "#111827") // Dark background
       .attr("fill", d => d.data.labelColor || "white")
       .attr("opacity", 0)
-      .style("font-size", d => d.depth === 0 ? "14px" : d.depth === 1 ? "12px" : "10px")
+      .style("font-size", d => {
+        // Keep original readable font sizes
+        if (d.depth === 0) return "14px";
+        if (d.depth === 1) return "12px";
+        return "10px"; // Still readable but slightly smaller for deeper levels
+      })
       .text(d => d.data.name)
-      .on("mouseover", handleMouseOver) // Add mouseover handler to labels
-      .on("mouseout", handleMouseOut)   // Add mouseout handler to labels
-      .style("cursor", "pointer")       // Change cursor to pointer on hover
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut)
+      .style("cursor", "pointer")
       .transition()
       .duration(300)
-      .delay((d, i) => 800 + i * 60)
+      .delay((d, i) => 600 + i * 40) // Faster animation
       .attr("opacity", 1);
 
     // Add responsive behavior
@@ -305,16 +316,16 @@ const SkillTree = ({ data }) => {
       if (!entries.length) return;
       
       const newWidth = entries[0].contentRect.width;
-      const newHeight = newWidth; // Maintain square aspect
+      const newHeight = newWidth * 0.85; // Maintain compact aspect ratio
       
       d3.select(svgRef.current)
         .attr("width", newWidth)
         .attr("height", newHeight)
         .attr("viewBox", [
-          -(newWidth * 0.5) - 40, 
-          -(newHeight * 0.52) - 40, 
-          newWidth + 80, 
-          newHeight + 80
+          -(newWidth * 0.5) - 30, 
+          -(newHeight * 0.5) - 30, 
+          newWidth + 60, 
+          newHeight + 60
         ]);
     });
 
@@ -327,24 +338,24 @@ const SkillTree = ({ data }) => {
   }, [data]);
 
   return (
-    <div className="w-full h-full flex justify-center items-center p-6 relative">
+    <div className="w-full flex justify-center items-center p-4 relative">
       <svg ref={svgRef} className="skill-tree-svg"></svg>
       
-      {/* React-controlled tooltip (optional alternative to D3 tooltip) */}
+      {/* React-controlled tooltip */}
       {tooltipData && (
         <div 
-          className="absolute pointer-events-none bg-gray-900/90 text-white px-4 py-2 rounded-lg border border-gray-700 shadow-lg backdrop-blur-sm z-50"
+          className="absolute pointer-events-none bg-gray-900/90 text-white px-3 py-1 rounded-lg border border-gray-700 shadow-lg backdrop-blur-sm z-50"
           style={{
             left: tooltipData.x,
             top: tooltipData.y,
             transform: 'translate(-50%, -100%)',
-            marginTop: '-10px',
+            marginTop: '-8px',
           }}
         >
           <div className="flex flex-col space-y-1">
-            <span className="font-medium text-sm">{tooltipData.name}</span>
+            <span className="font-medium">{tooltipData.name}</span>
             {tooltipData.description && (
-              <span className="text-xs text-gray-300">{tooltipData.description}</span>
+              <span className="text-gray-300">{tooltipData.description}</span>
             )}
           </div>
         </div>
