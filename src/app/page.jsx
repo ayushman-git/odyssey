@@ -81,6 +81,8 @@ export default function Home() {
             background: "linear-gradient(to top left, #242424, #000000)",
           }}
         >
+          <Contact ref={contactRef} />
+
           <div
             className="absolute bottom-0 left-0 right-0 z-10 w-full"
             style={{
@@ -94,8 +96,6 @@ export default function Home() {
           <CosmicFooter />
         </section>
       </div>
-
-      <Contact ref={contactRef} />
     </main>
   );
 }
