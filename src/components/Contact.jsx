@@ -72,10 +72,10 @@ function Contact() {
   }, []);
 
   return (
-    <div className="relative z-20">
+    <div className="relative z-20m my-52">
       <h1 
         ref={headingRef} 
-        className="text-9xl text-center font-bold relative z-30"
+        className="text-9xl text-center font-semibold relative z-30"
       >
         Ayushman Gupta
       </h1>
