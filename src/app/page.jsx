@@ -62,6 +62,8 @@ export default function Home() {
           <ClientStars />
           <HomeContent meowScriptClassName={meowScript.className} />
         </section>
+        
+        <Contact />
 
         {/* Project Gallery Section */}
         <div
@@ -81,8 +83,6 @@ export default function Home() {
             background: "linear-gradient(to top left, #242424, #000000)",
           }}
         >
-          <Contact ref={contactRef} />
-
           <div
             className="absolute bottom-0 left-0 right-0 z-10 w-full"
             style={{
