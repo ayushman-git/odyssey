@@ -6,11 +6,34 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 function Contact() {
   const imageRef = useRef(null);
   const sectionRef = useRef(null);
+  const headingRef = useRef(null); // Added ref for the heading
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     
-    // Delayed zoom animation that starts after scrolling down
+    // Heading animation: zoom in and move down behind image
+    // (keeping opacity at 1 and only changing scale and position)
+    gsap.fromTo(headingRef.current,
+      {
+        scale: 1,
+        y: 0,
+        zIndex: 10, // Start above the image
+      },
+      {
+        scale: 1.15,
+        y: 50, // Move down as user scrolls
+        zIndex: 10, // End behind the image
+        ease: "power1.inOut",
+        scrollTrigger: {
+          trigger: headingRef.current, // Use the heading itself as the trigger
+          start: "top 10%", // Start when the top of the heading is 10% from the top of viewport
+          end: "top -20%", // End the animation a bit after scrolling past
+          scrub: true,
+        }
+      }
+    );
+    
+    // Image animation (existing code)
     gsap.fromTo(imageRef.current, 
       { 
         scale: 1.0,
@@ -50,10 +73,15 @@ function Contact() {
 
   return (
     <div className="relative z-20">
-      <h1 className="text-9xl text-center font-bold">Ayushman Gupta</h1>
-      <section ref={sectionRef} className="flex justify-center">
+      <h1 
+        ref={headingRef} 
+        className="text-9xl text-center font-bold relative z-30"
+      >
+        Ayushman Gupta
+      </h1>
+      <section ref={sectionRef} className="relative flex justify-center z-10">
         <section className="relative max-w-[800px]">
-          <p className="text-black absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 -rotate-90 whitespace-nowrap text-sm font-medium">
+          <p className="text-black absolute z-10 left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 -rotate-90 whitespace-nowrap text-sm font-medium">
             New Delhi, India
           </p>
 
@@ -66,7 +94,7 @@ function Contact() {
             />
           </div>
 
-          <p className="text-black absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-6 rotate-90 whitespace-nowrap text-sm font-medium">
+          <p className="text-black absolute z-10 right-0 top-1/2 transform -translate-y-1/2 translate-x-6 rotate-90 whitespace-nowrap text-sm font-medium">
             Full Stack Developer
           </p>
         </section>
