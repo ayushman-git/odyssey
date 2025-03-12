@@ -94,17 +94,6 @@ const SkillTree = ({ data }) => {
       return parentNodes;
     };
 
-    // Function to get path from root to node
-    const getPathToRoot = (node) => {
-      const path = [];
-      let current = node;
-      while (current.parent) {
-        path.push(current.parent);
-        current = current.parent;
-      }
-      return path;
-    };
-    
     // Create shared mouseover handler for both nodes and labels
     const handleMouseOver = function(event, d) {
       const element = d3.select(this);
@@ -148,12 +137,11 @@ const SkillTree = ({ data }) => {
         .attr("stroke-width", 1.2)
         .attr("stroke-opacity", 0.9);
       
-      // Highlight the parent labels
+      // Highlight the parent labels - removed font-weight styling
       d3.selectAll(".skill-label")
         .filter(n => n.data.name === d.data.name || parentNodeNames.includes(n.data.name))
         .transition()
         .duration(200)
-        .style("font-weight", "bold")
         .attr("stroke-width", 3);
       
       // Position and show tooltip using React state only
@@ -195,11 +183,10 @@ const SkillTree = ({ data }) => {
         .attr("stroke-width", 0.8) // Thinner links
         .attr("stroke-opacity", 0.5);
       
-      // Reset all labels
+      // Reset all labels - removed font-weight styling
       d3.selectAll(".skill-label")
         .transition()
         .duration(300)
-        .style("font-weight", "normal")
         .attr("stroke-width", 2);
       
       // Hide tooltip by clearing React state
