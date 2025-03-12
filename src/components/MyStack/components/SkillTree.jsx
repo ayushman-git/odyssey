@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 
 const SkillTree = ({ data }) => {
   const svgRef = useRef(null);
+  const containerRef = useRef(null);
   const [tooltipData, setTooltipData] = useState(null);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ const SkillTree = ({ data }) => {
     
     // Set up dimensions with reduced height for a more compact view
     const container = svgRef.current.parentElement;
+    containerRef.current = container;
     const width = container.clientWidth;
     // Make height slightly smaller for a more compact look
     const height = width * 0.85;
@@ -78,15 +80,7 @@ const SkillTree = ({ data }) => {
     hoverMerge.append("feMergeNode").attr("in", "coloredBlur");
     hoverMerge.append("feMergeNode").attr("in", "SourceGraphic");
 
-    // Create tooltip div
-    const tooltip = d3.select(container.parentNode)
-      .append("div")
-      .attr("class", "absolute pointer-events-none bg-gray-900/90 text-white px-3 py-1 rounded-lg border border-gray-700 shadow-lg backdrop-blur-sm z-50 transition-opacity duration-200 opacity-0 max-w-[200px]")
-      .style("transform", "translate(-50%, -100%)")
-      .style("margin-top", "-8px");
-
     // Function to get parent nodes instead of descendants
-    // This replaces the previous getDescendants function
     const getParentNodes = (node) => {
       const parentNodes = [];
       let current = node;
@@ -162,28 +156,20 @@ const SkillTree = ({ data }) => {
         .style("font-weight", "bold")
         .attr("stroke-width", 3);
       
-      // Position and show tooltip
-      const tooltipX = event.pageX - container.getBoundingClientRect().left - window.scrollX;
-      const tooltipY = event.pageY - container.getBoundingClientRect().top - window.scrollY;
+      // Position and show tooltip using React state only
+      // Get accurate mouse position relative to viewport
+      const rect = containerRef.current.getBoundingClientRect();
+      const tooltipX = event.clientX - rect.left;
+      const tooltipY = event.clientY - rect.top;
       
-      // Prepare tooltip content
-      let tooltipContent = `
-        <div class="flex flex-col space-y-1">
-          <span class="font-medium">${d.data.name}</span>
-          ${d.data.description ? `<span class="text-gray-300">${d.data.description}</span>` : ''}
-        </div>
-      `;
+      console.log('Setting tooltip data:', {
+        name: d.data.name,
+        description: d.data.description,
+        x: tooltipX,
+        y: tooltipY
+      });
       
-      // Update tooltip position and content
-      tooltip
-        .html(tooltipContent)
-        .style("left", `${tooltipX}px`)
-        .style("top", `${tooltipY}px`)
-        .transition()
-        .duration(200)
-        .style("opacity", 1);
-      
-      // Store tooltip data for React state
+      // Update React tooltip state
       setTooltipData({
         name: d.data.name,
         description: d.data.description || null,
@@ -216,12 +202,7 @@ const SkillTree = ({ data }) => {
         .style("font-weight", "normal")
         .attr("stroke-width", 2);
       
-      // Hide tooltip
-      tooltip
-        .transition()
-        .duration(200)
-        .style("opacity", 0);
-      
+      // Hide tooltip by clearing React state
       setTooltipData(null);
     };
 
@@ -333,9 +314,11 @@ const SkillTree = ({ data }) => {
 
     return () => {
       resizeObserver.unobserve(container);
-      d3.select(container.parentNode).select("div.absolute").remove(); // Remove tooltip on unmount
+      setTooltipData(null); // Clear tooltip data on unmount
     };
   }, [data]);
+
+  console.log('Tooltip data state:', tooltipData);
 
   return (
     <div className="w-full flex justify-center items-center p-4 relative">
@@ -346,10 +329,11 @@ const SkillTree = ({ data }) => {
         <div 
           className="absolute pointer-events-none bg-gray-900/90 text-white px-3 py-1 rounded-lg border border-gray-700 shadow-lg backdrop-blur-sm z-50"
           style={{
-            left: tooltipData.x,
-            top: tooltipData.y,
+            left: `${tooltipData.x}px`,
+            top: `${tooltipData.y}px`,
             transform: 'translate(-50%, -100%)',
             marginTop: '-8px',
+            opacity: 1 // Ensure opacity is set to visible
           }}
         >
           <div className="flex flex-col space-y-1">

@@ -23,7 +23,7 @@ export default function MyStack() {
 
   return (
     <motion.div
-      className="flex flex-col items-center w-full min-h-screen py-12" // Reduced vertical padding
+      className="flex flex-col items-center w-full min-h-screen py-20"
       ref={containerRef}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -31,27 +31,27 @@ export default function MyStack() {
     >
       {/* Console-style header */}
       <motion.div
-        className="mb-6 font-mono text-sm md:text-base text-blue-400" // Reduced bottom margin
+        className="mb-8 font-mono text-sm md:text-base text-blue-400"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold mb-1 text-center text-white"> {/* Reduced margin */}
+        <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-white">
           My Toolkit
         </h2>
-        <p className="text-center text-gray-400 mb-6 max-w-2xl mx-auto"> {/* Reduced margin */}
+        <p className="text-center text-gray-400 mb-10 max-w-2xl mx-auto">
           The technologies and frameworks I've mastered throughout my journey as a developer, organized by relationship.
         </p>
       </motion.div>
 
       {/* Tree View */}
       <motion.div
-        className="w-full px-2 md:px-4 relative" // Reduced horizontal padding
+        className="w-full px-4 md:px-6 relative"
         style={{ y: yBg }}
       >
         {/* Glassmorphic panel background for tree view */}
         <motion.div
-          className="absolute inset-0 backdrop-blur-lg rounded-2xl shadow-xl shadow-blue-500/5" // Smaller radius
+          className="absolute inset-0 backdrop-blur-lg rounded-3xl shadow-2xl shadow-blue-500/5"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
