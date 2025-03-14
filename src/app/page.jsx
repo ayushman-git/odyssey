@@ -62,8 +62,10 @@ export default function Home() {
           <ClientStars />
           <HomeContent meowScriptClassName={meowScript.className} />
         </section>
-        
-        <Contact />
+
+        <div id="about">
+          <Contact />
+        </div>
 
         {/* Project Gallery Section */}
         <div
@@ -73,7 +75,10 @@ export default function Home() {
           <ProjectGallery />
         </div>
 
-        <div className="py-10 relative z-20 bg-black bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08),transparent_70%)]">
+        <div
+          id="my-stack"
+          className="py-10 relative z-20 bg-black bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08),transparent_70%)]"
+        >
           <MyStack />
         </div>
 

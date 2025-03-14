@@ -7,6 +7,8 @@ import Link from "next/link";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { scrollToSectionWithId } from "@/utils";
+import { useRouter } from "next/navigation";
 
 // Register ScrollTrigger plugin
 if (typeof window !== "undefined") {
@@ -14,8 +16,8 @@ if (typeof window !== "undefined") {
 }
 
 function CosmicFooter() {
+  const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
-  const [email, setEmail] = useState("");
   const footerRef = useRef(null);
   const footerInView = useInView(footerRef, { once: true, amount: 0.2 });
   const controls = useAnimation();
@@ -50,20 +52,18 @@ function CosmicFooter() {
     const x = e.clientX - left;
     const y = e.clientY - top;
 
-    // Convert position to percentages for easier translation calculation
     setMousePosition({
-      x: x / footerDimensions.width - 0.5, // -0.5 to 0.5
-      y: y / footerDimensions.height - 0.5, // -0.5 to 0.5
+      x: x / footerDimensions.width - 0.5,
+      y: y / footerDimensions.height - 0.5,
     });
   };
 
-  // Enhanced background pattern animation with GSAP, now including mouse position
+  // Enhanced background pattern animation with GSAP
   useEffect(() => {
     if (!footerRef.current) return;
 
     const patternEl = footerRef.current.querySelector(".pattern-bg");
 
-    // Apply opacity and scale based on hover state
     gsap.to(patternEl, {
       opacity: isHovered ? 0.4 : 0,
       scale: isHovered ? 1.1 : 1,
@@ -71,10 +71,9 @@ function CosmicFooter() {
       ease: "power2.inOut",
     });
 
-    // Apply position based on mouse position
     if (isHovered) {
       gsap.to(patternEl, {
-        x: mousePosition.x * 25, // Move by up to 25px in each direction
+        x: mousePosition.x * 25,
         y: mousePosition.y * 25,
         duration: 0.8,
         ease: "power1.out",
@@ -88,12 +87,6 @@ function CosmicFooter() {
       controls.start("visible");
     }
   }, [controls, footerInView]);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    console.log("Subscribing email:", email);
-    setEmail("");
-  };
 
   const currentYear = new Date().getFullYear();
 
@@ -129,7 +122,6 @@ function CosmicFooter() {
     },
   };
 
-  // Add footer scale animation
   const footerVariants = {
     initial: { y: 100, opacity: 0 },
     animate: {
@@ -139,6 +131,28 @@ function CosmicFooter() {
     },
     hover: { scale: 1.0, transition: { duration: 0.4, ease: "easeOut" } },
   };
+
+  // Handle navigation action based on item type
+  const handleNavigation = (item) => {
+    if (item.id === "home") {
+      // For home, scroll to top
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (item.id === "blog") {
+      // For blog, navigate to blog page
+      router.push("/blog");
+    } else {
+      // For other items, scroll to their section IDs
+      scrollToSectionWithId(item.id);
+    }
+  };
+
+  // Map navigation items to their corresponding section IDs or actions
+  const navItems = [
+    { name: "Home", id: "home" },
+    { name: "Projects", id: "projects" },
+    { name: "Skills", id: "my-stack" },
+    { name: "Blog", id: "blog" },
+  ];
 
   return (
     <div className="h-auto relative z-20 max-w-7xl mx-auto">
@@ -153,7 +167,7 @@ function CosmicFooter() {
         onMouseLeave={() => setIsHovered(false)}
         onMouseMove={handleMouseMove}
       >
-        {/* Background div with repeating pattern - updated for mouse tracking */}
+        {/* Background div with repeating pattern */}
         <div
           className="pattern-bg absolute inset-0 w-full h-full opacity-0"
           style={{
@@ -167,31 +181,43 @@ function CosmicFooter() {
         />
 
         <div className="relative z-10 text-white">
+          {/* Header Section - Simplified */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate={controls}
+            className="text-center mb-10"
+          >
+            <motion.h2
+              variants={itemVariants}
+              className="text-2xl md:text-3xl font-bold tracking-tight"
+            >
+              Thanks for visiting!
+            </motion.h2>
+          </motion.div>
+
           {/* Main Content Section - Streamlined */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={controls}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 mb-10"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 mb-10"
           >
-            {/* Social Links Column */}
+            {/* Location Info */}
             <motion.div variants={itemVariants}>
               <motion.h3
                 variants={itemVariants}
                 className="text-xl font-bold mb-4 tracking-tight"
               >
-                Connect
+                Location
               </motion.h3>
-              <motion.div variants={itemVariants}>
-                <SocialLinks className="mt-2" />
-              </motion.div>
               <motion.address
                 variants={containerVariants}
-                className="not-italic text-sm text-white/90 mt-4"
+                className="not-italic text-sm text-white/90"
               >
                 <motion.p
                   variants={itemVariants}
-                  className="leading-relaxed mt-1"
+                  className="leading-relaxed"
                 >
                   Based in{" "}
                   <span className="text-white font-medium">
@@ -201,27 +227,21 @@ function CosmicFooter() {
               </motion.address>
             </motion.div>
 
-            {/* Portfolio Links Column */}
+            {/* Navigation Links Column */}
             <motion.div variants={itemVariants}>
               <motion.h3
                 variants={itemVariants}
                 className="text-xl font-bold mb-4 tracking-tight"
               >
-                Portfolio
+                Navigate
               </motion.h3>
               <motion.ul
                 variants={containerVariants}
                 className="space-y-2 text-sm text-white/90"
               >
-                {[
-                  "Home",
-                  "Projects",
-                  "Skills & Expertise",
-                  "Resume",
-                  "Blog",
-                ].map((item, i) => (
+                {navItems.map((item, i) => (
                   <motion.li
-                    key={item}
+                    key={item.name}
                     variants={itemVariants}
                     custom={i}
                     className="relative flex items-center group"
@@ -230,57 +250,37 @@ function CosmicFooter() {
                       className="absolute left-0 w-0 h-[2px] bg-white rounded-full opacity-0 
                       group-hover:w-2 group-hover:opacity-100 transition-all duration-300 ease-out"
                     />
-                    <Link
-                      href={
-                        item === "Home"
-                          ? "/"
-                          : `/${item
-                              .toLowerCase()
-                              .replace(/\s+&\s+|\s+/g, "-")}`
-                      }
+                    <button
+                      onClick={() => handleNavigation(item)}
                       className="hover:text-white inline-block py-1 pl-0 
-                      group-hover:pl-3 transition-all duration-300 ease-in-out transform"
+                      group-hover:pl-3 transition-all duration-300 ease-in-out transform
+                      text-left cursor-pointer"
                       style={{ transformOrigin: "left center" }}
                     >
-                      {item}
-                    </Link>
+                      {item.name}
+                    </button>
                   </motion.li>
                 ))}
               </motion.ul>
             </motion.div>
 
-            {/* Contact Form Mini */}
+            {/* Connect Column */}
             <motion.div variants={itemVariants}>
               <motion.h3
                 variants={itemVariants}
                 className="text-xl font-bold mb-4 tracking-tight"
               >
-                Get In Touch
+                Connect
               </motion.h3>
-              <motion.form
-                variants={itemVariants}
-                onSubmit={handleSubscribe}
-                className="space-y-2"
-              >
-                <motion.input
-                  whileFocus={{ scale: 1.01 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  type="email"
-                  placeholder="Your email"
-                  className="w-full px-4 py-2 rounded-lg text-blue-900 focus:outline-none focus:ring-2 focus:ring-white/50"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  type="submit"
-                  className="w-full px-4 py-2 bg-white text-blue-700 rounded-lg font-semibold hover:bg-blue-50 transition-all"
-                >
-                  Start a Conversation
-                </motion.button>
-              </motion.form>
+              
+              {/* Social Links */}
+              <motion.div variants={itemVariants} className="mb-4">
+                <SocialLinks />
+              </motion.div>
+              
+              <motion.p variants={itemVariants} className="text-sm text-white/90">
+                Feel free to reach out through social media
+              </motion.p>
             </motion.div>
           </motion.div>
 

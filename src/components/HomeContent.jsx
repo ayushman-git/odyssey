@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import SocialLinks from "./SocialLinks";
 import WhatIDo from "./WhatIDo";
 import SectionDivider from "./SectionDivider";
+import { scrollToSectionWithId } from "@/utils";
 
 export default function HomeContent({ meowScriptClassName }) {
   const introRef = useRef(null);
@@ -54,26 +55,9 @@ export default function HomeContent({ meowScriptClassName }) {
     };
   }, []);
 
-  // Setup button hover effects
-  const handleButtonHover = (e, enter) => {
-    gsap.to(e.target, {
-      scale: enter ? 1.05 : 1,
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  };
-
   // Handler to open resume PDF
   const handleResumeClick = () => {
-    window.open('/ayushman_resume.pdf', '_blank');
-  };
-
-  // Simple scroll to projects function
-  const scrollToProjects = () => {
-    const projectsSection = document.querySelector('#projects');
-    if (projectsSection) {
-      projectsSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.open("/ayushman_resume.pdf", "_blank");
   };
 
   return (
@@ -103,27 +87,49 @@ export default function HomeContent({ meowScriptClassName }) {
 
           <div ref={ctaRef} className="flex flex-wrap gap-6 mb-12">
             {/* Primary CTA - View My Work Button */}
-            <button 
+            <button
               className="group relative bg-white border border-white py-3 px-8 opacity-0 rounded-md hover:bg-transparent hover:text-white transition-all duration-300 text-black"
-              onClick={scrollToProjects}
+              onClick={() => scrollToSectionWithId("projects")}
             >
               <span className="flex items-center font-medium">
                 <span>View My Work</span>
-                <svg className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12H19M19 12L12 5M19 12L12 19"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </span>
             </button>
 
             {/* Secondary CTA - Resume Button */}
-            <button 
+            <button
               className="group relative bg-transparent border border-gray-700 py-3 px-8 opacity-0 rounded-md hover:border-white transition-colors duration-300"
               onClick={handleResumeClick}
             >
               <span className="flex items-center text-white font-medium">
                 <span>Resume</span>
-                <svg className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-y-[-1px] group-hover:translate-x-[1px]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-y-[-1px] group-hover:translate-x-[1px]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 17L17 7M17 7H8M17 7V16"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </span>
             </button>

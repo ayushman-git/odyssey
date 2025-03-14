@@ -40,12 +40,12 @@ export const underscoreDelimiter = (str) => {
 
 export const convertToSlug = (str) => {
   return str
-    .toLowerCase()               // Convert to lowercase
-    .trim()                      // Trim leading/trailing whitespace
-    .replace(/[\s_]+/g, '-')     // Replace spaces and underscores with hyphens
-    .replace(/[^\w\-]+/g, '')    // Remove all non-word characters
-    .replace(/\-\-+/g, '-');     // Replace multiple hyphens with a single hyphen
-}
+    .toLowerCase() // Convert to lowercase
+    .trim() // Trim leading/trailing whitespace
+    .replace(/[\s_]+/g, "-") // Replace spaces and underscores with hyphens
+    .replace(/[^\w\-]+/g, "") // Remove all non-word characters
+    .replace(/\-\-+/g, "-"); // Replace multiple hyphens with a single hyphen
+};
 
 export const generateInt = (start, end) => {
   return Math.floor(Math.random() * (end - start) + start);
@@ -54,7 +54,6 @@ export const generateInt = (start, end) => {
 export const generateFloat = (start, end) => {
   return Math.random() * (end - start) + start;
 };
-
 
 export const throttle = (callback, delay) => {
   let lastCall = 0;
@@ -66,4 +65,11 @@ export const throttle = (callback, delay) => {
     lastCall = now;
     return callback(...args);
   };
-}
+};
+
+export const scrollToSectionWithId = (id) => {
+  const idOfSection = document.querySelector(`#${id}`);
+  if (idOfSection) {
+    idOfSection.scrollIntoView({ behavior: "smooth" });
+  }
+};
