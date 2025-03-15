@@ -1,6 +1,16 @@
+// This file is meant to be imported only in Server Components or API routes
+
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+
+// Add this check to prevent client-side execution
+if (typeof window !== 'undefined') {
+  throw new Error(
+    'posts.js should only be imported in Server Components or API routes'
+  );
+}
+
 import { remark } from "remark";
 import html from "remark-html";
 import CustomMDX from "@/components/mdx/mdx-remote";

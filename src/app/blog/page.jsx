@@ -1,18 +1,12 @@
-import ArticleCardList from "@/components/ArticleCardList";
-import CreativeGrid from "@/components/CreativeGrid";
-import HeroBanner from "@/components/HeroBanner";
-import { Suspense } from "react";
+import { getArticles } from "@/lib/posts";
+import BlogLayout from "@/components/BlogLayout";
 
-export default function BlogPage() {
-  return (
-    <Suspense>
-      <div className="w-full overflow-hidden grid place-items-center">
-        <div className="max-w-screen-md sm:px-0 px-6">
-          <HeroBanner />
-          <CreativeGrid />
-          <ArticleCardList />
-        </div>
-      </div>
-    </Suspense>
-  );
+export const revalidate = 3600; // Revalidate this page every hour
+
+export default async function BlogPage() {
+  // Fetch articles with server component
+  const articles = getArticles();
+  
+  // Pass pre-fetched articles to client component
+  return <BlogLayout initialArticles={articles} />;
 }

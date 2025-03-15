@@ -14,9 +14,9 @@ function HeroBanner() {
   const { scrollYProgress } = useScroll();
 
   // Use useTransform to map the scrollYProgress to a usable translateX value
-  const odysseyX = useTransform(scrollYProgress, [0, 1], [0, -800]);
-  const createdX = useTransform(scrollYProgress, [0, 1], [0, -400]);
-  const descX = useTransform(scrollYProgress, [0, 1], [0, 1000]);
+  const odysseyX = useTransform(scrollYProgress, [0, 1], [0, -300]);
+  const createdX = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const descX = useTransform(scrollYProgress, [0, 1], [0, 300]);
 
   const opacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
 

@@ -16,7 +16,7 @@ function Grid({ img, gridArea, onLoadingComplete }) {
     [0, generateInt(-200, 200)]
   );
 
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0.8]);
   return (
     <motion.div
       className="w-full relative h-full rounded-3xl overflow-hidden "
