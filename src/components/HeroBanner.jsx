@@ -2,6 +2,13 @@
 
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { Meow_Script } from "next/font/google";
+
+const meowScript = Meow_Script({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 function HeroBanner() {
   const { scrollYProgress } = useScroll();
@@ -28,10 +35,10 @@ function HeroBanner() {
           Odyssey.
         </motion.h1>
         <motion.h2
-          className="text-2xl font-normal decoration-black decoration-wavy"
+          className="text-2xl font-light decoration-black decoration-wavy"
           style={{ translateX: createdX, opacity }}
         >
-          Crafted by Ayushman
+          Crafted by <span className={`${meowScript.className} text-4xl`}>Ayushman</span>
         </motion.h2>
       </section>
       <aside className="flex-1">
