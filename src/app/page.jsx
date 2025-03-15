@@ -63,7 +63,7 @@ export default function Home() {
           <HomeContent meowScriptClassName={meowScript.className} />
         </section>
 
-        <div id="about">
+        <div id="about" className="relative overflow-hidden">
           <Contact />
         </div>
 

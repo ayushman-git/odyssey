@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import topographyBg from "@/assets/svgs/topography.svg";
 import SocialLinks from "../SocialLinks";
-import Link from "next/link";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -181,21 +180,6 @@ function CosmicFooter() {
         />
 
         <div className="relative z-10 text-white">
-          {/* Header Section - Simplified */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={controls}
-            className="text-center mb-10"
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-2xl md:text-3xl font-bold tracking-tight"
-            >
-              Thanks for visiting!
-            </motion.h2>
-          </motion.div>
-
           {/* Main Content Section - Streamlined */}
           <motion.div
             variants={containerVariants}
