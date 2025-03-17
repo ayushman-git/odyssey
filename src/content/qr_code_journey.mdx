@@ -12,9 +12,31 @@ introduction: In India, QR codes have become as common as auto-rickshaws dodging
 # Introduction
 In India, QR codes have become as common as auto-rickshaws dodging through traffic. No matter however small or remote you find a shop, chances are that they will have these pixelated printouts ready for you to make the payment. Yes, those are QR codes, and they've become as essential as a smartphone in the hands of every shopkeeper—integral and universally embraced. 
 
+ <figure
+    style={{
+    margin: "72px 0px"
+ }}>
+    <img src="https://s17233.pcdn.co/blog/wp-content/uploads/2024/02/qr-code-basics-hero.png" alt="artistic qr showcase" style={{
+        borderRadius: "8px",
+        margin: "24px auto"
+    }} />
+    <Figcaption>Fig.1 - An artistic deconstruction of a QR code, showcasing its structural components with a modern, abstract design</Figcaption>
+    </figure>
+
 Unlike traditional barcodes, which store information in a single direction (horizontally), QR codes store data both horizontally and vertically. This structure lets them encode much more data, from URLs and text to contact information and payment details.
 
 This two-dimensional structure is what gives QR codes their distinctive square shape with patterns of black and white modules. A QR code is blazingly fast, thanks to some nifty techniques, it can store lots of data (upto 23,624 bits) and it can error correct itself if some part of the QR is missing. Things like these make the adoption of QR code so rampant.
+
+ <figure
+    style={{
+    margin: "72px 0px"
+ }}>
+    <img src="https://cdn.mos.cms.futurecdn.net/z9Vd2xybjoM9jMbbkVd8Xh-1200-80.jpg" alt="qr art" style={{
+        borderRadius: "8px",
+        margin: "24px auto"
+    }} />
+    <Figcaption>Fig.2</Figcaption>
+    </figure>
 </Block>
 <Block>
 # History
@@ -27,8 +49,16 @@ But the QR code didn't stop there. Someone thought, "If we can manage car parts 
 
 <Block>
 # Deconstructing QR Codes
-
-The Arecibo Message begins with a basic sequence: counting from 1 to 10. But instead of using the numbers we see every day, it uses binary code, which is like a special language made up of only two symbols: 1s and 0s. Binary is the fundamental language of computers, and it’s also a universal way to represent numbers, making it ideal for communicating across space, where the language or even the way of thinking might be entirely different.
+ <figure
+    style={{
+    margin: "72px 0px"
+ }}>
+    <img src="https://qrcodedynamic.com/blog/content/images/size/w1000/2024/12/qr-code-structure.png" alt="qr code breakdown" style={{
+        borderRadius: "8px",
+        margin: "24px auto"
+    }} />
+    <Figcaption>Fig.3 - How Each Section Plays a Role in Encoding Data</Figcaption>
+    </figure>
 
 ## Position Markers: The QR Code's Guiding Stars
 
@@ -45,7 +75,6 @@ These markers are like the North Star for your scanner, helping it figure out wh
 It's a small square, typically nestled near the bottom-right corner of larger QR codes (Version 2 and up). In more expansive codes, you'll find multiple Alignment Patterns strategically placed like seasoned coaches on a sports field.
 
 When your QR code is scanned at an odd angle, wrapped around a coffee cup, or crumpled in your pocket, the Alignment Pattern swoops in to save the day. It helps the scanner straighten things out, correcting any perspective wonkiness so your data doesn't end up looking like a Picasso painting. In larger QR codes, these Alignment Patterns are sprinkled throughout, much like checkpoints in a marathon, ensuring everything stays on track from start to finish.
-
 ## Timing Patterns: The QR Code's Built-In Gridlines
 
 Timing patterns are sequences of alternating black and white modules that run both horizontally and vertically between the **position markers**. Think of them as the QR code's gridlines, laying out the precise design so your scanner knows exactly where to read. It's the QR code's way of laying down a coordinate grid, much like a Cartesian plane, providing precise "x" and "y" axes for your scanner to navigate.
@@ -54,10 +83,18 @@ These patterns help the scanner determine the size of the data grid—the number
 
 - The horizontal timing pattern connects the two position markers at the top, while the vertical one links the top-left and bottom-left markers.
 - By counting the modules in the timing patterns, the scanner can figure out the version of the QR code and adjust its decoding algorithm accordingly.
-
 ## Version
 The Timing Patterns tells us about the version of the QR code. The versioning in QR ranges from 1 to 40, 1 being the smallest and 40 being able to store humongous amount of data.
-
+ <figure
+    style={{
+    margin: "72px 0px"
+ }}>
+    <img src="https://huonw.github.io/blog/2021/09/qr-error-correction/v1-v18-v40.png" alt="qr code breakdown" style={{
+        borderRadius: "8px",
+        margin: "24px auto"
+    }} />
+    <Figcaption>Fig.4 - QR Code Version</Figcaption>
+    </figure>
 The Version Information is an **18-bit binary sequence** encoded using a **BCH (Bose-Chaudhuri-Hocquenghem) error-correcting code**. Think of it as the QR code's way of proofreading its own genetic instructions to errors.
 
 - For versions **7 and above**, the Version Information is strategically placed in two locations:
@@ -109,6 +146,17 @@ QR codes work kind of like your block castle.
 - If some squares get smudged or dirty, the helper squares **fill in the missing pieces**.
 
 ## Error Correction Levels
+ <figure
+    style={{
+    margin: "72px 0px"
+ }}>
+    <img src="https://help.scantrust.com/hc/article_attachments/15642901913884" alt="qr code error correction" style={{
+        borderRadius: "8px",
+        margin: "24px auto"
+    }} />
+    <Figcaption>Fig.5 - QR Code Error Correction Levels</Figcaption>
+    </figure>
+
 QR codes offer four levels of error correction to balance data capacity and resilience:
 
  <div>**Level L (Low):**</div>
@@ -129,10 +177,20 @@ QR codes offer four levels of error correction to balance data capacity and resi
 
 **Note:** Increasing the error correction level adds more redundant data, which reduces the amount of space available for actual information.
 </Block>
-
 <Block> 
 ## Conclusion
 From Toyota's assembly lines to the bustling markets of India, QR codes have come a long way—evolving from a specialized tool for tracking car parts into a ubiquitous payment and information-sharing system. Along the way, they've proven just how powerful a simple square can be when backed by smart engineering and thoughtful design.
+
+<figure
+    style={{
+    margin: "72px 0px"
+ }}>
+    <img src="https://www.metablocks.com/wp-content/uploads/2012/07/qrcode_in_2.jpg" alt="qr code error correction" style={{
+        borderRadius: "8px",
+        margin: "24px auto"
+    }} />
+    <Figcaption>Fig.6 - QR Code Examples</Figcaption>
+    </figure>
 
 It's easy to look at a QR code and see just black and white squares, but beneath that unassuming grid lies a blend of robust mathematics, error correction, and clever encoding. This synergy of design and tech ensures QR codes remain both highly accessible and remarkably reliable.
 
