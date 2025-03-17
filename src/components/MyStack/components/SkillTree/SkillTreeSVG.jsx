@@ -244,7 +244,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
       .attr("stroke", "#111827") // Dark background
       .attr("fill", d => d.data.labelColor || "white")
       .attr("opacity", 0)
-      .style("font-size", d => d.depth === 0 ? "14px" : d.depth === 1 ? "12px" : "10px")
+      .style("font-size", d => d.depth === 0 ? "20px" : d.depth === 1 ? "18px" : "16px")
       .text(d => d.data.name)
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut)
