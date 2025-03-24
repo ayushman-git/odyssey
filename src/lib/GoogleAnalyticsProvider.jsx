@@ -7,7 +7,7 @@ const GoogleAnalytics = () => {
   return (
     <>
       <Script
-        strategy='lazyOnload'
+        strategy='beforeInteractive'
         src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}
       />
 
@@ -17,6 +17,7 @@ const GoogleAnalytics = () => {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${MEASUREMENT_ID}', {
+              send_page_view: true,
               });
           `}
       </Script>
