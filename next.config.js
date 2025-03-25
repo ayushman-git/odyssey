@@ -17,6 +17,7 @@ const nextConfig = {
     unoptimized: process.env.NODE_ENV === 'development',
   },
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  poweredByHeader: false, // Remove the X-Powered-By header
 };
 
 module.exports = withMDX(nextConfig);

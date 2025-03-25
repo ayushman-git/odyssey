@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { Meow_Script } from "next/font/google";
 import dynamic from "next/dynamic";
+import Script from "next/script";
 import Navigation from "../components/Navigation";
 import ClientStars from "../components/ClientStars";
 import HomeContent from "../components/HomeContent";
@@ -38,8 +39,27 @@ export default function Home() {
     </h1>
   );
 
+  const homeJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Ayushman Gupta | Developer & Designer",
+    "url": "https://ayushman.dev",
+    "description": "Personal portfolio of Ayushman Gupta, a developer and designer specializing in web development and creative solutions.",
+    "author": {
+      "@type": "Person",
+      "name": "Ayushman Gupta"
+    }
+  };
+
   return (
     <main>
+      <Script
+        id="home-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(homeJsonLd)
+        }}
+      />
       <div className="bg-black min-h-screen p-4">
         <section
           className="rounded-t-2xl min-h-screen px-6 md:px-16 lg:px-24 py-10 relative overflow-hidden"
