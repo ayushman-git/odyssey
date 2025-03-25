@@ -266,9 +266,9 @@ const SkillTree = ({ data }) => {
       .attr("opacity", 0)
       .style("font-size", d => {
         // Keep original readable font sizes
-        if (d.depth === 0) return "14px";
-        if (d.depth === 1) return "12px";
-        return "10px"; // Still readable but slightly smaller for deeper levels
+        if (d.depth === 0) return "16px";
+        if (d.depth === 1) return "16px";
+        return "14px"; // Still readable but slightly smaller for deeper levels
       })
       .text(d => d.data.name)
       .on("mouseover", handleMouseOver)

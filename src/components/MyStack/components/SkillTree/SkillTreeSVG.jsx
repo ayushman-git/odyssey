@@ -23,6 +23,8 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
     
     // Set up dimensions with extra padding to prevent cropping
     const container = svgRef.current.parentElement;
+    if (!container) return; // Additional safety check for parent container
+    
     const width = container.clientWidth;
     const height = width;
     
