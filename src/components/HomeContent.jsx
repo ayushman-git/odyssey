@@ -2,9 +2,6 @@
 
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import SocialLinks from "./SocialLinks";
-import WhatIDo from "./WhatIDo";
-import SectionDivider from "./SectionDivider";
 import { scrollToSectionWithId } from "@/utils";
 
 export default function HomeContent({ meowScriptClassName }) {
@@ -12,43 +9,47 @@ export default function HomeContent({ meowScriptClassName }) {
   const headingRef = useRef(null);
   const descriptionRef = useRef(null);
   const ctaRef = useRef(null);
-  const socialsRef = useRef(null);
 
   useEffect(() => {
     // Initial animation timeline
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    // Animate elements in sequence
-    tl.fromTo(
-      introRef.current,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8 }
-    )
-      .fromTo(
+    // Animate elements in sequence - with null checks
+    if (introRef.current) {
+      tl.fromTo(
+        introRef.current,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 }
+      );
+    }
+    
+    if (headingRef.current) {
+      tl.fromTo(
         headingRef.current,
         { y: 30, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.8 },
         "-=0.4" // Start slightly before previous animation ends
-      )
-      .fromTo(
+      );
+    }
+    
+    if (descriptionRef.current) {
+      tl.fromTo(
         descriptionRef.current,
         { y: 30, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.8 },
         "-=0.4"
-      )
-      .fromTo(
+      );
+    }
+    
+    if (ctaRef.current && ctaRef.current.children.length > 0) {
+      tl.fromTo(
         ctaRef.current.children,
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.6, stagger: 0.2 },
         "-=0.4"
-      )
-      .fromTo(
-        socialsRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6 },
-        "-=0.2"
       );
-
+    }
+    
     // Clean up animations on component unmount
     return () => {
       tl.kill();
@@ -134,10 +135,6 @@ export default function HomeContent({ meowScriptClassName }) {
               </span>
             </button>
           </div>
-
-          {/* <div ref={socialsRef} className="opacity-0">
-            <SocialLinks />
-          </div> */}
         </div>
       </div>
     </>

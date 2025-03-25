@@ -7,11 +7,12 @@ const GoogleAnalytics = () => {
   return (
     <>
       <Script
-        strategy='beforeInteractive'
+        strategy='afterInteractive'
         src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}
+        async
       />
 
-      <Script id='' strategy='beforeInteractive'>
+      <Script id='google-analytics' strategy='afterInteractive'>
         {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}

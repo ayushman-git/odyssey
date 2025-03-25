@@ -31,16 +31,13 @@ const ProjectGallery = () => {
             transition={{ duration: 0.3 }}
           >
             {isClient ? (
-              // Entire card is now wrapped in an anchor tag
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col h-full cursor-pointer"
-                aria-label={`View ${project.title} project`}
-              >
-                {/* Image container */}
-                <div className="aspect-video relative overflow-hidden rounded-2xl mb-4">
+              // Card is no longer wrapped in an anchor tag
+              <div className="flex flex-col h-full cursor-pointer">
+                {/* Image container with its own clickable area */}
+                <div 
+                  className="aspect-video relative overflow-hidden rounded-2xl mb-4"
+                  onClick={() => window.open(project.liveUrl, '_blank', 'noopener,noreferrer')}
+                >
                   <img
                     src={project.image}
                     alt={project.title}
@@ -51,7 +48,10 @@ const ProjectGallery = () => {
                 {/* Content below the image */}
                 <div className="px-1 flex flex-col flex-grow">
                   {/* Title */}
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">
+                  <h3 
+                    className="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors cursor-pointer"
+                    onClick={() => window.open(project.liveUrl, '_blank', 'noopener,noreferrer')}
+                  >
                     {project.title}
                   </h3>
                   
@@ -79,26 +79,21 @@ const ProjectGallery = () => {
                 </div>
                 
                 {/* Code link button positioned absolutely */}
-                <div 
-                  className="absolute top-3 right-3 z-10"
-                  onClick={(e) => e.stopPropagation()}
-                >
+                <div className="absolute top-3 right-3 z-10">
                   <a
                     href={project.codeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded-full text-white shadow-lg hover:shadow-gray-500/30 transform transition-all duration-200 hover:scale-110"
                     onClick={(e) => {
-                      e.preventDefault();
                       e.stopPropagation();
-                      window.open(project.codeUrl, '_blank', 'noopener,noreferrer');
                     }}
                     aria-label={`View code for ${project.title}`}
                   >
                     <FaCode size={14} />
                   </a>
                 </div>
-              </a>
+              </div>
             ) : (
               // Render a simple placeholder during SSR to avoid hydration errors
               <div className="aspect-video relative overflow-hidden rounded-2xl mb-4 bg-gray-800">
