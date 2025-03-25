@@ -1,4 +1,5 @@
 import { getArticles } from "@/lib/posts";
+import { convertToSlug } from "@/utils";
 
 export default async function sitemap() {
   const baseUrl = "https://ayushman.dev";
@@ -8,7 +9,7 @@ export default async function sitemap() {
   
   // Generate entries for blog posts
   const blogEntries = articles.map((article) => ({
-    url: `${baseUrl}/blog/${article.type}/${article.slug}`,
+    url: `${baseUrl}/blog/${convertToSlug(article.type)}/${article.slug}`,
     lastModified: article.date || new Date().toISOString(),
     changeFrequency: 'monthly',
     priority: 0.8,
