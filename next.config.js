@@ -48,7 +48,7 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none';",
+              "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://camo.githubusercontent.com https://preview.redd.it; connect-src 'self' https://www.google-analytics.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none';",
           },
           {
             key: 'Referrer-Policy',

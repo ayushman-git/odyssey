@@ -81,9 +81,9 @@ export default async function Page({ params }) {
         }}
       />
       <section className="py-8 pt-0 relative w-full grid place-items-center">
-        <div>
+        {/* <div>
           <LinearProgress />
-        </div>
+        </div> */}
         <div className="w-full h-[76vh] relative">
           <Image
             src={cover_img}
