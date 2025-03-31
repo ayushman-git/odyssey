@@ -20,6 +20,7 @@ function CosmicFooter() {
   const footerRef = useRef(null);
   const footerInView = useInView(footerRef, { once: true, amount: 0.2 });
   const controls = useAnimation();
+  const [bgLoaded, setBgLoaded] = useState(false);
 
   // Add mouse position tracking states
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -56,6 +57,17 @@ function CosmicFooter() {
       y: y / footerDimensions.height - 0.5,
     });
   };
+
+  // Lazy load the background pattern
+  useEffect(() => {
+    if (footerInView) {
+      const image = new Image();
+      image.src = topographyBg.src;
+      image.onload = () => {
+        setBgLoaded(true);
+      };
+    }
+  }, [footerInView]);
 
   // Enhanced background pattern animation with GSAP
   useEffect(() => {
@@ -166,11 +178,11 @@ function CosmicFooter() {
         onMouseLeave={() => setIsHovered(false)}
         onMouseMove={handleMouseMove}
       >
-        {/* Background div with repeating pattern */}
+        {/* Background div with repeating pattern - with lazy loading */}
         <div
           className="pattern-bg absolute inset-0 w-full h-full opacity-0"
           style={{
-            backgroundImage: `url(${topographyBg.src})`,
+            backgroundImage: bgLoaded ? `url(${topographyBg.src})` : "none",
             backgroundRepeat: "repeat",
             backgroundSize: "400px 400px",
             mixBlendMode: "soft-light",

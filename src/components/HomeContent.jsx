@@ -32,10 +32,11 @@ export default function HomeContent({ meowScriptClassName }) {
       );
     }
     
+    // Subtle animation for description - starting from already visible state
     if (descriptionRef.current) {
       tl.fromTo(
         descriptionRef.current,
-        { y: 30, opacity: 0 },
+        { y: 15, opacity: 0.85 }, // Start slightly offset but mostly visible
         { y: 0, opacity: 1, duration: 0.8 },
         "-=0.4"
       );
@@ -80,7 +81,7 @@ export default function HomeContent({ meowScriptClassName }) {
           </h1>
           <p
             ref={descriptionRef}
-            className="text-gray-300 text-xl md:text-2xl max-w-2xl mb-10 opacity-0 md:leading-relaxed"
+            className="text-gray-300 text-xl md:text-2xl max-w-2xl mb-10 md:leading-relaxed opacity-0,"
           >
             Crafting elegant frontends, architecting robust backends, and
             building exceptional digital experiences that solve real problems.

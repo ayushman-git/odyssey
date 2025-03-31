@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import Me from "@/assets/images/cover.jpg";
+import Me from "@/assets/images/cover.webp";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 function Contact() {
   const imageRef = useRef(null);
@@ -81,17 +82,23 @@ function Contact() {
       >
         Ayushman Gupta
       </h1>
-      <section ref={sectionRef} className="relative flex justify-center z-10 mt-8 md:mt-0">
+      <section
+        ref={sectionRef}
+        className="relative flex justify-center z-10 mt-8 md:mt-0"
+      >
         <section className="relative max-w-[800px] w-full">
           <p className="text-black absolute z-10 left-0 top-1/2 transform -translate-y-1/2 -translate-x-2 sm:-translate-x-6 -rotate-90 whitespace-nowrap text-xs sm:text-sm font-medium">
             New Delhi, India
           </p>
 
           <div className="overflow-hidden rounded-2xl">
-            <img
+            <Image
               ref={imageRef}
+              src={Me}
+              width={800}
+              height={600}
+              priority
               className="rounded-2xl w-full transform-gpu"
-              src={Me.src}
               alt="Ayushman Gupta"
             />
           </div>

@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaCode } from "react-icons/fa";
 import { projects } from "@/data/projects";
+import Image from "next/image";
 
 const ProjectGallery = () => {
   // Using a simple conditional to ensure the component only 
@@ -38,10 +39,13 @@ const ProjectGallery = () => {
                   className="aspect-video relative overflow-hidden rounded-2xl mb-4"
                   onClick={() => window.open(project.liveUrl, '_blank', 'noopener,noreferrer')}
                 >
-                  <img
+                  <Image
                     src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
                   />
                 </div>
                 
