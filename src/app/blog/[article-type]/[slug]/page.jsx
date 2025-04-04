@@ -80,36 +80,68 @@ export default async function Page({ params }) {
           __html: JSON.stringify(articleJsonLd)
         }}
       />
-      <section className="py-8 pt-0 relative w-full grid place-items-center">
-        {/* <div>
-          <LinearProgress />
-        </div> */}
-        <div className="w-full h-[76vh] relative">
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <LinearProgress />
+      </div>
+      <section className="pt-0 relative w-full flex flex-col items-center">
+        <div className="w-full h-[60vh] md:h-[70vh] relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/70 z-10" />
           <Image
             src={cover_img}
             quality={100}
             fill
+            priority
             placeholder="blur"
             blurDataURL={BLUR_DATA_URLS.COVER_IMG}
             alt={`Cover image for article: ${title}`}
             style={{
               objectFit: "cover",
             }}
+            className="transition-all duration-1000 ease-out hover:scale-105"
           />
+          
+          <div className="absolute bottom-0 left-0 right-0 md:p-10 z-20 mb-12">
+            <div className="max-w-screen-md lg:max-w-[900px] px-8 mx-auto">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="h-px w-10 bg-[#b7d9b7] dark:bg-[#4a7a4a]"></div>
+                <p className="text-gray-200 text-sm uppercase tracking-wider font-light">{formattedDate}</p>
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight mb-6">{title}</h1>
+              <div className="relative z-30">
+                <span className="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-[#b7d9b7] dark:border-[#4a7a4a] text-white text-sm font-medium shadow-sm">
+                  {type}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-        <article className="max-w-screen-md sm:px-0 px-6">
-          <div className="mt-12">
-            <p className="text-gray-500 text-sm font-normal">
-              {formattedDate}
-            </p>
+        
+        <article className="max-w-screen-md lg:max-w-[900px] w-full px-6 lg:px-8 -mt-10 md:-mt-16 relative z-30">
+          <div className="bg-white/95 dark:bg-[#1c1c1c] backdrop-blur-sm border border-gray-100 dark:border-gray-800 rounded-lg p-6 md:p-12 shadow-sm">
+            {introduction && (
+              <div className="mb-10 text-lg text-gray-700 dark:text-gray-300 font-light leading-relaxed">
+                <span className="text-3xl text-[#b7d9b7] dark:text-[#4a7a4a] font-serif">"</span>
+                {introduction}
+                <span className="text-3xl text-[#b7d9b7] dark:text-[#4a7a4a] font-serif">"</span>
+              </div>
+            )}
+            
+            <div className="w-16 h-0.5 bg-gray-200 dark:bg-gray-700 mb-10 mx-auto"></div>
+            
+            <section className="prose dark:prose-invert prose-headings:font-medium prose-h2:text-2xl prose-h3:text-xl prose-headings:tracking-tight prose-a:text-[#4a7a4a] dark:prose-a:text-[#b7d9b7] prose-a:no-underline prose-a:border-b prose-a:border-[#b7d9b7]/30 dark:prose-a:border-[#4a7a4a]/30 hover:prose-a:border-[#b7d9b7] dark:hover:prose-a:border-[#4a7a4a] prose-img:rounded-md prose-img:shadow-sm max-w-none prose-p:leading-relaxed">
+              <CustomMDX source={fileContent} showAside={showAside} />
+            </section>
+            
+            <div className="mt-16 pt-6 border-t border-gray-200 dark:border-gray-800 flex flex-wrap justify-between items-center gap-3">
+              <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                <span className="inline-block w-1.5 h-1.5 bg-[#b7d9b7] dark:bg-[#4a7a4a] rounded-full mr-2"></span>
+                {type}
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                {formattedDate}
+              </div>
+            </div>
           </div>
-          <h1 className="text-4xl font-semibold mt-4">{title}</h1>
-          <div className="bg-[#b7d9b7] dark:bg-[#516e51] w-max px-4 py-1 rounded-xl my-4">
-            <p className="text-sm font-light">{type}</p>
-          </div>
-          <section className="py-8">
-            <CustomMDX source={fileContent} showAside={showAside} />
-          </section>
         </article>
       </section>
     </>
