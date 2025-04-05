@@ -4,8 +4,9 @@ import CustomThemeProvider from "@/lib/CustomThemeProvider";
 import GoogleAnalytics from "@/lib/GoogleAnalyticsProvider";
 
 const inter = Inter({
-  subsets: ["latin"],
-  style: ["normal"],
+  subsets: ["latin"], 
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // All font weights
+  style: ["normal"], // Optional: include italic if needed
 });
 
 export const metadata = {

@@ -1,5 +1,5 @@
 export const Typography = {
-  Em: ({ children }) => <em className="font-bold">{children}</em>,
+  Em: ({ children }) => <em>{children}</em>,
   P: ({ children }) => (
     <p
       className="my-4 sm:font-light font-normal sm:text-lg text-xl text-gray-500 sm:text-black dark:text-gray-400"
@@ -21,7 +21,8 @@ export const Typography = {
   Ul: ({ children }) => (
     <ul className="list-inside list-disc dark:text-gray-400">{children}</ul>
   ),
-  B: ({ children }) => <b className="font-bold">{children}</b>,
+  B: ({ children }) => <b className="font-semibold">{children}</b>,
+  Strong: ({ children }) => <b className="font-semibold">{children}</b>,
   Code: ({ children }) => (
     <code className="dark:text-gray-400">{children}</code>
   ),

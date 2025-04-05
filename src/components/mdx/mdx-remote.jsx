@@ -17,6 +17,7 @@ const components = {
   ol: Typography.Ol,
   ul: Typography.Ul,
   b: Typography.B,
+  strong: Typography.Strong,
   code: Typography.Code,
 };
 

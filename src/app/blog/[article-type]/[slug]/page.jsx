@@ -9,7 +9,6 @@ import { formatDateString } from "@/utils";
 
 export async function generateMetadata({ params }) {
   const { title, cover_img, introduction, date } = await getArticle(params.slug);
-  const formattedDate = formatDateString(date);
   
   return {
     title: title,
@@ -118,15 +117,6 @@ export default async function Page({ params }) {
         
         <article className="max-w-screen-md lg:max-w-[900px] w-full px-6 lg:px-8 -mt-10 md:-mt-16 relative z-30">
           <div className="bg-white/95 dark:bg-[#1c1c1c] backdrop-blur-sm border border-gray-100 dark:border-gray-800 rounded-lg p-6 md:p-12 shadow-sm">
-            {introduction && (
-              <div className="mb-10 text-lg text-gray-700 dark:text-gray-300 font-light leading-relaxed">
-                <span className="text-3xl text-[#b7d9b7] dark:text-[#4a7a4a] font-serif">"</span>
-                {introduction}
-                <span className="text-3xl text-[#b7d9b7] dark:text-[#4a7a4a] font-serif">"</span>
-              </div>
-            )}
-            
-            <div className="w-16 h-0.5 bg-gray-200 dark:bg-gray-700 mb-10 mx-auto"></div>
             
             <section className="prose dark:prose-invert prose-headings:font-medium prose-h2:text-2xl prose-h3:text-xl prose-headings:tracking-tight prose-a:text-[#4a7a4a] dark:prose-a:text-[#b7d9b7] prose-a:no-underline prose-a:border-b prose-a:border-[#b7d9b7]/30 dark:prose-a:border-[#4a7a4a]/30 hover:prose-a:border-[#b7d9b7] dark:hover:prose-a:border-[#4a7a4a] prose-img:rounded-md prose-img:shadow-sm max-w-none prose-p:leading-relaxed">
               <CustomMDX source={fileContent} showAside={showAside} />
