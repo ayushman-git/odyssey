@@ -3,9 +3,11 @@
   --background-light: #ffffff;
   --border-light: #dddddd;
   --explanation-bg-light: #f5f7fa;
-  --bandwidth-area-light: rgba(173, 216, 230, 0.4);
-  --bandwidth-area-hover-light: rgba(173, 216, 230, 0.6);
-  --quality-line-light: steelblue;
+  --bandwidth-area-light: rgba(100, 181, 246, 0.5);
+  --bandwidth-area-hover-light: rgba(66, 165, 245, 0.7);
+  --quality-line-light: #1976d2;
+  --grid-lines-light: rgba(0, 0, 0, 0.12);
+  --text-labels-light: #455a64;
   
   /* Dark theme variables */
   --background-dark: #1a1a1a;
@@ -13,9 +15,11 @@
   --border-dark: #444444;
   --explanation-bg-dark: #2a2a2a;
   --shadow-box: 0 2px 4px rgba(0,0,0, 0.1);
-  --bandwidth-area-dark: rgba(100, 149, 237, 0.4);
-  --bandwidth-area-hover-dark: rgba(100, 149, 237, 0.6);
-  --quality-line-dark: #6495ED;
+  --bandwidth-area-dark: rgba(79, 195, 247, 0.4);
+  --bandwidth-area-hover-dark: rgba(41, 182, 246, 0.6);
+  --quality-line-dark: #29b6f6;
+  --grid-lines-dark: rgba(255, 255, 255, 0.15);
+  --text-labels-dark: #b0bec5;
 }
 
 .adaptive-bitrate-demo {

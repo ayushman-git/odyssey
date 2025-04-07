@@ -8,15 +8,42 @@ showAside: true
 introduction: I didn't expect a viral trend of AI-generated Studio Ghibli art to lead me back to Grave of the Fireflies. Yet there I was, a bowl of ice cream in one hand and a box of tissues in the other, streaming this 1988 heart-wrenching classic on Netflix on a quiet evening.
 ---
 
+<style>
+{`
+  .ghibli-intro {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    flex-direction: row;
+  }
+
+  .ghibli-text {
+    flex: 2;
+  }
+
+  .ghibli-image {
+    flex: 1;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .ghibli-intro {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+`}
+</style>
+
 <Block>
 # Introduction
-<div style={{ display: "flex", alignItems: "flex-start", gap: "24px" }}>
-  <div style={{ flex: "2" }}>
+<div className="ghibli-intro">
+  <div className="ghibli-text"> 
     I didn't expect a viral trend of AI-generated Studio Ghibli art to lead me back to **Grave of the Fireflies**. Yet there I was, a bowl of ice cream in hand, streaming this 1988 masterpiece on a quiet evening. The internet had been flooded with whimsical AI images of Ghibli characters, and it sparked a wave of nostalgia strong enough to hit play on the real thing. As the opening scene rolled in, I settled in — and so did Netflix, ready to deliver an uninterrupted viewing experience. No buffering, no dips in quality — just smooth, high-quality streaming from start to finish.
 
     It got me thinking: how does Netflix manage to serve up flawless playback, even when millions of people are binging their favorite classics at the same time? In this deep dive, we'll explore the tech magic behind it — from adaptive streaming and smart video codecs to edge caching and content delivery networks. We'll keep it light, clear, and a little playful, with nods to that Ghibli night as we unravel what keeps our screens smooth and our stories flowing. Grab some popcorn — let's press play on this tech adventure.
   </div>
-  <figure style={{ flex: "1", margin: "0" }}>
+  <figure className="ghibli-image">
     <img src="/articles/netflix/side.jpg" alt="The Building Blocks of Life: Elements Represented in Binary—Hydrogen, Carbon, Nitrogen, Oxygen, and Phosphorus" style={{
       width: "100%",
       height: "auto"
@@ -27,31 +54,64 @@ introduction: I didn't expect a viral trend of AI-generated Studio Ghibli art to
 
 <Block>
 # Chapter 1: Press Play – The Stream Begins 
-The moment I clicked “Play” on *Grave of the Fireflies*, Netflix’s player sprang into action to deliver the video. But unlike a simple file download, streaming a movie involves a clever trick: **Adaptive Bitrte Streaming (ABR)**. Ever noticed how sometimes a video starts a bit blurry and then becomes sharp, or seamlessly drops to lower quality when your Wi-Fi falters? That’s ABR at work, dynamically adjusting video quality to match your internet speed in real time. Netflix wants playback to start instantly and never stall unexpectedly, even if your network conditions change. ABR is the secret sauce that makes this possible.
+The moment I clicked “Play” on *Grave of the Fireflies*, Netflix’s player sprang into action to deliver the video. But unlike a simple file download, streaming a movie involves a clever trick: **Adaptive Bitrate Streaming (ABR)**. Ever noticed how sometimes a video starts a bit blurry and then becomes sharp, or seamlessly drops to lower quality when your Wi-Fi falters? That’s ABR at work, dynamically adjusting video quality to match your internet speed in real time. Netflix wants playback to start instantly and never stall unexpectedly, even if your network conditions change. 
 
 Netflix encodes each movie or show in multiple quality levels (from low-res, low-bitrate up to high-res, high-bitrate). The video is chopped into small pieces (usually a few seconds each). When you start watching, the Netflix client (the app on your TV, phone, browser, etc.) quickly grabs an initial chunk at a lower quality to start playback fast. As it plays, the client measures your bandwidth and possibly your device’s capacity, then switches to higher or lower bitrates for subsequent chunks depending on what your connection can handle​
 . If your internet is fast, Netflix ramps up to a high bitrate (crispy HD or 4K goodness); if your connection slows (say someone else in the house starts a download), the app gracefully steps down to a lower resolution stream to avoid buffering. All of this happens adaptively, on the fly, without you lifting a finger. 
 <AdaptiveBitrateDemo />
-<i>Adaptive streaming overview: Netflix encodes each video at multiple bitrates (indicated by red, green, blue streams) and stores them on a server, along with a manifest file (index of segments). The client device requests small segments one by one. An ABR algorithm in the client decides which bitrate segment to download next based on current network speed, switching up or down in quality to provide smooth playback.</i>
 
 It’s like Netflix is constantly tuning an antenna for the best signal – but digitally. The moment I hit play on that Ghibli film, the app initially didn’t know my Wi-Fi could handle HD, so it likely started with a modest bitrate. Within seconds, seeing that my network was stable and fast, it would’ve cranked up to a higher quality stream. I barely noticed any change except that those beautifully animated scenes quickly sharpened to their full glory.
 
-**How does the Netflix app decide what quality to pick?** It uses an ABR algorithm – essentially some smart rules. Different streaming services use different approaches. Some algorithms are **throughput-based** (they look at recent download speed: if the last chunk downloaded super fast, maybe increase quality)
-.Others are **buffer-based** (they look at how much video is already buffered in the app: if there’s a healthy cushion, maybe we can afford higher quality)
+**How does the Netflix app decide what quality to pick?** It uses an ABR algorithm – essentially some smart rules. Different streaming services use different approaches. Some algorithms are **throughput-based** (they look at recent download speed: if the last chunk downloaded super fast, maybe increase quality). Others are **buffer-based** (they look at how much video is already buffered in the app: if there’s a healthy cushion, maybe we can afford higher quality)
 . Netflix has experimented with hybrid approaches that use both throughput and buffer occupancy to make decisions. In fact, research done with Netflix data showed that focusing on buffer size can reduce rebuffering (those dreaded pauses) by 10–20% compared to naive algorithms​
 . The Netflix player aims to keep you in a sweet spot: high enough quality for your screen, but not so high that you’ll run out of buffered video if your connection hiccups. 
 
-In my case, as the tragic story of Seita and Setsuko unfolded without a hitch, Netflix’s ABR was constantly checking: Is his buffer full enough? How’s the network now? Okay, maybe we can push to 1080p… or Uh-oh, slight drop in bandwidth, let’s preemptively go down to 720p for the next chunk so he doesn’t get a pause during this emotional dialog. This all happens behind the scenes and, when done right, you don’t even notice. The video just plays on smoothly, and the only thing you’re worrying about is the story (and in my case, trying not to cry too loudly). Adaptive streaming has basically become standard practice for all major streaming platforms​
-, and it’s a big reason services like Netflix can deliver high-resolution video with little buffering. Now that we know Netflix is fetching our movie in tiny pieces and adapting on the fly, you might wonder: what format are those pieces? How exactly are they delivered over the internet? To answer that, let’s look at the streaming protocols that make ABR possible.
 </Block>
 
 <Block>
-# Chapter 2: DASHing Through the Streams (Protocols: DASH and HLS)
-Netflix doesn’t stream video as one continuous blob; it sends those small chunks using standard web protocols. The two main formats in the streaming world are DASH (Dynamic Adaptive Streaming over HTTP) and HLS (HTTP Live Streaming). Think of these as two dialects of the same language – both speak in terms of manifests and segments, but with a slightly different accent. 
+# Chapter 2: How Netflix Streams, One Segment at a Time
+Netflix doesn’t stream video as one continuous blob; it sends those small chunks using standard web protocols. The two main formats in the streaming world are **DASH (Dynamic Adaptive Streaming over HTTP)** and **HLS (HTTP Live Streaming)**. Think of these as two dialects of the same language – both speak in terms of manifests and segments, but with a slightly different accent. 
 
-MPEG-DASH is an international standard for adaptive streaming that Netflix (and many others) have embraced​
-. It works by breaking content into segments (just like we discussed) and providing a manifest file (often with extension <kbd>.mpd</kbd>) that lists the URLs of all those segments for each quality level. When you hit play, the Netflix client fetches the manifest, which essentially says: “This video is available in, say, 10 different bitrates; here are the segment files (timestamps 0-4 seconds, 4-8s, etc.) for each version.” The client will then start grabbing segments one by one from one of those versions, switching up or down as needed. DASH is codec-agnostic and very flexible – it doesn’t care if the video inside segments is encoded with H.264, H.265, VP9, or whatever​
+**MPEG-DASH** is an international standard for adaptive streaming that Netflix (and many others) have embraced
+. It works by breaking content into **segments** (just like we discussed) and providing a **manifest file** (often with extension ```.mpd```) that lists the URLs of all those segments for each quality level. When you hit play, the Netflix client fetches the manifest, which essentially says: “This video is available in, say, 10 different bitrates; here are the segment files (timestamps 0-4 seconds, 4-8s, etc.) for each version.” The client will then start grabbing segments one by one from one of those versions, switching up or down as needed. DASH is codec-agnostic and very flexible – it doesn’t care if the video inside segments is encoded with H.264, H.265, VP9, or whatever​
 . Major streaming platforms like YouTube, Hulu, and Netflix rely on MPEG-DASH to deliver high-quality experiences to viewers.
+
+Following is an example ```.mpd``` file.
+
+```xml filename="manifest.mpd"
+<?xml version="1.0" encoding="UTF-8"?>
+<MPD xmlns="urn:mpeg:DASH:schema:MPD:2011"
+     minBufferTime="PT1.5S"
+     type="static"
+     mediaPresentationDuration="PT90M"
+     maxSegmentDuration="PT4S"
+     profiles="urn:mpeg:dash:profile:isoff-main:2011">
+
+  <Period id="1" start="PT0S">
+    <AdaptationSet mimeType="video/mp4" segmentAlignment="true" startWithSAP="1" lang="en">
+      
+      <!-- 360p -->
+      <Representation id="video-360p" bandwidth="800000" width="640" height="360" codecs="avc1.42E01E">
+        <BaseURL>video/360p/</BaseURL>
+        <SegmentTemplate duration="4" media="seg_$Number$.m4s" initialization="init.mp4" startNumber="1"/>
+      </Representation>
+      
+      <!-- 720p -->
+      <Representation id="video-720p" bandwidth="2000000" width="1280" height="720" codecs="avc1.4D401F">
+        <BaseURL>video/720p/</BaseURL>
+        <SegmentTemplate duration="4" media="seg_$Number$.m4s" initialization="init.mp4" startNumber="1"/>
+      </Representation>
+      
+      <!-- 1080p -->
+      <Representation id="video-1080p" bandwidth="5000000" width="1920" height="1080" codecs="avc1.640028">
+        <BaseURL>video/1080p/</BaseURL>
+        <SegmentTemplate duration="4" media="seg_$Number$.m4s" initialization="init.mp4" startNumber="1"/>
+      </Representation>
+      
+    </AdaptationSet>
+  </Period>
+</MPD>
+```
 
 On the other side, we have HLS, Apple’s baby. HLS also uses the idea of segmented video and a manifest (in its case, an .m3u8 playlist). Functionally, HLS and DASH are quite similar – both deliver chunks of video over ordinary HTTP(S) connections and let the client adapt the bitrate. In fact, both protocols have converged in many ways (today HLS can use MP4 segments just like DASH, thanks to a unifying standard called CMAF). But there are a few differences and historical quirks:- Origins and Support: HLS was created by Apple and is not an official international standard (it’s proprietary, though widely used)
 CLOUDINARY.COM

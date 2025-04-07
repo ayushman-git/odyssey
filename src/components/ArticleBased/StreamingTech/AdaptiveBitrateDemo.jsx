@@ -53,11 +53,12 @@ function AdaptiveBitrateDemo() {
     
     // Theme-specific colors
     const colors = {
-      text: isDarkTheme ? '#f0f0f0' : '#333',
-      axes: isDarkTheme ? '#aaa' : '#666',
-      gridLines: isDarkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)',
-      bandwidthFill: isDarkTheme ? 'rgba(100, 149, 237, 0.45)' : 'rgba(70, 130, 180, 0.35)',
-      qualityLine: isDarkTheme ? 'rgb(135, 206, 250)' : 'rgb(0, 90, 156)',
+      text: isDarkTheme ? '#e0e0e0' : '#455a64',
+      axes: isDarkTheme ? '#b0bec5' : '#607d8b',
+      gridLines: isDarkTheme ? 'var(--grid-lines-dark)' : 'var(--grid-lines-light)',
+      bandwidthFill: isDarkTheme ? 'var(--bandwidth-area-dark)' : 'var(--bandwidth-area-light)',
+      qualityLine: isDarkTheme ? 'var(--quality-line-dark)' : 'var(--quality-line-light)',
+      qualityLabels: isDarkTheme ? '#81d4fa' : '#0277bd',
     };
     
     // Simplified dimensions for mobile
@@ -173,13 +174,14 @@ function AdaptiveBitrateDemo() {
     
     // Theme-specific colors
     const colors = {
-      text: isDarkTheme ? '#f0f0f0' : '#333',
-      circleBorder: isDarkTheme ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.3)',
-      centerCircle: isDarkTheme ? 'rgba(40, 40, 40, 0.7)' : 'rgba(255, 255, 255, 0.7)',
-      centerBorder: isDarkTheme ? '#666' : '#333',
-      segmentLines: isDarkTheme ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)',
-      bandwidthFill: isDarkTheme ? 'rgba(100, 149, 237, 0.45)' : 'rgba(70, 130, 180, 0.35)',
-      qualityLine: isDarkTheme ? 'rgb(135, 206, 250)' : 'rgb(0, 90, 156)',
+      text: isDarkTheme ? '#e0e0e0' : '#455a64',
+      circleBorder: isDarkTheme ? 'rgba(255, 255, 255, 0.3)' : 'rgba(38, 50, 56, 0.2)',
+      centerCircle: isDarkTheme ? 'rgba(30, 30, 30, 0.85)' : 'rgba(255, 255, 255, 0.85)',
+      centerBorder: isDarkTheme ? '#546e7a' : '#cfd8dc',
+      segmentLines: isDarkTheme ? 'var(--grid-lines-dark)' : 'var(--grid-lines-light)',
+      bandwidthFill: isDarkTheme ? 'var(--bandwidth-area-dark)' : 'var(--bandwidth-area-light)',
+      qualityLine: isDarkTheme ? 'var(--quality-line-dark)' : 'var(--quality-line-light)',
+      qualityLabels: isDarkTheme ? '#81d4fa' : '#0277bd',
     };
     
     // Create sample data
@@ -231,7 +233,7 @@ function AdaptiveBitrateDemo() {
       .data(bitrateLabels)
       .join("text")
       .attr("y", d => -y(d.rate) - 10)
-      .attr("fill", colors.text)
+      .attr("fill", colors.qualityLabels)
       .attr("font-weight", "bold")
       .text(d => d.label);
     
