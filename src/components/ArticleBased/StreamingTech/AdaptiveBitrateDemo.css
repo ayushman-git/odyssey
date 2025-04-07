@@ -1,0 +1,176 @@
+:root {
+  /* Light theme variables */
+  --background-light: #ffffff;
+  --border-light: #dddddd;
+  --explanation-bg-light: #f5f7fa;
+  --bandwidth-area-light: rgba(173, 216, 230, 0.4);
+  --bandwidth-area-hover-light: rgba(173, 216, 230, 0.6);
+  --quality-line-light: steelblue;
+  
+  /* Dark theme variables */
+  --background-dark: #1a1a1a;
+  --text-clr: light-dark(#000, #e0e0e0);
+  --border-dark: #444444;
+  --explanation-bg-dark: #2a2a2a;
+  --shadow-box: 0 2px 4px rgba(0,0,0, 0.1);
+  --bandwidth-area-dark: rgba(100, 149, 237, 0.4);
+  --bandwidth-area-hover-dark: rgba(100, 149, 237, 0.6);
+  --quality-line-dark: #6495ED;
+}
+
+.adaptive-bitrate-demo {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Light theme (default) */
+.adaptive-bitrate-demo {
+  color: var(--text-clr);
+}
+
+/* Dark theme */
+.adaptive-bitrate-demo.dark-theme {
+  color: var(--text-clr);
+}
+
+.chart-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1rem auto;
+  overflow: visible;
+  border-radius: 8px;
+}
+
+/* SVG elements transitions for smooth theme changes */
+.chart-container svg,
+.chart-container svg * {
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+/* Hover effects for both themes */
+.bandwidth-area {
+  transition: fill 0.2s ease;
+}
+
+.bandwidth-area:hover {
+  opacity: 0.8;
+}
+
+.quality-line {
+  transition: stroke-width 0.2s ease;
+}
+
+.quality-line:hover {
+  stroke-width: 4;
+}
+
+/* Light theme visualization hover effects */
+.light-theme .bandwidth-area:hover {
+  fill: var(--bandwidth-area-hover-light);
+}
+
+.light-theme .quality-line:hover {
+  stroke-width: 4;
+}
+
+/* Dark theme visualization hover effects */
+.dark-theme .bandwidth-area:hover {
+  fill: var(--bandwidth-area-hover-dark);
+}
+
+.dark-theme .quality-line:hover {
+  stroke-width: 4;
+}
+
+/* Light theme explanation box */
+.light-theme .explanation {
+  box-shadow: var(--shadow-box);
+  border: 1px solid var(--border-light);
+}
+
+/* Dark theme explanation box */
+.dark-theme .explanation {
+  box-shadow: var(--shadow-box);
+  border: 1px solid var(--border-dark);
+}
+
+.explanation {
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 1rem auto;
+  font-size: 16px;
+  line-height: 1.5;
+  backdrop-filter: blur(5px);
+  box-shadow: var(--shadow-box);
+}
+
+.dark-theme .explanation {
+  box-shadow: var(--shadow-box);
+}
+
+.explanation p {
+  margin-top: 0;
+  line-height: 1.5;
+}
+
+.explanation ul {
+  padding-left: 20px;
+}
+
+.explanation li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+/* Light theme heading */
+.light-theme h2 {
+  color: var(--text-clr);
+}
+
+/* Dark theme heading */
+.dark-theme h2 {
+  color: var(--text-clr);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .adaptive-bitrate-demo h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .explanation {
+    font-size: 14px;
+  }
+  
+  .explanation ul {
+    padding-left: 20px;
+  }
+  
+  .chart-container svg {
+    max-width: 100%;
+  }
+}
+
+/* Override system preferences with theme classes */
+@media (prefers-color-scheme: dark) {
+  .adaptive-bitrate-demo:not(.light-theme):not(.dark-theme) {
+    color: var(--text-clr);
+  }
+  
+  .adaptive-bitrate-demo:not(.light-theme):not(.dark-theme) h2 {
+    color: var(--text-clr);
+  }
+  
+  .adaptive-bitrate-demo:not(.light-theme):not(.dark-theme) .explanation {
+  box-shadow: var(--shadow-box);
+    border: 1px solid var(--border-dark);
+  }
+}

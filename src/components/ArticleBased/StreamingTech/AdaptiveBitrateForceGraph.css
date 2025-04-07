@@ -1,0 +1,86 @@
+.abr-force-graph {
+  max-width: 928px;
+  margin: 40px auto 0;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.graph-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+}
+
+.graph-container svg {
+  background-color: #f9f9f9;
+  cursor: move;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.4;
+  pointer-events: none;
+  z-index: 100;
+  max-width: 200px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tooltip strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.nodes circle {
+  transition: fill 0.2s;
+}
+
+.nodes text {
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+}
+
+.links line {
+  transition: stroke-opacity 0.2s;
+}
+
+.links line:hover {
+  stroke-opacity: 1 !important;
+}
+
+.explanation {
+  background-color: #f5f7fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.explanation p {
+  margin-top: 0;
+  line-height: 1.5;
+}
+
+.explanation ul {
+  padding-left: 20px;
+}
+
+.explanation li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
