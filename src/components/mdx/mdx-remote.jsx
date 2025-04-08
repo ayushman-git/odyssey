@@ -8,6 +8,8 @@ import Figcaption from "./BaseElements/Figcaption";
 import Block from "./BaseElements/Block";
 import AreciboCountingGrid from "../ArticleBased/DecodingArecibo/AreciboCountingGrid";
 import AdaptiveBitrateDemo from "../ArticleBased/StreamingTech/AdaptiveBitrateDemo";
+import PerTitleEncodingDemo from "../ArticleBased/StreamingTech/PerTitleEncodingDemo";
+import NetflixEncodingVersions from "../ArticleBased/StreamingTech/NetflixEncodingVersions";
 
 const components = {
   h1: Heading.H1,
@@ -29,7 +31,16 @@ export default function CustomMDX(props) {
         parseFrontmatter: true,
       }}
       {...props}
-      components={{ ...components, ...(props.components || {}), Figcaption, Block, AreciboCountingGrid, AdaptiveBitrateDemo }}
+      components={{
+        ...components,
+        ...(props.components || {}),
+        Figcaption,
+        Block,
+        AreciboCountingGrid,
+        AdaptiveBitrateDemo,
+        PerTitleEncodingDemo,
+        NetflixEncodingVersions,
+      }}
     />
   );
 

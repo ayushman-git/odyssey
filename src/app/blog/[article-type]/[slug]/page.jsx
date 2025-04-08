@@ -5,41 +5,19 @@ import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import LinearProgress from "@/components/LinearProgress";
 import DetailChips from "@/components/DetailChips";
-import { formatDateString } from "@/utils";
+import { formatDateString, generatePageMetadata } from "@/utils";
 
 export async function generateMetadata({ params }) {
   const { title, cover_img, introduction, date } = await getArticle(params.slug);
   
-  return {
-    title: title,
+  return generatePageMetadata({
+    title,
     description: introduction || `Read ${title} by Ayushman Gupta on Odyssey blog.`,
-    openGraph: {
-      title: title,
-      description: introduction || "A Voyage into the Heart of Silicon by Ayushman Gupta",
-      siteName: "Ayushman Gupta | Odyssey",
-      images: [
-        {
-          url: cover_img,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
-      locale: "en_US",
-      type: "article",
-      publishedTime: date,
-      authors: ["Ayushman Gupta"],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: title,
-      description: introduction || "A Voyage into the Heart of Silicon by Ayushman Gupta",
-      images: [cover_img],
-    },
-    alternates: {
-      canonical: `https://ayushman.dev/blog/${params['article-type']}/${params.slug}`,
-    }
-  };
+    image: cover_img,
+    type: 'article',
+    url: `/blog/${params['article-type']}/${params.slug}`,
+    date
+  });
 }
 
 export default async function Page({ params }) {
@@ -115,9 +93,8 @@ export default async function Page({ params }) {
           </div>
         </div>
         
-        <article className="max-w-screen-md lg:max-w-[900px] w-full px-6 lg:px-8 -mt-10 md:-mt-16 relative z-30">
+        <article className="max-w-screen-md lg:max-w-[900px] w-full px-0 lg:px-8 -mt-10 md:-mt-16 relative z-30">
           <div className="bg-white/95 dark:bg-[#1c1c1c] backdrop-blur-sm border border-gray-100 dark:border-gray-800 rounded-lg p-6 md:p-12 shadow-sm">
-            
             <section className="prose dark:prose-invert prose-headings:font-medium prose-h2:text-2xl prose-h3:text-xl prose-headings:tracking-tight prose-a:text-[#4a7a4a] dark:prose-a:text-[#b7d9b7] prose-a:no-underline prose-a:border-b prose-a:border-[#b7d9b7]/30 dark:prose-a:border-[#4a7a4a]/30 hover:prose-a:border-[#b7d9b7] dark:hover:prose-a:border-[#4a7a4a] prose-img:rounded-md prose-img:shadow-sm max-w-none prose-p:leading-relaxed">
               <CustomMDX source={fileContent} showAside={showAside} />
             </section>

@@ -38,6 +38,60 @@ export const underscoreDelimiter = (str) => {
   return str.toLowerCase().replaceAll(" ", "_");
 };
 
+// New function to generate metadata for blog and article pages
+export const generatePageMetadata = ({ 
+  title, 
+  description, 
+  image, 
+  type = 'website', 
+  url, 
+  date, 
+  authors = ["Ayushman Gupta"]
+}) => {
+  const baseUrl = 'https://ayushman.dev';
+  const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
+  
+  const metadata = {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: fullUrl,
+      type,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ],
+    },
+    alternates: {
+      canonical: fullUrl,
+    }
+  };
+  
+  // Add article-specific properties
+  if (type === 'article') {
+    metadata.openGraph.publishedTime = date;
+    metadata.openGraph.authors = authors;
+    metadata.openGraph.siteName = "Ayushman Gupta | Odyssey";
+    metadata.openGraph.locale = "en_US";
+    
+    // Add Twitter card for articles
+    metadata.twitter = {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+    };
+  }
+  
+  return metadata;
+};
+
 export const convertToSlug = (str) => {
   return str
     .toLowerCase() // Convert to lowercase

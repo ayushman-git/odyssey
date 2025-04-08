@@ -1,37 +1,23 @@
 import { getArticles } from "@/lib/posts";
 import BlogLayout from "@/components/BlogLayout";
 import Script from "next/script";
+import { generatePageMetadata } from "@/utils";
 
 export const revalidate = 3600; // Revalidate this page every hour
 
-// Use a dynamic metadata function instead of static metadata
+// Use the utility function to generate metadata
 export async function generateMetadata() {
   const articles = getArticles();
   const firstArticleImage = articles.length > 0 && articles[0].cover_img 
     ? articles[0].cover_img 
     : '/cover.jpg'; // Fallback to a default image
 
-  return {
+  return generatePageMetadata({
     title: "Blog | Ayushman Gupta",
     description: "Read articles and insights by Ayushman Gupta on web development, design, and technology.",
-    openGraph: {
-      title: "Blog | Ayushman Gupta",
-      description: "Read articles and insights by Ayushman Gupta on web development, design, and technology.",
-      url: "https://ayushman.dev/blog",
-      type: "website",
-      images: [
-        {
-          url: firstArticleImage,
-          width: 1200,
-          height: 630,
-          alt: "Ayushman Gupta's Blog",
-        }
-      ],
-    },
-    alternates: {
-      canonical: "https://ayushman.dev/blog",
-    }
-  };
+    image: firstArticleImage,
+    url: "/blog"
+  });
 }
 
 export default async function BlogPage() {
