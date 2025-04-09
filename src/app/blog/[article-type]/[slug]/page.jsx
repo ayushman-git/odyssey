@@ -4,7 +4,6 @@ import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import LinearProgress from "@/components/LinearProgress";
-import DetailChips from "@/components/DetailChips";
 import { formatDateString, generatePageMetadata } from "@/utils";
 
 export async function generateMetadata({ params }) {

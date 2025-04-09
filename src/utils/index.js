@@ -52,6 +52,7 @@ export const generatePageMetadata = ({
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
   
   const metadata = {
+    metadataBase: new URL(baseUrl),
     title,
     description,
     openGraph: {
