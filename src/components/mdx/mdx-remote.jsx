@@ -43,7 +43,7 @@ export default function CustomMDX(props) {
         PerTitleEncodingDemo,
         NetflixEncodingVersions,
         NetflixOpenConnectFlow,
-        Totoro
+        Totoro,
       }}
     />
   );
@@ -80,7 +80,7 @@ export default function CustomMDX(props) {
   return (
     <section>
       {extractHeadings(mdx.props.source)}
-      {mdx}
+      <div className="-mt-12">{mdx}</div>
     </section>
   );
 }

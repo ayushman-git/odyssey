@@ -1,11 +1,12 @@
 "use client";
 
 import { underscoreDelimiter } from "@/utils";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 
 export default function AsideTitles({ headings }) {
   const [currentSectionInView, setCurrentSectionInView] = useState(null);
   const [isTableOfContentVisible, setIsTableOfContentVisible] = useState(true);
+  const itemRefs = useRef(new Map());
 
   const handleIntersection = (entries, observer, id) => {
     entries.forEach((entry) => {
@@ -56,18 +57,33 @@ export default function AsideTitles({ headings }) {
 
   const renderAsideList = (list) => {
     return list.map((item) => {
+      const isActive = currentSectionInView === underscoreDelimiter(item.title);
+      const id = underscoreDelimiter(item.title);
+      
       return (
         <Fragment key={item.title}>
           {item.title && (
             <a
-              className={
-                currentSectionInView === underscoreDelimiter(item.title)
-                  ? `text-blue-500 font-bold`
-                  : `text-gray-500`
-              }
-              href={`#${underscoreDelimiter(item.title)}`}
+              className={`block text-xs transition-all duration-300 ease-in-out ${
+                isActive 
+                  ? "text-blue-500 font-medium opacity-100" 
+                  : "text-gray-600 opacity-75 hover:opacity-90"
+              } hover:text-blue-600`}
+              href={`#${id}`}
+              ref={(el) => {
+                if (el) {
+                  itemRefs.current.set(id, el);
+                }
+              }}
             >
-              <li className="my-3">{item.title}</li>
+              <li className={`relative py-2 pl-3`}>
+                <span 
+                  className={`absolute left-0 top-0 h-full border-l-2 transition-all duration-300 ${
+                    isActive ? "border-blue-500 opacity-100" : "border-transparent opacity-0"
+                  }`}
+                ></span>
+                {item.title}
+              </li>
             </a>
           )}
         </Fragment>
@@ -77,14 +93,13 @@ export default function AsideTitles({ headings }) {
 
   return (
     <aside
-      className={`sticky top-44 w-52 -ml-72 h-0 ${
+      className={`sticky top-44 w-60 -ml-72 mt-10 h-0 p-5 transition-opacity duration-300 ${
         isTableOfContentVisible ? "opacity-100" : "opacity-0"
       }`}
       id="table-of-content"
     >
-      <h3 className="font-black mb-3">Table of Contents</h3>
-      <hr className="mb-6" />
-      <ul className="text-sm">{renderAsideList(headings)}</ul>
+      <h3 className="font-bold mb-4 pb-2">Table of Contents</h3>
+      <ul className="text-xs space-y-1">{renderAsideList(headings)}</ul>
     </aside>
   );
 }
