@@ -46,67 +46,61 @@ export default function ArticleCard({ details }) {
       >
         <motion.article
           transition={{
-            duration: 0.5,
+            duration: 0.4,
+            ease: "easeOut"
           }}
           whileHover={{
-            scale: details.disabled ? 1.0 : 1.01,
-            filter: "brightness(1.05) contrast(1.1)",
+            scale: details.disabled ? 1.0 : 1.03,
+            boxShadow: "0 10px 25px rgba(0,0,0,0.1)"
           }}
-          className={`flex h-full cursor-pointer flex-col rounded-3xl border border-black dark:border-gray-700 overflow-hidden ${
-            details.disabled ? "border-dashed cursor-default" : ""
+          className={`flex h-full cursor-pointer flex-col rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden bg-white dark:bg-gray-900 ${
+            details.disabled ? "border-dashed cursor-default opacity-80" : "shadow-sm hover:shadow-lg"
           }`}
         >
-          <div className="relative h-[220px]">
+          <div className="relative h-[200px] overflow-hidden">
             <Image
               src={details.cover_img}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               placeholder="blur"
-              className="object-cover"
+              className="object-cover transition-all duration-500 hover:scale-105"
               blurDataURL={BLUR_DATA_URLS.COVER_IMG}
               alt={details.title}
             />
             <div className="absolute top-4 left-4 flex items-center">
               <h3
-                className={`rounded-xl backdrop-blur-lg text-sm tracking-wide font-medium text-gray-200 px-4 py-2 ${
+                className={`rounded-lg bg-gradient-to-r from-black/70 to-black/60 text-sm tracking-wide font-medium text-white px-3 py-1.5 ${
                   details.disabled ? "rounded-r-none" : ""
                 }`}
-                style={{
-                  background: "rgba(0, 0, 0, 0.4)",
-                }}
               >
                 {details.type}
               </h3>
               {details.disabled && (
                 <h3
-                  style={{
-                    background: "linear-gradient(90deg, rgba(255, 255, 255, 0.596) 0%, #ebebeb 40%)",
-                  }}
-                  className="rounded-r-xl backdrop-blur-lg text-sm tracking-wide font-medium text-gray-900 px-4 py-2"
+                  className="rounded-r-lg bg-amber-500/90 text-sm tracking-wide font-medium text-white px-3 py-1.5"
                 >
                   Coming soon
                 </h3>
               )}
             </div>
           </div>
-          <div className="flex-1 p-6 flex flex-col">
-            <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center justify-between mb-2">
+          <div className="flex-1 p-5 flex flex-col">
+            <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
               <span>{formatDate(details.date)}</span>
-              {details.author && <span>By {details.author}</span>}
             </div>
             
-            <h2 className="text-xl font-semibold mb-3">{details.title}</h2>
+            <h2 className="text-xl font-bold mb-3 text-gray-800 dark:text-gray-100 line-clamp-2 text-left">{details.title}</h2>
             
             {details.introduction && (
-              <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-3 mb-4">
+              <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-4">
                 {details.introduction}
               </p>
             )}
             
-            <div className="mt-auto pt-4">
-              <span className="text-sm font-medium inline-flex items-center">
+            <div className="mt-auto pt-3 border-t border-gray-100 dark:border-gray-800">
+              <span className="text-sm font-semibold inline-flex items-center text-blue-600 dark:text-blue-400 transition-transform group">
                 Read more
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1.5 group-hover:translate-x-1 transition-transform">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </span>
