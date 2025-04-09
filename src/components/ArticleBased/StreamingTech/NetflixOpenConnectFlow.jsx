@@ -12,17 +12,17 @@ const NetflixOpenConnectFlow = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     // Initial check
     checkMobile();
-    
+
     // Add resize listener
     window.addEventListener("resize", checkMobile);
-    
+
     // Cleanup
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-  
+
   // Node styles
   const nodeStyle = {
     padding: "10px",
@@ -36,35 +36,27 @@ const NetflixOpenConnectFlow = () => {
   const awsStyle = { ...nodeStyle, backgroundColor: "#09122C", color: "white" };
   const ocaStyle = { ...nodeStyle, backgroundColor: "#872341", color: "white" };
   const ispStyle = { ...nodeStyle, backgroundColor: "#BE3144", color: "white" };
-  const userStyle = { ...nodeStyle, backgroundColor: "#E17564", color: "white" };
-  const ixpStyle = { ...nodeStyle, backgroundColor: "#872341", color: "white", opacity: 0.7 };
-
-  // Position nodes based on screen size
-  const getMobilePositions = () => {
-    return {
-      awsBackend: { x: 150, y: 50 },
-      steeringService: { x: 150, y: 130 },
-      ocaLocal: { x: 50, y: 230 },
-      ocaRegional: { x: 150, y: 230 },
-      ocaIxp: { x: 250, y: 230 },
-      ispNetwork: { x: 50, y: 330 },
-      user: { x: 50, y: 410 },
-    };
+  const userStyle = {
+    ...nodeStyle,
+    backgroundColor: "#E17564",
+    color: "white",
+  };
+  const ixpStyle = {
+    ...nodeStyle,
+    backgroundColor: "#872341",
+    color: "white",
+    opacity: 0.7,
   };
 
-  const getDesktopPositions = () => {
-    return {
-      awsBackend: { x: 400, y: 50 },
-      steeringService: { x: 400, y: 150 },
-      ocaLocal: { x: 200, y: 300 },
-      ocaRegional: { x: 400, y: 300 },
-      ocaIxp: { x: 600, y: 300 },
-      ispNetwork: { x: 200, y: 400 },
-      user: { x: 200, y: 500 },
-    };
+  const positions = {
+    awsBackend: { x: 400, y: 50 },
+    steeringService: { x: 400, y: 150 },
+    ocaLocal: { x: 200, y: 300 },
+    ocaRegional: { x: 400, y: 300 },
+    ocaIxp: { x: 600, y: 300 },
+    ispNetwork: { x: 200, y: 400 },
+    user: { x: 200, y: 500 },
   };
-
-  const positions = isMobile ? getMobilePositions() : getDesktopPositions();
 
   // Initial nodes representing the Netflix content delivery architecture
   const initialNodes = [
@@ -142,7 +134,11 @@ const NetflixOpenConnectFlow = () => {
       source: "steering-service",
       target: "oca-local",
       label: "Primary path",
-      labelStyle: { fill: "#111", fontWeight: "bold", fontSize: isMobile ? "10px" : "12px" },
+      labelStyle: {
+        fill: "#111",
+        fontWeight: "bold",
+        fontSize: isMobile ? "10px" : "12px",
+      },
       style: { stroke: "#872341", strokeWidth: 3 },
       markerEnd: { type: MarkerType.Arrow, color: "#000" },
     },
@@ -187,36 +183,30 @@ const NetflixOpenConnectFlow = () => {
   ];
 
   return (
-    <div style={{ 
-      width: "100%", 
-      height: isMobile ? "450px" : "600px", 
-      border: "1px solid #ddd" 
-    }}>
-      <ReactFlow 
-        nodes={initialNodes} 
-        edges={initialEdges} 
+    <div
+      style={{
+        width: "100%",
+        height: isMobile ? "450px" : "600px",
+        border: "1px solid #ddd",
+      }}
+    >
+      <ReactFlow
+        nodes={initialNodes}
+        edges={initialEdges}
+        defaultViewport={{
+          zoom: 1.2,
+        }}
         fitView
-        fitViewOptions={{ padding: isMobile ? 0.2 : 0.5 }}
-        minZoom={0.5}
-        maxZoom={1.5}
-        defaultZoom={1}
+        fitViewOptions={{
+          padding: 0.2,
+        }}
         nodesDraggable={false}
         nodesConnectable={false}
         elementsSelectable={false}
       >
-        <Background variant="dots" gap={12} size={0.8} />
+        <Background variant="dots" gap={12} size={1} color="#aaa" />
+        <Controls showZoom={true} showFitView={true} />
       </ReactFlow>
-      <div
-        style={{
-          padding: "10px",
-          fontSize: isMobile ? "12px" : "14px",
-          color: "#09122C",
-          textAlign: "center",
-        }}
-      >
-        Netflix's Open Connect architecture routes your stream via the closest
-        cached copy, dramatically reducing latency and network congestion.
-      </div>
     </div>
   );
 };

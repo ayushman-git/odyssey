@@ -10,6 +10,8 @@ import AreciboCountingGrid from "../ArticleBased/DecodingArecibo/AreciboCounting
 import AdaptiveBitrateDemo from "../ArticleBased/StreamingTech/AdaptiveBitrateDemo";
 import PerTitleEncodingDemo from "../ArticleBased/StreamingTech/PerTitleEncodingDemo";
 import NetflixEncodingVersions from "../ArticleBased/StreamingTech/NetflixEncodingVersions";
+import NetflixOpenConnectFlow from "../ArticleBased/StreamingTech/NetflixOpenConnectFlow";
+import Totoro from "../ArticleBased/StreamingTech/Totoro";
 
 const components = {
   h1: Heading.H1,
@@ -40,6 +42,8 @@ export default function CustomMDX(props) {
         AdaptiveBitrateDemo,
         PerTitleEncodingDemo,
         NetflixEncodingVersions,
+        NetflixOpenConnectFlow,
+        Totoro
       }}
     />
   );
