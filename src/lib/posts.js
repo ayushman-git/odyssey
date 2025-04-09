@@ -17,33 +17,35 @@ import CustomMDX from "@/components/mdx/mdx-remote";
 
 const articlesDir = path.join(process.cwd(), "src", "content");
 
-const sortArticles = (articles) => {
-  return articles.sort((a, b) => {
-    const prevDate = a.date.split("-");
-    const nextDate = b.date.split("-");
-
-    const prevDateObj = new Date(prevDate[2], prevDate[1] - 1, prevDate[0]);
-    const nextDateObj = new Date(nextDate[2], nextDate[1] - 1, nextDate[0]);
-
-    if (prevDateObj > nextDateObj) return -1;
-    if (prevDateObj < nextDateObj) return 1;
-    return 0;
-  });
-};
-
 export function getArticles() {
-  const fileNames = fs.readdirSync(articlesDir);
-  const allArticlesData = fileNames.map((file) => {
-    const fileName = file.replace(/\.mdx$/, "");
-    const fullPath = path.join(articlesDir, file);
-    const fileContent = fs.readFileSync(fullPath, "utf-8");
-    const parsedMatter = matter(fileContent);
-    return {
-      slug: fileName,
-      ...parsedMatter.data,
-    };
-  });
-  return sortArticles(allArticlesData);
+  const files = fs.readdirSync(articlesDir);
+  const allArticlesData = files
+    .filter((file) => file.endsWith(".mdx"))
+    .map((file) => {
+      const id = file.replace(/\.mdx$/, "");
+      const fullPath = path.join(articlesDir, file);
+      const fileContents = fs.readFileSync(fullPath, "utf8");
+      
+      const { data } = matter(fileContents);
+      
+      // Extract metadata
+      return {
+        id,
+        slug: id,
+        ...data,
+      };
+    })
+    // Filter out posts with hidden: true
+    .filter(post => !post.hidden)
+    .sort((a, b) => {
+      if (a.date < b.date) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+
+  return allArticlesData;
 }
 
 export async function getArticle(slug) {
