@@ -1,9 +1,9 @@
 ---
 author: Ayushman
-title: "From Fireflies to Fiber Optics: How Netflix Streams Your Favorite Shows"
+title: "From Fireflies to Fiber Optics: How Netflix Streams Your Favourite Shows"
 type: Case Study
 date: 09-04-2025
-cover_img: /articles/netflix/cover.png
+cover_img: https://i.imgur.com/KDVRQLS.png
 showAside: true
 introduction: I didn't expect a viral trend of AI-generated Studio Ghibli art to lead me back to *Grave of the Fireflies*. Yet there I was, a bowl of ice cream in one hand and a box of tissues in the other, streaming this 1988 heart-wrenching classic on Netflix on a quiet evening.
 ---
@@ -41,7 +41,7 @@ introduction: I didn't expect a viral trend of AI-generated Studio Ghibli art to
   <div className="ghibli-text"> 
     I didn't expect a viral trend of AI-generated Studio Ghibli art to lead me back to *Grave of the Fireflies*. Yet there I was, a bowl of ice cream in hand, streaming this 1988 masterpiece on a quiet evening. The internet had been flooded with whimsical AI images of Ghibli characters, and it sparked a wave of nostalgia strong enough to hit play on the real thing. As the opening scene rolled in, I settled in — and so did Netflix, ready to deliver an uninterrupted viewing experience. No buffering, no dips in quality — just smooth, high-quality streaming from start to finish.
 
-    It got me thinking: how does Netflix manage to serve up flawless playback, even when millions of people are binging their favorite classics at the same time? In this deep dive, we'll explore the tech magic behind it — from adaptive streaming and smart video codecs to edge caching and content delivery networks. We'll keep it light, clear, and a little playful, with nods to that Ghibli night as we unravel what keeps our screens smooth and our stories flowing. 
+    It got me thinking: how does Netflix manage to serve up flawless playback, even when millions of people are binging their favourite classics at the same time? In this deep dive, we'll explore the tech magic behind it — from adaptive streaming and smart video codecs to edge caching and content delivery networks. We'll keep it light, clear, and a little playful, with nods to that Ghibli night as we unravel what keeps our screens smooth and our stories flowing. 
   </div>
   <figure className="ghibli-image">
     <img src="/articles/netflix/side.jpg" alt="" style={{
@@ -160,7 +160,7 @@ Now, having all these versions of video is one thing – getting them to you eff
 # Chapter 5: Edge Servers and Open Connect – Netflix’s Delivery Magic
 When you stream on Netflix, the video data isn’t usually coming from some far-off central server. Instead, it’s likely coming from a server near you, possibly even within your internet service provider’s network. This is thanks to **Netflix Open Connect**, the company’s private Content Delivery Network (CDN). Netflix delivers a whopping **95%** of its data traffic through direct connections via Open Connect appliances in ISPs. In plain terms: Netflix strategically places caching servers all over the world so that your movies and shows don’t have to travel far.
 
-Here’s how it works: Netflix provides special server boxes called **Open Connect Appliances (OCAs)** to ISPs (Internet Service Providers) for free. These are basically high-powered caches loaded up with Netflix content. If your ISP participates (and over a thousand ISPs do worldwide), they might have a Netflix OCA in their data center right in your city or region. Popular Netflix content (especially new releases, popular series, regional favorites) is stored on these local servers. So when you hit play, the Netflix backend (running in AWS cloud) will route your streaming request to the nearest OCA that has the content. Rather than your stream coming across the globe, it might just come from down the street! 
+Here’s how it works: Netflix provides special server boxes called **Open Connect Appliances (OCAs)** to ISPs (Internet Service Providers) for free. These are basically high-powered caches loaded up with Netflix content. If your ISP participates (and over a thousand ISPs do worldwide), they might have a Netflix OCA in their data center right in your city or region. Popular Netflix content (especially new releases, popular series, regional favourites) is stored on these local servers. So when you hit play, the Netflix backend (running in AWS cloud) will route your streaming request to the nearest OCA that has the content. Rather than your stream coming across the globe, it might just come from down the street! 
 
 In my case, streaming *Grave of the Fireflies* from my home in the evening, Netflix likely directed my video segments from an Open Connect server my ISP hosts in the metro area. Even though it’s an older film, the trend of AI Ghibli art could have caused many viewers in my region to watch it around the same time. Netflix’s system (via a *steering service*) would choose an OCA that had *Grave of the Fireflies* already cached. If by chance it wasn’t cached locally (maybe it wasn’t super popular in my region until then), Netflix’s system might pull it from a regional hub or an Internet Exchange where they have servers (Netflix also deploys OCAs at internet exchange points for broader coverage). But once one person in an area requests a movie, that local OCA can cache it so the next person gets it locally. It’s like Netflix has built thousands of mini-Blockbusters inside ISP networks, stocked with the most-requested titles.
 
@@ -232,7 +232,7 @@ I grew up watching Studio Ghibli films. They weren’t just movies — they were
 
 Netflix’s tech fades into the background, not because it’s simple — but because it’s designed to disappear. Like the studio stage crew that dims the lights, opens the curtain, and sets the scene — their work is most successful when it isn’t noticed. But for those of us who peek behind the curtain, it’s nothing short of a masterpiece.
 
-So the next time you binge a series, or rewatch an old favorite, or even explore a Ghibli movie for the very first time, take a second to marvel — not just at the story you’re watching, but at the quiet brilliance that delivers it to you. From fiber optics and frame buffering to machine learning and chaos engineering — this isn’t just entertainment. It’s a symphony of engineering, crafted with care so that all you have to do is sit back and feel something.
+So the next time you binge a series, or rewatch an old favourite, or even explore a Ghibli movie for the very first time, take a second to marvel — not just at the story you’re watching, but at the quiet brilliance that delivers it to you. From fiber optics and frame buffering to machine learning and chaos engineering — this isn’t just entertainment. It’s a symphony of engineering, crafted with care so that all you have to do is sit back and feel something.
 
 And honestly, isn’t that beautiful?
 

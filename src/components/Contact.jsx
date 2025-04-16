@@ -109,7 +109,7 @@ function Contact() {
         </section>
       </section>
       <div className="flex justify-center mt-8">
-        <article className="max-w-[800px] text-base sm:text-lg md:text-xl px-4 sm:px-6 md:px-0">
+        <article className="text-gray-200 max-w-[800px] text-base sm:text-lg md:text-xl px-4 sm:px-6 md:px-0">
           <p className="mb-4">
             I'm a software engineer passionate about crafting intuitive,
             user-centric digital experiences. My journey in tech has taken me
