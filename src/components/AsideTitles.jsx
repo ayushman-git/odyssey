@@ -93,7 +93,7 @@ export default function AsideTitles({ headings }) {
 
   return (
     <aside
-      className={`sticky top-44 w-60 -ml-72 mt-10 h-0 p-5 transition-opacity duration-300 ${
+      className={`sticky top-48 w-60 -ml-72 mt-20 h-0 p-5 transition-opacity duration-300 ${
         isTableOfContentVisible ? "opacity-100" : "opacity-0"
       }`}
       id="table-of-content"
