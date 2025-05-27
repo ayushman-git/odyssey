@@ -93,7 +93,7 @@ export default async function Page({ params }) {
         </div>
         
         <article className="max-w-screen-md lg:max-w-[900px] w-full px-0 lg:px-8 -mt-10 md:-mt-16 relative z-30">
-          <div className="bg-white/95 dark:bg-[#1c1c1c] backdrop-blur-sm border border-gray-100 dark:border-gray-800 rounded-lg p-6 md:p-12 shadow-sm">
+          <div className="bg-white/95 dark:bg-[#1c1c1c] backdrop-blur-sm border border-gray-100 dark:border-gray-800 rounded-lg p-6 md:p-12 md:pt-0 shadow-sm">
             <section className="prose dark:prose-invert prose-headings:font-medium prose-h2:text-2xl prose-h3:text-xl prose-headings:tracking-tight prose-a:text-[#4a7a4a] dark:prose-a:text-[#b7d9b7] prose-a:no-underline prose-a:border-b prose-a:border-[#b7d9b7]/30 dark:prose-a:border-[#4a7a4a]/30 hover:prose-a:border-[#b7d9b7] dark:hover:prose-a:border-[#4a7a4a] prose-img:rounded-md prose-img:shadow-sm max-w-none prose-p:leading-relaxed">
               <CustomMDX source={fileContent} showAside={showAside} />
             </section>

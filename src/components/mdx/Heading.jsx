@@ -22,5 +22,5 @@ export const Heading = {
       </h1>
     );
   },
-  H2: ({ children }) => <h2 className="dark:text-gray-300 text-xl mt-6 mb-3 font-semibold">{children}</h2>,
+  H2: ({ children }) => <h2 className="dark:text-gray-300 text-xl text-left mt-6 mb-3 font-semibold">{children}</h2>,
 };

@@ -67,7 +67,7 @@ export default function AsideTitles({ headings }) {
               className={`block text-xs transition-all duration-300 ease-in-out ${
                 isActive 
                   ? "text-blue-500 font-medium opacity-100" 
-                  : "text-gray-600 opacity-75 hover:opacity-90"
+                  : "dark:text-gray-400 text-gray-700 opacity-75 hover:opacity-90"
               } hover:text-blue-600`}
               href={`#${id}`}
               ref={(el) => {
@@ -93,7 +93,7 @@ export default function AsideTitles({ headings }) {
 
   return (
     <aside
-      className={`sticky top-44 w-60 -ml-72 mt-10 h-0 p-5 transition-opacity duration-300 ${
+      className={`sticky top-48 w-60 -ml-72 mt-16 h-0 p-5 transition-opacity duration-300 ${
         isTableOfContentVisible ? "opacity-100" : "opacity-0"
       }`}
       id="table-of-content"
