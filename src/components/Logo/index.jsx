@@ -1,16 +1,19 @@
 import Link from "next/link";
 import React from "react";
-import { Maven_Pro } from "next/font/google";
+import { Meow_Script } from "next/font/google";
 
-const maven = Maven_Pro({
+const meowScript = Meow_Script({
+  weight: "400",
   subsets: ["latin"],
-  style: ["normal"],
+  display: "swap",
 });
 
 function Logo() {
   return (
     <Link href="/">
-      <h1 className={`cursor-pointer font-light text-lg ${maven.className}`}>Home</h1>
+      <h1 className={`cursor-pointer text-2xl ${meowScript.className} hover:opacity-80 transition-opacity duration-200`}>
+        Ayushman
+      </h1>
     </Link>
   );
 }
