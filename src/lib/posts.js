@@ -13,15 +13,38 @@ if (typeof window !== 'undefined') {
 
 const articlesDir = path.join(process.cwd(), "src", "content");
 
-// Cache for articles to avoid repeated file system operations
+// Enhanced cache with metadata
 let articlesCache = null;
 let cacheTimestamp = 0;
+let articleTypesCache = null;
 const CACHE_DURATION = 3600000; // 1 hour in milliseconds
+
+// Optimized date parsing function
+function parseArticleDate(dateString) {
+  if (!dateString) return new Date(0);
+  
+  // Cache parsed dates
+  if (!parseArticleDate.cache) {
+    parseArticleDate.cache = new Map();
+  }
+  
+  if (parseArticleDate.cache.has(dateString)) {
+    return parseArticleDate.cache.get(dateString);
+  }
+  
+  const date = new Date(dateString.split("-").reverse().join("-"));
+  parseArticleDate.cache.set(dateString, date);
+  return date;
+}
 
 // Clear cache function for development
 export function clearArticlesCache() {
   articlesCache = null;
+  articleTypesCache = null;
   cacheTimestamp = 0;
+  if (parseArticleDate.cache) {
+    parseArticleDate.cache.clear();
+  }
 }
 
 export function getArticles() {
@@ -31,41 +54,63 @@ export function getArticles() {
     return articlesCache;
   }
 
-  const files = fs.readdirSync(articlesDir);
-  const allArticlesData = files
-    .filter((file) => file.endsWith(".mdx"))
-    .map((file) => {
-      const id = file.replace(/\.mdx$/, "");
-      const fullPath = path.join(articlesDir, file);
-      const fileContents = fs.readFileSync(fullPath, "utf8");
-      
-      const { data } = matter(fileContents);
-      
-      // Extract metadata
-      return {
-        id,
-        slug: id,
-        ...data,
-      };
-    })
-    // Filter out posts with hidden: true
-    .filter(post => !post.hidden)
-    .sort((a, b) => {
-      // Optimize date comparison
-      if (!a.date || !b.date) return 0;
-      
-      // Convert date strings to comparable format for faster sorting
-      const dateA = new Date(a.date.split("-").reverse().join("-"));
-      const dateB = new Date(b.date.split("-").reverse().join("-"));
-      
-      return dateB - dateA; // Newest first
-    });
+  try {
+    const files = fs.readdirSync(articlesDir);
+    const allArticlesData = files
+      .filter((file) => file.endsWith(".mdx"))
+      .map((file) => {
+        const id = file.replace(/\.mdx$/, "");
+        const fullPath = path.join(articlesDir, file);
+        
+        try {
+          const fileContents = fs.readFileSync(fullPath, "utf8");
+          const { data } = matter(fileContents);
+          
+          // Extract metadata with defaults
+          return {
+            id,
+            slug: id,
+            title: data.title || 'Untitled',
+            type: data.type || 'article',
+            date: data.date || '01-01-1970',
+            disabled: Boolean(data.disabled),
+            hidden: Boolean(data.hidden),
+            ...data,
+          };
+        } catch (error) {
+          console.error(`Error processing article ${file}:`, error);
+          return null;
+        }
+      })
+      .filter(Boolean) // Remove null entries from failed parsing
+      .filter(post => !post.hidden) // Filter out hidden posts
+      .sort((a, b) => {
+        // Optimized date comparison using cached parsing
+        const dateA = parseArticleDate(a.date);
+        const dateB = parseArticleDate(b.date);
+        return dateB - dateA; // Newest first
+      });
 
-  // Update cache
-  articlesCache = allArticlesData;
-  cacheTimestamp = now;
+    // Update cache
+    articlesCache = allArticlesData;
+    cacheTimestamp = now;
 
-  return allArticlesData;
+    return allArticlesData;
+  } catch (error) {
+    console.error('Error reading articles directory:', error);
+    return [];
+  }
+}
+
+// Get unique article types (cached)
+export function getArticleTypes() {
+  const articles = getArticles();
+  
+  if (!articleTypesCache) {
+    articleTypesCache = ["All", ...new Set(articles.map(article => article.type))];
+  }
+  
+  return articleTypesCache;
 }
 
 export async function getArticle(slug) {

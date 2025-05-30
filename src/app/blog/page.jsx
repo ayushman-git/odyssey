@@ -5,6 +5,7 @@ import { generatePageMetadata } from "@/utils";
 
 export const revalidate = 3600; // Revalidate this page every hour
 export const dynamic = 'force-static'; // Force static generation
+export const fetchCache = 'force-cache'; // Cache all fetch requests
 
 // Use the utility function to generate metadata
 export async function generateMetadata() {
@@ -31,6 +32,9 @@ export default async function BlogPage() {
   const activePosts = articles.filter((article) => !article.disabled);
   const featuredArticle = activePosts.length > 0 ? activePosts[0] : null;
   
+  // Pre-compute article types on server for better performance
+  const articleTypes = ["All", ...new Set(activePosts.map(article => article.type))];
+  
   const blogJsonLd = {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -54,8 +58,9 @@ export default async function BlogPage() {
         }}
       />
       <BlogLayout 
-        initialArticles={articles} 
+        initialArticles={activePosts}
         featuredArticle={featuredArticle}
+        articleTypes={articleTypes}
       />
     </>
   );
