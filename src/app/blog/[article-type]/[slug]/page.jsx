@@ -4,6 +4,13 @@ import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import { formatDateString, generatePageMetadata } from "@/utils";
+import { Meow_Script } from "next/font/google";
+
+const meowScript = Meow_Script({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export async function generateMetadata({ params }) {
   const { title, cover_img, introduction, date } = await getArticle(params.slug);
@@ -55,56 +62,123 @@ export default async function Page({ params }) {
           __html: JSON.stringify(articleJsonLd)
         }}
       />
-      <section className="pt-0 relative w-full flex flex-col items-center">
-        <div className="w-full h-[60vh] md:h-[70vh] relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/70 z-10" />
-          <Image
-            src={cover_img}
-            quality={100}
-            fill
-            priority
-            placeholder="blur"
-            blurDataURL={BLUR_DATA_URLS.COVER_IMG}
-            alt={`Cover image for article: ${title}`}
-            style={{
-              objectFit: "cover",
-            }}
-            className="transition-all duration-1000 ease-out hover:scale-105"
-          />
-          
-          <div className="absolute bottom-0 left-0 right-0 md:p-10 z-20 mb-12">
-            <div className="max-w-screen-md lg:max-w-[900px] px-8 mx-auto">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="h-px w-10 bg-[#b7d9b7] dark:bg-[#4a7a4a]"></div>
-                <p className="text-gray-200 text-sm uppercase tracking-wider font-light">{formattedDate}</p>
+      
+      {/* Editorial Header */}
+      <section className="pt-0 relative w-full bg-white dark:bg-black">
+        {/* Magazine-style Header */}
+        <div className="max-w-4xl mx-auto px-8 pt-16 pb-8">
+          {/* Issue/Date Line */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 font-mono tracking-wider uppercase">
+              <div className="h-px w-8 bg-current opacity-50" />
+              <span>VOL. I — {new Date(date).getFullYear()}</span>
+              <div className="h-px w-8 bg-current opacity-50" />
+            </div>
+          </div>
+
+          {/* Article Type */}
+          <div className="text-center mb-6">
+            <span className="text-sm font-medium tracking-[0.2em] text-gray-600 dark:text-gray-400 uppercase">
+              {type}
+            </span>
+          </div>
+
+          {/* Main Title */}
+          <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 text-black dark:text-white">
+            {title}
+          </h1>
+
+          {/* Author & Date */}
+          <div className="text-center space-y-4 mb-12">
+            <div className="flex items-center justify-center gap-6">
+              <div className="h-px w-12 bg-gray-300 dark:bg-gray-600" />
+              <div className="space-y-1">
+                <p className="text-xs font-medium tracking-[0.1em] text-gray-500 dark:text-gray-400 uppercase">
+                  Written by
+                </p>
+                <p className={`${meowScript.className} text-2xl text-black dark:text-white`}>
+                  Ayushman
+                </p>
               </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight mb-6">{title}</h1>
-              <div className="relative z-30">
-                <span className="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-[#b7d9b7] dark:border-[#4a7a4a] text-white text-sm font-medium shadow-sm">
-                  {type}
-                </span>
-              </div>
+              <div className="h-px w-12 bg-gray-300 dark:bg-gray-600" />
+            </div>
+            
+            <div className="text-sm text-gray-500 dark:text-gray-400 font-mono">
+              {formattedDate}
             </div>
           </div>
         </div>
-        
-        <article className="max-w-screen-md lg:max-w-[900px] w-full px-0 lg:px-8 -mt-10 md:-mt-16 relative z-30">
-          <div className="bg-white/95 dark:bg-[#1c1c1c] backdrop-blur-sm border border-gray-100 dark:border-gray-800 rounded-lg p-6 md:p-12 md:pt-0 shadow-sm">
-            <section className="prose dark:prose-invert prose-headings:font-medium prose-h2:text-2xl prose-h3:text-xl prose-headings:tracking-tight prose-a:text-[#4a7a4a] dark:prose-a:text-[#b7d9b7] prose-a:no-underline prose-a:border-b prose-a:border-[#b7d9b7]/30 dark:prose-a:border-[#4a7a4a]/30 hover:prose-a:border-[#b7d9b7] dark:hover:prose-a:border-[#4a7a4a] prose-img:rounded-md prose-img:shadow-sm max-w-none prose-p:leading-relaxed">
+
+        {/* Hero Image */}
+        <div className="max-w-5xl mx-auto px-8 mb-16">
+          <div className="relative h-[50vh] md:h-[60vh] rounded-lg overflow-hidden shadow-2xl">
+            <Image
+              src={cover_img}
+              quality={100}
+              fill
+              priority
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URLS.COVER_IMG}
+              alt={`Cover image for article: ${title}`}
+              style={{
+                objectFit: "cover",
+              }}
+              className="transition-all duration-700 ease-out hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+          </div>
+        </div>
+
+        {/* Article Content */}
+        <div className="max-w-4xl mx-auto px-8 pb-20">
+          <article className="relative">
+            {/* Main Content */}
+            <section className="prose prose-lg dark:prose-invert max-w-none
+              prose-headings:font-light prose-headings:tracking-tight
+              prose-h1:text-4xl prose-h1:mb-8 prose-h1:mt-12
+              prose-h2:text-3xl prose-h2:mb-6 prose-h2:mt-10
+              prose-h3:text-2xl prose-h3:mb-4 prose-h3:mt-8
+              prose-p:leading-relaxed prose-p:text-gray-700 dark:prose-p:text-gray-300
+              prose-p:mb-6 prose-p:font-light prose-p:text-lg
+              prose-a:text-black dark:prose-a:text-white prose-a:no-underline 
+              prose-a:border-b prose-a:border-gray-300 dark:prose-a:border-gray-600
+              hover:prose-a:border-black dark:hover:prose-a:border-white
+              prose-blockquote:border-l-2 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600
+              prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:font-light
+              prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8
+              prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
+              prose-pre:bg-gray-100 dark:prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700">
+              
               <CustomMDX source={fileContent} showAside={showAside} />
             </section>
-            
-            <div className="mt-16 pt-6 border-t border-gray-200 dark:border-gray-800 flex flex-wrap justify-between items-center gap-3">
-              <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                <span className="inline-block w-1.5 h-1.5 bg-[#b7d9b7] dark:bg-[#4a7a4a] rounded-full mr-2"></span>
-                {type}
+
+            {/* Article Footer */}
+            <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
+                {/* Article Info */}
+                <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full"></div>
+                    <span className="font-mono uppercase tracking-wider">{type}</span>
+                  </div>
+                  <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+                  <span className="font-mono">{formattedDate}</span>
+                </div>
+
+                {/* Back to Blog */}
+                <a 
+                  href="/blog" 
+                  className="group inline-flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+                >
+                  <svg className="w-4 h-4 transform transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
+                  <span className="font-mono tracking-wider uppercase">Back to Journal</span>
+                </a>
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                {formattedDate}
-              </div>
-            </div>
-          </div>
-        </article>
+            </footer>
+          </article>
+        </div>
       </section>
     </>
   );

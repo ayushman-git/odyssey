@@ -16,6 +16,7 @@ import Totoro from "../ArticleBased/StreamingTech/Totoro";
 const components = {
   h1: Heading.H1,
   h2: Heading.H2,
+  h3: Heading.H3,
   blockquote: Blockquote,
   em: Typography.Em,
   p: Typography.P,

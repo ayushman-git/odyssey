@@ -11,8 +11,8 @@ const styleListItems = (children) => {
   return React.Children.map(children, child => {
     if (child.type === 'li') {
       return React.cloneElement(child, {
-        className: "my-1.5 sm:font-light font-normal text-lg text-gray-700 dark:text-gray-400 pl-1",
-        style: { lineHeight: "28px" }
+        className: "my-2 font-light text-lg text-gray-700 dark:text-gray-300 pl-1",
+        style: { lineHeight: "32px" }
       });
     } else if (child.props && child.props.children) {
       // Handle nested elements by recursively styling their children
@@ -25,13 +25,13 @@ const styleListItems = (children) => {
 };
 
 export const Typography = {
-  Em: ({ children }) => <em>{children}</em>,
+  Em: ({ children }) => <em className="italic font-light">{children}</em>,
 
   P: ({ children }) => (
     <p
-      className="my-4 sm:font-light font-normal text-lg text-gray-700 dark:text-gray-400"
+      className="my-6 font-light text-lg text-gray-700 dark:text-gray-300"
       style={{
-        lineHeight: "30px",
+        lineHeight: "32px",
       }}
     >
       {children}
@@ -48,35 +48,35 @@ export const Typography = {
     }
 
     return (
-      <code className="px-1.5 py-0.5 mx-0.5 rounded bg-gray-100 dark:bg-gray-800 text-pink-500 dark:text-pink-300 font-mono text-sm">
+      <code className="px-2 py-1 mx-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono text-sm border border-gray-200 dark:border-gray-700">
         {children}
       </code>
     );
   },
 
   Ol: ({ children }) => (
-    <ol className="list-decimal list-outside mx-6 my-5 dark:text-gray-400 space-y-1 pl-4">
+    <ol className="list-decimal list-outside mx-6 my-6 text-gray-700 dark:text-gray-300 space-y-2 pl-4">
       {styleListItems(children)}
     </ol>
   ),
 
   Ul: ({ children }) => (
-    <ul className="list-disc list-outside mx-6 my-5 dark:text-gray-400 space-y-1 pl-4">
+    <ul className="list-disc list-outside mx-6 my-6 text-gray-700 dark:text-gray-300 space-y-2 pl-4">
       {styleListItems(children)}
     </ul>
   ),
 
   Li: ({ children }) => (
     <li
-      className="my-1.5 sm:font-light font-normal text-lg text-gray-700 dark:text-gray-400 pl-1"
+      className="my-2 font-light text-lg text-gray-700 dark:text-gray-300 pl-1"
       style={{
-        lineHeight: "28px",
+        lineHeight: "32px",
       }}
     >
       {children}
     </li>
   ),
 
-  B: ({ children }) => <b className="font-semibold">{children}</b>,
-  Strong: ({ children }) => <b className="font-semibold">{children}</b>,
+  B: ({ children }) => <b className="font-medium text-black dark:text-white">{children}</b>,
+  Strong: ({ children }) => <strong className="font-medium text-black dark:text-white">{children}</strong>,
 };
