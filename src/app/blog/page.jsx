@@ -24,6 +24,10 @@ export default async function BlogPage() {
   // Fetch articles with server component
   const articles = getArticles();
   
+  // Compute featured article server-side
+  const activePosts = articles.filter((article) => !article.disabled);
+  const featuredArticle = activePosts.length > 0 ? activePosts[0] : null;
+  
   const blogJsonLd = {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -46,7 +50,10 @@ export default async function BlogPage() {
           __html: JSON.stringify(blogJsonLd)
         }}
       />
-      <BlogLayout initialArticles={articles} />
+      <BlogLayout 
+        initialArticles={articles} 
+        featuredArticle={featuredArticle}
+      />
     </>
   );
 }

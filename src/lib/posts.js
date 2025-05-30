@@ -11,10 +11,6 @@ if (typeof window !== 'undefined') {
   );
 }
 
-import { remark } from "remark";
-import html from "remark-html";
-import CustomMDX from "@/components/mdx/mdx-remote";
-
 const articlesDir = path.join(process.cwd(), "src", "content");
 
 export function getArticles() {
