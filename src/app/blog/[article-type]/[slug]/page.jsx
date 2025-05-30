@@ -3,7 +3,6 @@ import Script from "next/script";
 import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
-import LinearProgress from "@/components/LinearProgress";
 import { formatDateString, generatePageMetadata } from "@/utils";
 
 export async function generateMetadata({ params }) {
@@ -56,9 +55,6 @@ export default async function Page({ params }) {
           __html: JSON.stringify(articleJsonLd)
         }}
       />
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <LinearProgress />
-      </div>
       <section className="pt-0 relative w-full flex flex-col items-center">
         <div className="w-full h-[60vh] md:h-[70vh] relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/70 z-10" />
