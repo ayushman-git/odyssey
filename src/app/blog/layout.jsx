@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer";
+import CosmicFooter from "@/components/CosmisFooter";
 import Navbar from "@/components/LandingPage/Navbar";
 import Script from "next/script";
 import React from "react";
@@ -36,7 +36,7 @@ function Layout({ children }) {
       <main className="w-full pb-32">
         <section className="w-full grid place-items-center">{children}</section>
       </main>
-      <Footer />
+      <CosmicFooter variant="editorial" />
     </div>
   );
 }
