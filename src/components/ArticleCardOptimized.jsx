@@ -51,7 +51,7 @@ export default function ArticleCard({ details }) {
 
   return (
     <Link 
-      href={`/blog/${convertToSlug(details.title)}`}
+      href={`/blog/${convertToSlug(details.type)}/${details.slug}`}
       className="block w-full h-full border rounded-3xl overflow-hidden group hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
     >
       <div className="relative overflow-hidden w-full">
