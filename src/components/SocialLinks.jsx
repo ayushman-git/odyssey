@@ -3,10 +3,24 @@ import { FaGithub, FaLinkedin, FaBehance, FaMedium, FaEnvelope } from "react-ico
 import { gsap } from "gsap";
 import { Snackbar, Alert } from "@mui/material";
 
-const SocialLinks = () => {
+const SocialLinks = ({ variant = "default" }) => {
   const linksRef = useRef([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const emailAddress = "ayushman.gupta308@gmail.com";
+
+  // Theme configuration based on variant
+  const themeConfig = {
+    default: {
+      textColor: "text-white",
+      hoverColor: "#ffffff",
+    },
+    editorial: {
+      textColor: "text-gray-600 dark:text-gray-400",
+      hoverColor: "#666666",
+    }
+  };
+
+  const theme = themeConfig[variant] || themeConfig.default;
 
   useEffect(() => {
     // Subtle pulsing animation for links
@@ -32,7 +46,7 @@ const SocialLinks = () => {
   const handleLinkHover = (index, isEntering) => {
     gsap.to(linksRef.current[index], {
       scale: isEntering ? 1.2 : 1,
-      color: isEntering ? "#ffffff" : "#ffffff",
+      color: isEntering ? theme.hoverColor : "inherit",
       duration: 0.3,
       ease: "power2.out",
     });
@@ -106,7 +120,7 @@ const SocialLinks = () => {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white transition-colors duration-300"
+            className={`${theme.textColor} transition-colors duration-300 hover:text-gray-700 dark:hover:text-gray-300`}
             aria-label={link.label}
             onMouseEnter={() => handleLinkHover(index, true)}
             onMouseLeave={() => handleLinkHover(index, false)}

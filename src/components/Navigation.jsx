@@ -1,15 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NavButton from "./NavButton";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { scrollToSectionWithId } from "@/utils";
+import { gsap } from "gsap";
 
 const Navigation = ({ logo, contactRef }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const blogButtonRef = useRef(null);
+  const mobileBlogButtonRef = useRef(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -18,10 +21,10 @@ const Navigation = ({ logo, contactRef }) => {
 
     // Initial check
     checkMobile();
-    
+
     // Add event listener
     window.addEventListener("resize", checkMobile);
-    
+
     // Cleanup
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
@@ -29,6 +32,25 @@ const Navigation = ({ logo, contactRef }) => {
   const handleNavClick = (action) => {
     setIsOpen(false); // Close menu when item is clicked
     action();
+  };
+
+  // GSAP hover animations for blog button
+  const handleBlogHover = (ref) => {
+    gsap.to(ref.current, {
+      scale: 1.05,
+      boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  };
+
+  const handleBlogLeave = (ref) => {
+    gsap.to(ref.current, {
+      scale: 1,
+      boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+      duration: 0.3,
+      ease: "power2.out"
+    });
   };
 
   // Animation variants
@@ -61,7 +83,7 @@ const Navigation = ({ logo, contactRef }) => {
         type: "spring",
         stiffness: 300,
         damping: 40,
-      }
+      },
     },
     open: {
       opacity: 1,
@@ -72,8 +94,8 @@ const Navigation = ({ logo, contactRef }) => {
         damping: 30,
         when: "beforeChildren",
         staggerChildren: 0.1,
-      }
-    }
+      },
+    },
   };
 
   return (
@@ -84,7 +106,7 @@ const Navigation = ({ logo, contactRef }) => {
       variants={navVariants}
     >
       <motion.div variants={itemVariants}>{logo}</motion.div>
-      
+
       {/* Desktop Navigation */}
       {!isMobile && (
         <ul className="flex space-x-4">
@@ -101,9 +123,13 @@ const Navigation = ({ logo, contactRef }) => {
           </motion.li>
           <motion.li variants={itemVariants}>
             <NavButton
+              ref={blogButtonRef}
               onClick={() => {
                 router.push("/blog");
               }}
+              onMouseEnter={() => handleBlogHover(blogButtonRef)}
+              onMouseLeave={() => handleBlogLeave(blogButtonRef)}
+              className="!bg-white !text-gray-900 !hover:bg-white !hover:text-gray-900 font-semibold px-6 py-2 rounded-full shadow-sm"
             >
               Blog
             </NavButton>
@@ -134,16 +160,20 @@ const Navigation = ({ logo, contactRef }) => {
           >
             <motion.ul className="flex flex-col items-center space-y-6">
               <motion.li variants={itemVariants}>
-                <NavButton 
-                  onClick={() => handleNavClick(() => scrollToSectionWithId("about"))}
+                <NavButton
+                  onClick={() =>
+                    handleNavClick(() => scrollToSectionWithId("about"))
+                  }
                   className="text-xl"
                 >
                   About
                 </NavButton>
               </motion.li>
               <motion.li variants={itemVariants}>
-                <NavButton 
-                  onClick={() => handleNavClick(() => scrollToSectionWithId("my-stack"))}
+                <NavButton
+                  onClick={() =>
+                    handleNavClick(() => scrollToSectionWithId("my-stack"))
+                  }
                   className="text-xl"
                 >
                   Skills
@@ -151,8 +181,11 @@ const Navigation = ({ logo, contactRef }) => {
               </motion.li>
               <motion.li variants={itemVariants}>
                 <NavButton
+                  ref={mobileBlogButtonRef}
                   onClick={() => handleNavClick(() => router.push("/blog"))}
-                  className="text-xl"
+                  onMouseEnter={() => handleBlogHover(mobileBlogButtonRef)}
+                  onMouseLeave={() => handleBlogLeave(mobileBlogButtonRef)}
+                  className="text-xl !bg-white !text-gray-900 !hover:bg-white !hover:text-gray-900 font-semibold px-6 py-2 rounded-full shadow-sm"
                 >
                   Blog
                 </NavButton>
@@ -171,9 +204,9 @@ const HamburgerIcon = ({ isOpen }) => {
     <div className="w-5 h-5 flex flex-col justify-between cursor-pointer">
       <motion.div
         className="w-full h-0.5 bg-white"
-        animate={{ 
+        animate={{
           rotate: isOpen ? 45 : 0,
-          y: isOpen ? 7 : 0
+          y: isOpen ? 7 : 0,
         }}
         transition={{ duration: 0.3 }}
       />
@@ -184,9 +217,9 @@ const HamburgerIcon = ({ isOpen }) => {
       />
       <motion.div
         className="w-full h-0.5 bg-white"
-        animate={{ 
+        animate={{
           rotate: isOpen ? -45 : 0,
-          y: isOpen ? -7 : 0
+          y: isOpen ? -7 : 0,
         }}
         transition={{ duration: 0.3 }}
       />

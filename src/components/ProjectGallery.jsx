@@ -15,21 +15,40 @@ const ProjectGallery = () => {
   }, []);
 
   return (
-    <div className="relative">
-      <h2 className="text-3xl md:text-4xl font-bold mb-2 text-center text-white">
+    <div className="relative max-w-screen-xl mx-auto px-4 py-16">
+      <motion.h2 
+        className="text-3xl md:text-4xl font-bold mb-2 text-center text-white"
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         Featured Projects
-      </h2>
-      <p className="text-center text-gray-400 mb-10 max-w-2xl mx-auto">
+      </motion.h2>
+      <motion.p 
+        className="text-center text-gray-400 mb-10 max-w-2xl mx-auto"
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+      >
         A collection of my recent work and side projects showcasing my skills and interests in software development.
-      </p>
+      </motion.p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
-        {projects.map((project) => (
+        {projects.map((project, index) => (
           <motion.div
             key={project.id}
             className="flex flex-col group h-full relative"
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ 
+              duration: 0.6, 
+              delay: index * 0.15,
+              ease: "easeOut" 
+            }}
             whileHover={{ y: -5 }}
-            transition={{ duration: 0.3 }}
           >
             {isClient ? (
               // Card is no longer wrapped in an anchor tag

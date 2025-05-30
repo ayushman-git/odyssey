@@ -6,16 +6,16 @@ import SocialLinks from "../SocialLinks";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { scrollToSectionWithId } from "@/utils";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // Register ScrollTrigger plugin
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-function CosmicFooter() {
-  const router = useRouter();
+function CosmicFooter({ variant = "default" }) {
+  const pathname = usePathname();
   const [isHovered, setIsHovered] = useState(false);
   const footerRef = useRef(null);
   const footerInView = useInView(footerRef, { once: true, amount: 0.2 });
@@ -28,6 +28,32 @@ function CosmicFooter() {
     width: 0,
     height: 0,
   });
+
+  // Theme configuration based on variant
+  const themeConfig = {
+    default: {
+      containerClass: "rounded-2xl bg-blue-700",
+      textColor: "text-white",
+      dividerColor: "border-white/20",
+      linkHoverColor: "hover:text-white",
+      bgOpacity: "opacity-0",
+      accentColor: "bg-white",
+      textSecondary: "text-white/90",
+      textMuted: "text-white/80"
+    },
+    editorial: {
+      containerClass: "border border-gray-200 dark:border-gray-700 bg-white dark:bg-black",
+      textColor: "text-black dark:text-white",
+      dividerColor: "border-gray-200 dark:border-gray-700",
+      linkHoverColor: "hover:text-gray-700 dark:hover:text-gray-300",
+      bgOpacity: "opacity-0", // No pattern for editorial
+      accentColor: "bg-black dark:bg-white",
+      textSecondary: "text-gray-600 dark:text-gray-400",
+      textMuted: "text-gray-500 dark:text-gray-500"
+    }
+  };
+
+  const theme = themeConfig[variant] || themeConfig.default;
 
   // Update footer dimensions on mount and resize
   useEffect(() => {
@@ -58,22 +84,23 @@ function CosmicFooter() {
     });
   };
 
-  // Lazy load the background pattern
+  // Lazy load the background pattern (only for default variant)
   useEffect(() => {
-    if (footerInView) {
+    if (footerInView && variant === "default") {
       const image = new Image();
       image.src = topographyBg.src;
       image.onload = () => {
         setBgLoaded(true);
       };
     }
-  }, [footerInView]);
+  }, [footerInView, variant]);
 
-  // Enhanced background pattern animation with GSAP
+  // Enhanced background pattern animation with GSAP (only for default variant)
   useEffect(() => {
-    if (!footerRef.current) return;
+    if (!footerRef.current || variant !== "default") return;
 
     const patternEl = footerRef.current.querySelector(".pattern-bg");
+    if (!patternEl) return;
 
     gsap.to(patternEl, {
       opacity: isHovered ? 0.4 : 0,
@@ -90,7 +117,7 @@ function CosmicFooter() {
         ease: "power1.out",
       });
     }
-  }, [isHovered, mousePosition.x, mousePosition.y]);
+  }, [isHovered, mousePosition.x, mousePosition.y, variant]);
 
   // Animate content when in view
   useEffect(() => {
@@ -143,26 +170,12 @@ function CosmicFooter() {
     hover: { scale: 1.0, transition: { duration: 0.4, ease: "easeOut" } },
   };
 
-  // Handle navigation action based on item type
-  const handleNavigation = (item) => {
-    if (item.id === "home") {
-      // For home, scroll to top
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else if (item.id === "blog") {
-      // For blog, navigate to blog page
-      router.push("/blog");
-    } else {
-      // For other items, scroll to their section IDs
-      scrollToSectionWithId(item.id);
-    }
-  };
-
-  // Map navigation items to their corresponding section IDs or actions
+  // Map navigation items to their corresponding routes or section IDs
   const navItems = [
-    { name: "Home", id: "home" },
-    { name: "Projects", id: "projects" },
-    { name: "Skills", id: "my-stack" },
-    { name: "Blog", id: "blog" },
+    { name: "Home", href: "/" },
+    { name: "Projects", href: "/#projects" },
+    { name: "Skills", href: "/#my-stack" },
+    { name: "Blog", href: "/blog" },
   ];
 
   return (
@@ -173,25 +186,29 @@ function CosmicFooter() {
         animate="animate"
         whileHover="hover"
         variants={footerVariants}
-        className="rounded-2xl bg-blue-700 relative overflow-hidden p-5 sm:p-8 lg:p-12 mt-12 mb-6"
+        className={`${theme.containerClass} relative overflow-hidden p-5 sm:p-8 lg:p-12 mt-12 mb-6 ${
+          variant === "editorial" ? "transition-all duration-300" : ""
+        }`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onMouseMove={handleMouseMove}
       >
-        {/* Background div with repeating pattern - with lazy loading */}
-        <div
-          className="pattern-bg absolute inset-0 w-full h-full opacity-0"
-          style={{
-            backgroundImage: bgLoaded ? `url(${topographyBg.src})` : "none",
-            backgroundRepeat: "repeat",
-            backgroundSize: "400px 400px",
-            mixBlendMode: "soft-light",
-            transformOrigin: "center center",
-            willChange: "transform, opacity",
-          }}
-        />
+        {/* Background div with repeating pattern - only for default variant */}
+        {variant === "default" && (
+          <div
+            className={`pattern-bg absolute inset-0 w-full h-full ${theme.bgOpacity}`}
+            style={{
+              backgroundImage: bgLoaded ? `url(${topographyBg.src})` : "none",
+              backgroundRepeat: "repeat",
+              backgroundSize: "400px 400px",
+              mixBlendMode: "soft-light",
+              transformOrigin: "center center",
+              willChange: "transform, opacity",
+            }}
+          />
+        )}
 
-        <div className="relative z-10 text-white">
+        <div className={`relative z-10 ${theme.textColor}`}>
           {/* Main Content Section - Streamlined */}
           <motion.div
             variants={containerVariants}
@@ -203,20 +220,20 @@ function CosmicFooter() {
             <motion.div variants={itemVariants}>
               <motion.h3
                 variants={itemVariants}
-                className="text-xl font-bold mb-4 tracking-tight"
+                className={`text-xl ${variant === "editorial" ? "font-light" : "font-bold"} mb-4 tracking-tight`}
               >
                 Location
               </motion.h3>
               <motion.address
                 variants={containerVariants}
-                className="not-italic text-sm text-white/90"
+                className={`not-italic text-sm ${theme.textSecondary}`}
               >
                 <motion.p
                   variants={itemVariants}
                   className="leading-relaxed"
                 >
                   Based in{" "}
-                  <span className="text-white font-medium">
+                  <span className={`${theme.textColor} ${variant === "editorial" ? "font-normal" : "font-medium"}`}>
                     New Delhi, India
                   </span>
                 </motion.p>
@@ -227,13 +244,13 @@ function CosmicFooter() {
             <motion.div variants={itemVariants}>
               <motion.h3
                 variants={itemVariants}
-                className="text-xl font-bold mb-4 tracking-tight"
+                className={`text-xl ${variant === "editorial" ? "font-light" : "font-bold"} mb-4 tracking-tight`}
               >
                 Navigate
               </motion.h3>
               <motion.ul
                 variants={containerVariants}
-                className="space-y-2 text-sm text-white/90"
+                className={`space-y-2 text-sm ${theme.textSecondary}`}
               >
                 {navItems.map((item, i) => (
                   <motion.li
@@ -243,18 +260,18 @@ function CosmicFooter() {
                     className="relative flex items-center group"
                   >
                     <span
-                      className="absolute left-0 w-0 h-[2px] bg-white rounded-full opacity-0 
-                      group-hover:w-2 group-hover:opacity-100 transition-all duration-300 ease-out"
+                      className={`absolute left-0 w-0 h-[2px] ${theme.accentColor} rounded-full opacity-0 
+                      group-hover:w-2 group-hover:opacity-100 transition-all duration-300 ease-out`}
                     />
-                    <button
-                      onClick={() => handleNavigation(item)}
-                      className="hover:text-white inline-block py-1 pl-0 
+                    <Link
+                      href={item.href}
+                      className={`${theme.linkHoverColor} inline-block py-1 pl-0 
                       group-hover:pl-3 transition-all duration-300 ease-in-out transform
-                      text-left cursor-pointer"
+                      text-left cursor-pointer ${variant === "editorial" ? "font-light" : ""}`}
                       style={{ transformOrigin: "left center" }}
                     >
                       {item.name}
-                    </button>
+                    </Link>
                   </motion.li>
                 ))}
               </motion.ul>
@@ -264,17 +281,17 @@ function CosmicFooter() {
             <motion.div variants={itemVariants}>
               <motion.h3
                 variants={itemVariants}
-                className="text-xl font-bold mb-4 tracking-tight"
+                className={`text-xl ${variant === "editorial" ? "font-light" : "font-bold"} mb-4 tracking-tight`}
               >
                 Connect
               </motion.h3>
               
               {/* Social Links */}
               <motion.div variants={itemVariants} className="mb-4">
-                <SocialLinks />
+                <SocialLinks variant={variant} />
               </motion.div>
               
-              <motion.p variants={itemVariants} className="text-sm text-white/90">
+              <motion.p variants={itemVariants} className={`text-sm ${theme.textSecondary} ${variant === "editorial" ? "font-light" : ""}`}>
                 Feel free to reach out through social media
               </motion.p>
             </motion.div>
@@ -285,7 +302,7 @@ function CosmicFooter() {
             variants={fadeInVariants}
             initial="hidden"
             animate={controls}
-            className="pt-6 border-t border-white/20 flex flex-col sm:flex-row justify-between items-center"
+            className={`pt-6 border-t ${theme.dividerColor} flex flex-col sm:flex-row justify-between items-center`}
           >
             <motion.p
               initial={{ opacity: 0 }}
@@ -296,9 +313,9 @@ function CosmicFooter() {
                   transition: { delay: 0.7 },
                 },
               }}
-              className="text-sm text-white/80 font-medium"
+              className={`text-sm ${theme.textMuted} ${variant === "editorial" ? "font-light font-mono" : "font-medium"}`}
             >
-              © {currentYear} Ayushman Gupta. All rights reserved.
+              © {currentYear} {variant === "editorial" ? "Odyssey | " : ""}Ayushman Gupta. All rights reserved.
             </motion.p>
             <motion.div
               initial={{ opacity: 0 }}
@@ -311,7 +328,9 @@ function CosmicFooter() {
               }}
               className="mt-4 sm:mt-0"
             >
-              <p className="text-sm text-white/80">Designed & Built with ❤️</p>
+              <p className={`text-sm ${theme.textMuted} ${variant === "editorial" ? "font-light" : ""}`}>
+                Designed & Built with {variant === "editorial" ? "⚡" : "❤️"}
+              </p>
             </motion.div>
           </motion.div>
         </div>

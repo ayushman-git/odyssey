@@ -150,13 +150,6 @@ const SkillTree = ({ data }) => {
       const tooltipX = event.clientX - rect.left;
       const tooltipY = event.clientY - rect.top;
       
-      console.log('Setting tooltip data:', {
-        name: d.data.name,
-        description: d.data.description,
-        x: tooltipX,
-        y: tooltipY
-      });
-      
       // Update React tooltip state
       setTooltipData({
         name: d.data.name,
@@ -304,8 +297,6 @@ const SkillTree = ({ data }) => {
       setTooltipData(null); // Clear tooltip data on unmount
     };
   }, [data]);
-
-  console.log('Tooltip data state:', tooltipData);
 
   return (
     <div className="w-full flex justify-center items-center p-4 relative">

@@ -10,6 +10,9 @@ function Navbar() {
   const { resolvedTheme, theme, systemTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
+  // Navigation items - removed as requested
+  const navItems = [];
+
   // Wait until the theme is resolved
   useEffect(() => {
     setMounted(true);
@@ -33,9 +36,12 @@ function Navbar() {
       }}
       className="backdrop-blur-md sticky top-0 z-40 grid place-items-center border-b border-b-gray-300 dark:border-b-gray-700 py-4 px-8 items-center w-full"
     >
-      <div className="max-w-screen-md w-full flex items-center justify-between">
+      <div className="max-w-screen-xl w-full flex items-center justify-between">
         <Logo />
-        <ThemeSwitch />
+        
+        <div className="flex items-center">
+          <ThemeSwitch />
+        </div>
       </div>
     </motion.nav>
   );

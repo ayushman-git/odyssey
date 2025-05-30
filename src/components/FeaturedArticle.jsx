@@ -19,58 +19,130 @@ export default function FeaturedArticle({ article }) {
   };
 
   return (
-    <Link 
-      href={`/blog/${convertToSlug(article.type)}/${article.slug}`}
-      className="block"
+    <motion.section
+      className="max-w-6xl mx-auto px-8 py-16"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true, margin: "-100px" }}
     >
-      <motion.div
+      {/* Section Header */}
+      <motion.div 
+        className="text-center mb-12"
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative rounded-3xl overflow-hidden border border-black dark:border-gray-700 mb-16"
+        viewport={{ once: true }}
       >
-        <div className="relative h-[500px] md:h-[600px] w-full">
-          <Image
-            src={article.cover_img}
-            fill
-            priority
-            sizes="100vw"
-            placeholder="blur"
-            className="object-cover"
-            blurDataURL={BLUR_DATA_URLS.COVER_IMG}
-            alt={article.title}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+        <div className="inline-flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 font-mono mb-4">
+          <div className="h-px w-8 bg-current" />
+          <span>FEATURED ARTICLE</span>
+          <div className="h-px w-8 bg-current" />
         </div>
-        
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
-          <div className="inline-block bg-white/90 dark:bg-gray-900/90 text-black dark:text-white rounded-full px-4 py-1 text-sm font-medium mb-4">
-            Featured {article.type}
-          </div>
-          
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            {article.title}
-          </h1>
-          
-          {article.introduction && (
-            <p className="text-lg md:text-xl text-gray-100 max-w-3xl mb-6 line-clamp-3">
-              {article.introduction}
-            </p>
-          )}
-          
-          <div className="flex items-center text-sm text-gray-200 mt-4">
-            <span>{formatDate(article.date)}</span>
-            <span className="mx-2">•</span>
-            {article.author && <span>By {article.author}</span>}
-            <span className="ml-auto font-medium flex items-center">
-              Read article
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </span>
-          </div>
-        </div>
+        <h2 className="text-3xl md:text-4xl font-light tracking-tight text-black dark:text-white">
+          LATEST EXPLORATION
+        </h2>
       </motion.div>
-    </Link>
+
+      {/* Featured Article Card */}
+      <Link 
+        href={`/blog/${convertToSlug(article.type)}/${article.slug}`}
+        className="block"
+      >
+        <motion.article
+          className="border border-gray-200 dark:border-gray-700 group cursor-pointer"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true }}
+          whileHover={{ y: -8 }}
+        >
+          {/* Image Section */}
+          <div className="relative h-[300px] md:h-[400px] overflow-hidden">
+            <Image
+              src={article.cover_img}
+              fill
+              priority
+              sizes="100vw"
+              placeholder="blur"
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              blurDataURL={BLUR_DATA_URLS.COVER_IMG}
+              alt={article.title}
+            />
+            
+            {/* Category Badge */}
+            <div className="absolute top-6 left-6">
+              <motion.div 
+                className="inline-flex items-center gap-2 bg-white dark:bg-gray-900 px-4 py-2 border border-gray-200 dark:border-gray-700"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="w-2 h-2 bg-black dark:bg-white" />
+                <span className="text-sm font-medium tracking-[0.1em] text-black dark:text-white uppercase">
+                  {article.type}
+                </span>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Content Section */}
+          <div className="p-8 md:p-12">
+            {/* Date and Meta */}
+            <div className="flex items-center gap-4 mb-6 text-sm text-gray-500 dark:text-gray-400">
+              <span className="font-mono">{formatDate(article.date)}</span>
+              <div className="h-px w-4 bg-current" />
+              {article.author && <span>BY {article.author.toUpperCase()}</span>}
+            </div>
+
+            {/* Title */}
+            <h3 className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight leading-tight text-black dark:text-white mb-6 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-300">
+              {article.title}
+            </h3>
+
+            {/* Introduction */}
+            {article.introduction && (
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 max-w-3xl mb-8">
+                {article.introduction}
+              </p>
+            )}
+
+            {/* Read More Link */}
+            <div className="flex items-center justify-between">
+              <motion.div 
+                className="flex items-center gap-3 text-black dark:text-white group-hover:gap-4 transition-all duration-300"
+                whileHover={{ x: 4 }}
+              >
+                <span className="font-medium tracking-[0.1em] uppercase text-sm">
+                  Continue Reading
+                </span>
+                <motion.div
+                  className="w-12 h-px bg-current"
+                  whileHover={{ width: 20 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2"
+                  className="group-hover:translate-x-1 transition-transform duration-300"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </motion.div>
+
+              {/* Corner Decoration */}
+              <motion.div 
+                className="w-8 h-8 border-r-2 border-b-2 border-gray-200 dark:border-gray-700 group-hover:border-black dark:group-hover:border-white transition-colors duration-300"
+                whileHover={{ scale: 1.2, rotate: 45 }}
+                transition={{ duration: 0.2 }}
+              />
+            </div>
+          </div>
+        </motion.article>
+      </Link>
+    </motion.section>
   );
 }

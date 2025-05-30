@@ -1,3 +1,16 @@
+/**
+ * @deprecated This component is deprecated in favor of the new optimized architecture:
+ * - Use ArticleSearchAndFilter for client-side filtering and search
+ * - Use ArticleGrid with ArticleCardOptimized for server-side rendering
+ * - Use ArticleMetadata for article metadata display
+ * 
+ * This component will be removed in a future version.
+ * The new architecture provides better performance through:
+ * - Server-side static generation
+ * - Reduced client-side JavaScript
+ * - Optimized caching and data fetching
+ * - Better separation of concerns
+ */
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
@@ -8,6 +21,13 @@ import { Search, SortAsc, SortDesc } from "lucide-react";
 import { Button } from "./ui/button";
 
 export default function ArticleCardList({ initialArticles = [] }) {
+  // Log deprecation warning in development
+  if (process.env.NODE_ENV === 'development') {
+    console.warn(
+      '⚠️ ArticleCardList is deprecated. Use ArticleSearchAndFilter + ArticleGrid + ArticleCardOptimized instead for better performance.'
+    );
+  }
+
   const [articles, setArticles] = useState(initialArticles);
   const [loading, setLoading] = useState(initialArticles.length === 0);
   const [filter, setFilter] = useState("All");

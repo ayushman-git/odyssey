@@ -42,13 +42,14 @@ export default function Home() {
   const homeJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Ayushman Gupta | Developer & Designer",
-    "url": "https://ayushman.dev",
-    "description": "Personal portfolio of Ayushman Gupta, a developer and designer specializing in web development and creative solutions.",
-    "author": {
+    name: "Ayushman Gupta | Developer & Designer",
+    url: "https://ayushman.dev",
+    description:
+      "Personal portfolio of Ayushman Gupta, a developer and designer specializing in web development and creative solutions.",
+    author: {
       "@type": "Person",
-      "name": "Ayushman Gupta"
-    }
+      name: "Ayushman Gupta",
+    },
   };
 
   return (
@@ -57,7 +58,7 @@ export default function Home() {
         id="home-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(homeJsonLd)
+          __html: JSON.stringify(homeJsonLd),
         }}
       />
       <div className="bg-black min-h-screen p-4">
@@ -102,24 +103,7 @@ export default function Home() {
           <MyStack />
         </div>
 
-        <section
-          className="rounded-b-2xl px-6 md:px-16 lg:px-24 py-10 relative overflow-hidden"
-          style={{
-            background: "linear-gradient(to top left, #242424, #000000)",
-          }}
-        >
-          <div
-            className="absolute bottom-0 left-0 right-0 z-10 w-full"
-            style={{
-              height: "100%",
-              background:
-                "linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)",
-              pointerEvents: "none",
-            }}
-          ></div>
-          <ClientStars />
-          <CosmicFooter />
-        </section>
+        <CosmicFooter />
       </div>
     </main>
   );

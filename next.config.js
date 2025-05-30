@@ -42,10 +42,6 @@ const nextConfig = {
             value: 'DENY',
           },  
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=0, must-revalidate',
-          },
-          {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
