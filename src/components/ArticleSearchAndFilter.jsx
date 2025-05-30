@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Input } from "./ui/input";
 import { Search, SortAsc, SortDesc } from "lucide-react";
@@ -8,9 +9,51 @@ import { Button } from "./ui/button";
 import ArticleGrid from "./ArticleGrid";
 
 export default function ArticleSearchAndFilter({ initialArticles = [], articleTypes = [] }) {
-  const [filter, setFilter] = useState("All");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  
+  // Initialize filter from URL parameter, fallback to "All"
+  const [filter, setFilter] = useState(() => {
+    const urlFilter = searchParams.get('filter');
+    // Only use URL filter if it's a valid article type
+    return urlFilter && articleTypes.includes(urlFilter) ? urlFilter : "All";
+  });
   const [sortOrder, setSortOrder] = useState("newest");
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Update filter when URL changes
+  useEffect(() => {
+    const urlFilter = searchParams.get('filter');
+    if (urlFilter && articleTypes.includes(urlFilter)) {
+      setFilter(urlFilter);
+    } else if (!urlFilter) {
+      setFilter("All");
+    }
+  }, [searchParams, articleTypes]);
+
+  // Update URL when filter changes (but not for "All")
+  const updateFilterInUrl = (newFilter) => {
+    const params = new URLSearchParams(searchParams.toString());
+    
+    if (newFilter === "All") {
+      params.delete('filter');
+    } else {
+      params.set('filter', newFilter);
+    }
+    
+    const query = params.toString();
+    const url = query ? `${pathname}?${query}` : pathname;
+    
+    // Use replace to avoid cluttering browser history
+    router.replace(url, { scroll: false });
+  };
+
+  // Custom setFilter that also updates URL
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    updateFilterInUrl(newFilter);
+  };
 
   // Optimized filtering with early returns and simplified logic
   const filteredArticles = useMemo(() => {
@@ -110,7 +153,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
               {articleTypes.map((type, index) => (
                 <motion.button
                   key={type}
-                  onClick={() => setFilter(type)}
+                  onClick={() => handleFilterChange(type)}
                   className={`px-3 py-2 text-xs font-medium tracking-[0.1em] uppercase transition-all duration-300 relative ${
                     filter === type 
                       ? 'bg-black dark:bg-white text-white dark:text-black' 
@@ -175,7 +218,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
             <motion.button
               onClick={() => {
                 setSearchTerm("");
-                setFilter("All");
+                handleFilterChange("All");
               }}
               className="inline-flex items-center gap-3 px-8 py-3 border border-gray-200 dark:border-gray-700 text-sm font-medium tracking-[0.1em] uppercase text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300"
               whileHover={{ y: -2 }}

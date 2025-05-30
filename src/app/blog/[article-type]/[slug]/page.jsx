@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Script from "next/script";
 import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
@@ -65,8 +66,37 @@ export default async function Page({ params }) {
       
       {/* Editorial Header */}
       <section className="pt-0 relative w-full bg-white dark:bg-black">
+        {/* Breadcrumb Navigation */}
+        <div className="max-w-4xl mx-auto px-8 pt-6 pb-2">
+          <nav className="flex items-center text-sm text-gray-500 dark:text-gray-400" aria-label="Breadcrumb">
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Link 
+                href="/blog" 
+                className="hover:text-black dark:hover:text-white transition-colors font-medium"
+              >
+                Odyssey
+              </Link>
+              <svg className="w-3 h-3 opacity-40 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+              </svg>
+              <Link 
+                href={`/blog?filter=${encodeURIComponent(type)}`}
+                className="hover:text-black dark:hover:text-white transition-colors font-medium capitalize flex-shrink-0"
+              >
+                {type}
+              </Link>
+              <svg className="w-3 h-3 opacity-40 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <span className="text-gray-600 dark:text-gray-400 font-light truncate min-w-0">
+              {title}
+            </span>
+          </nav>
+        </div>
+
         {/* Magazine-style Header */}
-        <div className="max-w-4xl mx-auto px-8 pt-16 pb-8">
+        <div className="max-w-4xl mx-auto px-8 pt-12 pb-8">
           {/* Issue/Date Line */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 font-mono tracking-wider uppercase">
@@ -166,7 +196,7 @@ export default async function Page({ params }) {
                 </div>
 
                 {/* Back to Blog */}
-                <a 
+                <Link 
                   href="/blog" 
                   className="group inline-flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
                 >
@@ -174,7 +204,7 @@ export default async function Page({ params }) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>
                   <span className="font-mono tracking-wider uppercase">Back to Journal</span>
-                </a>
+                </Link>
               </div>
             </footer>
           </article>
