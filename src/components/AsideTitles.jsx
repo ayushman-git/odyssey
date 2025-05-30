@@ -18,8 +18,8 @@ export default function AsideTitles({ headings }) {
 
   const handleTableOfContentVisibility = (entries) => {
     entries.forEach((entry) => {
-      // Set visibility based on whether the table of contents is fully in view
-      setIsTableOfContentVisible(entry.intersectionRatio === 1);
+      // Show if at least 50% is visible (less strict visibility check)
+      setIsTableOfContentVisible(entry.intersectionRatio > 0.5);
     });
   };
 
@@ -32,7 +32,7 @@ export default function AsideTitles({ headings }) {
     const tableOfContentElement = document.getElementById("table-of-content");
 
     const observer = new IntersectionObserver(handleTableOfContentVisibility, {
-      threshold: 1,
+      threshold: [0, 0.25, 0.5, 0.75, 1], // Multiple thresholds for better detection
     });
 
     observer.observe(tableOfContentElement);
@@ -64,11 +64,11 @@ export default function AsideTitles({ headings }) {
         <Fragment key={item.title}>
           {item.title && (
             <a
-              className={`block text-xs transition-all duration-300 ease-in-out ${
+              className={`block text-sm font-light transition-all duration-300 ease-in-out ${
                 isActive 
-                  ? "text-blue-500 font-medium opacity-100" 
-                  : "dark:text-gray-400 text-gray-700 opacity-75 hover:opacity-90"
-              } hover:text-blue-600`}
+                  ? "text-black dark:text-white opacity-100" 
+                  : "text-gray-500 dark:text-gray-400 opacity-70 hover:opacity-100"
+              } hover:text-black dark:hover:text-white`}
               href={`#${id}`}
               ref={(el) => {
                 if (el) {
@@ -76,13 +76,17 @@ export default function AsideTitles({ headings }) {
                 }
               }}
             >
-              <li className={`relative py-2 pl-3`}>
+              <li className={`relative py-3 pl-4 leading-relaxed`}>
                 <span 
-                  className={`absolute left-0 top-0 h-full border-l-2 transition-all duration-300 ${
-                    isActive ? "border-blue-500 opacity-100" : "border-transparent opacity-0"
+                  className={`absolute left-0 top-0 h-full w-px transition-all duration-300 ${
+                    isActive ? "bg-black dark:bg-white opacity-100" : "bg-transparent opacity-0"
                   }`}
                 ></span>
-                {item.title}
+                <span className={`transition-all duration-300 ${
+                  isActive ? "font-normal tracking-tight" : "font-light tracking-normal"
+                }`}>
+                  {item.title}
+                </span>
               </li>
             </a>
           )}
@@ -93,13 +97,19 @@ export default function AsideTitles({ headings }) {
 
   return (
     <aside
-      className={`sticky top-48 w-60 -ml-72 mt-16 h-0 p-5 transition-opacity duration-300 ${
-        isTableOfContentVisible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`fixed top-32 left-8 w-64 max-h-[calc(100vh-200px)] overflow-y-auto p-6 bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg transition-all duration-300 ${
+        isTableOfContentVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+      } hidden xl:block z-10`}
       id="table-of-content"
     >
-      <h3 className="font-bold mb-4 pb-2">Table of Contents</h3>
-      <ul className="text-xs space-y-1">{renderAsideList(headings)}</ul>
+      <div className="mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+        <h3 className="text-xs font-medium tracking-[0.1em] text-gray-500 dark:text-gray-400 uppercase">
+          Table of Contents
+        </h3>
+      </div>
+      <nav>
+        <ul className="space-y-1">{renderAsideList(headings)}</ul>
+      </nav>
     </aside>
   );
 }

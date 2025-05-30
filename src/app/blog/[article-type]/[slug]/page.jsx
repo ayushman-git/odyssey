@@ -4,7 +4,9 @@ import Script from "next/script";
 import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
+import AsideTitles from "@/components/AsideTitles";
 import { formatDateString, generatePageMetadata } from "@/utils";
+import { extractHeadingsFromMDX } from "@/utils/extractHeadings";
 import { Meow_Script } from "next/font/google";
 
 const meowScript = Meow_Script({
@@ -30,6 +32,9 @@ export default async function Page({ params }) {
   const { title, cover_img, type, fileContent, date, showAside, introduction } =
     await getArticle(params.slug);
   const formattedDate = formatDateString(date);
+  
+  // Extract headings for table of contents
+  const headings = showAside ? extractHeadingsFromMDX(fileContent) : [];
   
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -160,44 +165,51 @@ export default async function Page({ params }) {
         </div>
 
         {/* Article Content */}
-        <div className="max-w-4xl mx-auto px-8 pb-20">
-          <article className="relative">
-            {/* Main Content */}
-            <section className="prose prose-lg dark:prose-invert max-w-none
-              prose-headings:font-light prose-headings:tracking-tight
-              prose-h1:text-4xl prose-h1:mb-8 prose-h1:mt-12
-              prose-h2:text-3xl prose-h2:mb-6 prose-h2:mt-10
-              prose-h3:text-2xl prose-h3:mb-4 prose-h3:mt-8
-              prose-p:leading-relaxed prose-p:text-gray-700 dark:prose-p:text-gray-300
-              prose-p:mb-6 prose-p:font-light prose-p:text-lg
-              prose-a:text-black dark:prose-a:text-white prose-a:no-underline 
-              prose-a:border-b prose-a:border-gray-300 dark:prose-a:border-gray-600
-              hover:prose-a:border-black dark:hover:prose-a:border-white
-              prose-blockquote:border-l-2 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600
-              prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:font-light
-              prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8
-              prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
-              prose-pre:bg-gray-100 dark:prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700">
-              
-              <CustomMDX source={fileContent} showAside={showAside} />
-            </section>
+        <div className="max-w-7xl mx-auto px-8 pb-20">
+          <div className="flex gap-12 relative">
+            {/* Left sidebar for table of contents */}
+            <div className="hidden xl:block w-64 flex-shrink-0">
+              {showAside && headings.length > 0 && <AsideTitles headings={headings} />}
+            </div>
+            
+            {/* Main article content */}
+            <article className="flex-1 max-w-4xl">
+              {/* Main Content */}
+              <section className="prose prose-lg dark:prose-invert max-w-none
+                prose-headings:font-light prose-headings:tracking-tight
+                prose-h1:text-4xl prose-h1:mb-8 prose-h1:mt-12
+                prose-h2:text-3xl prose-h2:mb-6 prose-h2:mt-10
+                prose-h3:text-2xl prose-h3:mb-4 prose-h3:mt-8
+                prose-p:leading-relaxed prose-p:text-gray-700 dark:prose-p:text-gray-300
+                prose-p:mb-6 prose-p:font-light prose-p:text-lg
+                prose-a:text-black dark:prose-a:text-white prose-a:no-underline 
+                prose-a:border-b prose-a:border-gray-300 dark:prose-a:border-gray-600
+                hover:prose-a:border-black dark:hover:prose-a:border-white
+                prose-blockquote:border-l-2 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600
+                prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:font-light
+                prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8
+                prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
+                prose-pre:bg-gray-100 dark:prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700">
+                
+                <CustomMDX source={fileContent} showAside={showAside} />
+              </section>
 
-            {/* Article Footer */}
-            <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
-                {/* Article Info */}
-                <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full"></div>
-                    <span className="font-mono uppercase tracking-wider">{type}</span>
+              {/* Article Footer */}
+              <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
+                  {/* Article Info */}
+                  <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full"></div>
+                      <span className="font-mono uppercase tracking-wider">{type}</span>
+                    </div>
+                    <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+                    <span className="font-mono">{formattedDate}</span>
                   </div>
-                  <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
-                  <span className="font-mono">{formattedDate}</span>
-                </div>
 
-                {/* Back to Blog */}
-                <Link 
-                  href="/blog" 
+                  {/* Back to Blog */}
+                  <Link 
+                    href="/blog" 
                   className="group inline-flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
                 >
                   <svg className="w-4 h-4 transform transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,7 +219,8 @@ export default async function Page({ params }) {
                 </Link>
               </div>
             </footer>
-          </article>
+            </article>
+          </div>
         </div>
       </section>
     </>
