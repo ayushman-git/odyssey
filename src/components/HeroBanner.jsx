@@ -11,21 +11,21 @@ const meowScript = Meow_Script({
 });
 
 function HeroBanner() {
+  // Simplified scroll effects for better performance
   const { scrollYProgress } = useScroll();
 
-  // Use useTransform to map the scrollYProgress to a usable translateX value
-  const odysseyX = useTransform(scrollYProgress, [0, 1], [0, -300]);
-  const createdX = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const descX = useTransform(scrollYProgress, [0, 1], [0, 300]);
-
-  const opacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
+  // Reduced transform calculations for better performance
+  const odysseyX = useTransform(scrollYProgress, [0, 0.5], [0, -150]);
+  const createdX = useTransform(scrollYProgress, [0, 0.5], [0, -75]);
+  const descX = useTransform(scrollYProgress, [0, 0.5], [0, 150]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
   return (
     <motion.div
       className="flex sm:flex-row flex-col my-24 gap-4"
       initial={{ opacity: 0, translateY: -20 }}
       animate={{ opacity: 1, translateY: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }} // Reduced duration for faster animation
     >
       <section className="flex-1 gap-4">
         <motion.h1

@@ -4,12 +4,15 @@ import Script from "next/script";
 import { generatePageMetadata } from "@/utils";
 
 export const revalidate = 3600; // Revalidate this page every hour
+export const dynamic = 'force-static'; // Force static generation
 
 // Use the utility function to generate metadata
 export async function generateMetadata() {
+  // Use a cache key to avoid re-fetching articles
   const articles = getArticles();
-  const firstArticleImage = articles.length > 0 && articles[0].cover_img 
-    ? articles[0].cover_img 
+  const activePosts = articles.filter((article) => !article.disabled);
+  const firstArticleImage = activePosts.length > 0 && activePosts[0].cover_img 
+    ? activePosts[0].cover_img 
     : '/cover.jpg'; // Fallback to a default image
 
   return generatePageMetadata({
@@ -21,24 +24,12 @@ export async function generateMetadata() {
 }
 
 export default async function BlogPage() {
-  // Fetch articles with server component
+  // Fetch articles with server component - only once
   const articles = getArticles();
   
-  // Compute featured article server-side - get latest by date
+  // Use pre-sorted articles from getArticles (already sorted by date)
   const activePosts = articles.filter((article) => !article.disabled);
-  
-  // Sort articles by date (newest first) to get the latest article
-  const sortedActivePosts = activePosts.sort((a, b) => {
-    const dateA = a.date.split("-");
-    const dateB = b.date.split("-");
-    
-    const dateObjA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
-    const dateObjB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
-    
-    return dateObjB - dateObjA; // Newest first
-  });
-  
-  const featuredArticle = sortedActivePosts.length > 0 ? sortedActivePosts[0] : null;
+  const featuredArticle = activePosts.length > 0 ? activePosts[0] : null;
   
   const blogJsonLd = {
     "@context": "https://schema.org",

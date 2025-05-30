@@ -1,7 +1,15 @@
 import ArticleCardList from "./ArticleCardList";
 import FeaturedArticle from "./FeaturedArticle";
-import HeroBanner from "./HeroBanner";
-import CreativeGrid from "./CreativeGrid";
+import dynamic from "next/dynamic";
+
+// Dynamically import heavy components to improve initial load time
+const HeroBanner = dynamic(() => import("./HeroBanner"), {
+  loading: () => <div className="h-32 animate-pulse bg-gray-200 rounded mb-8"></div>
+});
+
+const CreativeGrid = dynamic(() => import("./CreativeGrid"), {
+  loading: () => <div className="h-64 animate-pulse bg-gray-200 rounded mb-8"></div>
+});
 
 export default function BlogLayout({ initialArticles = [], featuredArticle = null }) {
   return (

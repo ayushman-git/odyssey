@@ -13,7 +13,24 @@ if (typeof window !== 'undefined') {
 
 const articlesDir = path.join(process.cwd(), "src", "content");
 
+// Cache for articles to avoid repeated file system operations
+let articlesCache = null;
+let cacheTimestamp = 0;
+const CACHE_DURATION = 3600000; // 1 hour in milliseconds
+
+// Clear cache function for development
+export function clearArticlesCache() {
+  articlesCache = null;
+  cacheTimestamp = 0;
+}
+
 export function getArticles() {
+  // Check if cache is valid
+  const now = Date.now();
+  if (articlesCache && (now - cacheTimestamp) < CACHE_DURATION) {
+    return articlesCache;
+  }
+
   const files = fs.readdirSync(articlesDir);
   const allArticlesData = files
     .filter((file) => file.endsWith(".mdx"))
@@ -34,12 +51,19 @@ export function getArticles() {
     // Filter out posts with hidden: true
     .filter(post => !post.hidden)
     .sort((a, b) => {
-      if (a.date < b.date) {
-        return 1;
-      } else {
-        return -1;
-      }
+      // Optimize date comparison
+      if (!a.date || !b.date) return 0;
+      
+      // Convert date strings to comparable format for faster sorting
+      const dateA = new Date(a.date.split("-").reverse().join("-"));
+      const dateB = new Date(b.date.split("-").reverse().join("-"));
+      
+      return dateB - dateA; // Newest first
     });
+
+  // Update cache
+  articlesCache = allArticlesData;
+  cacheTimestamp = now;
 
   return allArticlesData;
 }

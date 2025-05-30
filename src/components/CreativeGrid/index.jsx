@@ -1,7 +1,11 @@
 import React from "react";
-import Grid from "./Grid";
+import dynamic from "next/dynamic";
 import { GRID_IMAGES } from "@/data/constants";
 
+// Dynamically import Grid component to reduce bundle size
+const Grid = dynamic(() => import("./Grid"), {
+  loading: () => <div className="w-full h-full bg-gray-200 animate-pulse rounded-3xl"></div>
+});
 
 function CreativeGrid() {
   return (
