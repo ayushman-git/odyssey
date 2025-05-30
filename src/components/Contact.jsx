@@ -78,7 +78,7 @@ function Contact() {
     <div className="relative z-20 my-20 md:my-36 lg:my-52 px-4 sm:px-6 md:px-0">
       <h1
         ref={headingRef}
-        className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl text-center font-semibold relative z-30"
+        className="text-gray-200 text-4xl sm:text-6xl md:text-7xl lg:text-9xl text-center font-semibold relative z-30"
       >
         Ayushman Gupta
       </h1>
