@@ -114,13 +114,6 @@ function HeroBanner() {
           className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
           variants={itemVariants}
         >
-          <div className="flex flex-col items-center gap-3 text-gray-400 dark:text-gray-500">
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-px h-8 bg-current"
-            />
-          </div>
         </motion.div>
 
         {/* Corner Decorations */}
