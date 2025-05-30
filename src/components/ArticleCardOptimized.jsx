@@ -8,30 +8,38 @@ export default function ArticleCard({ details }) {
   // Early return for disabled articles
   if (details.disabled) {
     return (
-      <div className="w-full h-full border rounded-3xl overflow-hidden opacity-50 cursor-not-allowed">      <div className="relative overflow-hidden w-full">
-        {details.cover_img && (
-          <Image
-            src={details.cover_img}
-            alt={details.title}
-            width={400}
-            height={200}
-            className="object-cover aspect-video w-full"
-            placeholder="blur"
-            blurDataURL={BLUR_DATA_URLS.COVER_IMG}
-            loading="lazy"
-          />
-        )}
-      </div>
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-              {details.type}
-            </span>
-            <span className="text-xs text-gray-500">In the Works</span>
+      <div className="group relative border border-gray-200 bg-white hover:border-gray-400 transition-all duration-300 opacity-50 cursor-not-allowed">
+        <div className="aspect-[3/2] overflow-hidden border-b border-gray-200">
+          {details.cover_img && (
+            <Image
+              src={details.cover_img}
+              alt={details.title}
+              width={500}
+              height={333}
+              className="w-full h-full object-cover"
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URLS.COVER_IMG}
+              loading="lazy"
+            />
+          )}
+        </div>
+        <div className="p-8">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+              <span className="text-xs uppercase tracking-widest text-gray-400 font-mono">
+                {details.type}
+              </span>
+            </div>
+            <span className="text-xs text-gray-400 font-mono">In Development</span>
           </div>
-          <h3 className="text-xl font-bold mb-2 text-gray-600">{details.title}</h3>
+          <h3 className="text-xl font-light leading-tight mb-4 text-gray-400 line-clamp-2">
+            {details.title}
+          </h3>
           {details.introduction && (
-            <p className="text-gray-500 text-sm line-clamp-3">{details.introduction}</p>
+            <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 font-light">
+              {details.introduction}
+            </p>
           )}
         </div>
       </div>
@@ -52,35 +60,43 @@ export default function ArticleCard({ details }) {
   return (
     <Link 
       href={`/blog/${convertToSlug(details.type)}/${details.slug}`}
-      className="block w-full h-full border rounded-3xl overflow-hidden group hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+      className="group relative block border border-gray-200 bg-white hover:border-black transition-all duration-300"
     >
-      <div className="relative overflow-hidden w-full">
+      <div className="aspect-[3/2] overflow-hidden border-b border-gray-200">
         {details.cover_img && (
           <Image
             src={details.cover_img}
             alt={details.title}
-            width={400}
-            height={200}
-            className="object-cover aspect-video w-full group-hover:scale-105 transition-transform duration-300"
+            width={500}
+            height={333}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             placeholder="blur"
             blurDataURL={BLUR_DATA_URLS.COVER_IMG}
             loading="lazy"
           />
         )}
       </div>
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
-            {details.type}
-          </span>
-          <span className="text-xs text-gray-500">{formatDate(details.date)}</span>
+      <div className="p-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <div className="w-1 h-1 bg-black rounded-full"></div>
+            <span className="text-xs uppercase tracking-widest text-gray-600 font-mono group-hover:text-black transition-colors">
+              {details.type}
+            </span>
+          </div>
+          <span className="text-xs text-gray-500 font-mono">{formatDate(details.date)}</span>
         </div>
-        <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">
+        <h3 className="text-xl font-light leading-tight mb-4 text-black group-hover:text-gray-700 transition-colors line-clamp-2">
           {details.title}
         </h3>
         {details.introduction && (
-          <p className="text-gray-600 text-sm line-clamp-3">{details.introduction}</p>
+          <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 font-light">
+            {details.introduction}
+          </p>
         )}
+        
+        {/* Corner decoration */}
+        <div className="absolute top-4 right-4 w-3 h-3 border-t border-r border-gray-300 group-hover:border-black transition-colors duration-300"></div>
       </div>
     </Link>
   );

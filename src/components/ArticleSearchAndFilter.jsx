@@ -44,93 +44,150 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
     return filtered;
   }, [initialArticles, filter, sortOrder, searchTerm]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        duration: 0.6,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <div className="py-10">
-      {/* Controls section */}
-      <div className="mb-6 space-y-5">
-        <div className="flex flex-col sm:flex-row justify-between gap-4">
-          <div className="relative w-full sm:w-72">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <Search className="h-4 w-4 text-muted-foreground" />
-              </div>
-              <Input
-                type="text"
-                placeholder="Search articles..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-full"
-              />
+    <motion.section
+      className="max-w-6xl mx-auto px-8 py-8"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+    >
+      {/* Search and Filter Controls - Single Row */}
+      <motion.div 
+        className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8"
+        variants={itemVariants}
+      >
+        {/* Search Section */}
+        <div className="w-full md:w-96">
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+              <Search className="h-4 w-4 text-gray-400 dark:text-gray-500 group-focus-within:text-black dark:group-focus-within:text-white transition-colors" />
             </div>
-          </div>
-          <div className="flex flex-wrap gap-3 items-center">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setSortOrder(sortOrder === "newest" ? "oldest" : "newest")}
-              className="h-9 gap-2"
-            >
-              {sortOrder === "newest" ? <SortDesc className="h-4 w-4" /> : <SortAsc className="h-4 w-4" />}
-              {sortOrder === "newest" ? "Newest First" : "Oldest First"}
-            </Button>
+            <input
+              type="text"
+              placeholder="Search archives..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full h-10 pl-12 pr-4 text-sm bg-transparent border border-gray-200 dark:border-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-black dark:focus:border-white transition-colors duration-300"
+            />
+            <motion.div
+              className="absolute bottom-0 left-0 h-px bg-black dark:bg-white origin-left"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: searchTerm ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
+            />
           </div>
         </div>
-        
-        {/* Article Type Filter */}
-        {articleTypes.length > 1 && (
-          <div className="flex flex-wrap gap-2">
-            {articleTypes.map(type => (
-              <Button
-                key={type}
-                variant={filter === type ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilter(type)}
-                className="h-9"
-              >
-                {type}
-              </Button>
-            ))}
-          </div>
-        )}
-      </div>
-      
-      {/* Results count - simplified */}
-      <div className="mb-8 text-sm text-gray-600 dark:text-gray-400 flex flex-wrap">
-        <span>
-          Showing <strong>{filteredArticles.length}</strong> article{filteredArticles.length !== 1 ? 's' : ''}
-        </span>
-        
-        {filter !== "All" && (
-          <span>&nbsp;in <strong>{filter}</strong></span>
-        )}
-        
-        {searchTerm && (
-          <span>&nbsp;matching <strong>{searchTerm}</strong></span>
-        )}
-      </div>
+
+        {/* Filter Controls */}
+        <div className="flex items-center gap-4">
+          {/* Category Filters */}
+          {articleTypes.length > 1 && (
+            <div className="inline-flex items-center border border-gray-200 dark:border-gray-700">
+              {articleTypes.map((type, index) => (
+                <motion.button
+                  key={type}
+                  onClick={() => setFilter(type)}
+                  className={`px-3 py-2 text-xs font-medium tracking-[0.1em] uppercase transition-all duration-300 relative ${
+                    filter === type 
+                      ? 'bg-black dark:bg-white text-white dark:text-black' 
+                      : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                  } ${index > 0 ? 'border-l border-gray-200 dark:border-gray-700' : ''}`}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {type}
+                </motion.button>
+              ))}
+            </div>
+          )}
+
+          {/* Sort Control */}
+          <motion.button
+            onClick={() => setSortOrder(sortOrder === "newest" ? "oldest" : "newest")}
+            className="inline-flex items-center gap-2 px-3 py-2 border border-gray-200 dark:border-gray-700 text-xs font-medium tracking-[0.1em] uppercase text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:border-black dark:hover:border-white transition-all duration-300"
+            whileHover={{ y: -1 }}
+            whileTap={{ y: 0 }}
+          >
+            {sortOrder === "newest" ? (
+              <SortDesc className="h-3 w-3" />
+            ) : (
+              <SortAsc className="h-3 w-3" />
+            )}
+            {sortOrder === "newest" ? "Newest First" : "Oldest First"}
+          </motion.button>
+        </div>
+      </motion.div>
+
+      {/* Results Info */}
+      <motion.div 
+        className="text-center mb-6"
+        variants={itemVariants}
+      >
+        <div className="inline-flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400 font-mono">
+          <div className="h-px w-4 bg-current" />
+          <span>
+            {filteredArticles.length} ARTICLE{filteredArticles.length !== 1 ? 'S' : ''}
+            {filter !== "All" && ` IN ${filter.toUpperCase()}`}
+            {searchTerm && ` MATCHING "${searchTerm.toUpperCase()}"`}
+          </span>
+          <div className="h-px w-4 bg-current" />
+        </div>
+      </motion.div>
       
       {/* Articles grid layout */}
       {filteredArticles.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 px-4">
-          <h3 className="text-3xl font-medium text-center">No articles found</h3>
-          <p className="mt-3 text-gray-600 dark:text-gray-400 text-center max-w-md">
-            We couldn't find any articles matching your current filters. Try adjusting your search term or category selection.
-          </p>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => {
-              setSearchTerm("");
-              setFilter("All");
-            }}
-            className="mt-6"
-          >
-            Reset filters
-          </Button>
-        </div>
+        <motion.div 
+          className="text-center py-20"
+          variants={itemVariants}
+        >
+          <div className="max-w-md mx-auto">
+            <h3 className="text-3xl font-light text-black dark:text-white mb-4">
+              No Results Found
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+              The archives don't contain any articles matching your current search criteria.
+            </p>
+            <motion.button
+              onClick={() => {
+                setSearchTerm("");
+                setFilter("All");
+              }}
+              className="inline-flex items-center gap-3 px-8 py-3 border border-gray-200 dark:border-gray-700 text-sm font-medium tracking-[0.1em] uppercase text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300"
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 0 }}
+            >
+              Clear All Filters
+            </motion.button>
+          </div>
+        </motion.div>
       ) : (
         <ArticleGrid articles={filteredArticles} />
       )}
-    </div>
+    </motion.section>
   );
 }
