@@ -24,9 +24,21 @@ export default async function BlogPage() {
   // Fetch articles with server component
   const articles = getArticles();
   
-  // Compute featured article server-side
+  // Compute featured article server-side - get latest by date
   const activePosts = articles.filter((article) => !article.disabled);
-  const featuredArticle = activePosts.length > 0 ? activePosts[0] : null;
+  
+  // Sort articles by date (newest first) to get the latest article
+  const sortedActivePosts = activePosts.sort((a, b) => {
+    const dateA = a.date.split("-");
+    const dateB = b.date.split("-");
+    
+    const dateObjA = new Date(dateA[2], dateA[1] - 1, dateA[0]);
+    const dateObjB = new Date(dateB[2], dateB[1] - 1, dateB[0]);
+    
+    return dateObjB - dateObjA; // Newest first
+  });
+  
+  const featuredArticle = sortedActivePosts.length > 0 ? sortedActivePosts[0] : null;
   
   const blogJsonLd = {
     "@context": "https://schema.org",
