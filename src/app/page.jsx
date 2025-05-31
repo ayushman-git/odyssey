@@ -61,9 +61,9 @@ export default function Home() {
           __html: JSON.stringify(homeJsonLd),
         }}
       />
-      <div className="bg-black min-h-screen p-4">
+      <div className="bg-black min-h-screen md:p-4 p-0">
         <section
-          className="rounded-t-2xl min-h-screen px-6 md:px-16 lg:px-24 py-10 relative overflow-hidden"
+          className="rounded-none md:rounded-t-2xl min-h-screen px-6 md:px-16 lg:px-24 py-10 relative overflow-hidden"
           style={{
             background: "linear-gradient(to bottom right, #242424, #000000)",
           }}

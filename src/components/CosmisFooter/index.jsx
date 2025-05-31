@@ -7,7 +7,6 @@ import { motion, useAnimation, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 // Register ScrollTrigger plugin
 if (typeof window !== "undefined") {
@@ -15,7 +14,6 @@ if (typeof window !== "undefined") {
 }
 
 function CosmicFooter({ variant = "default" }) {
-  const pathname = usePathname();
   const [isHovered, setIsHovered] = useState(false);
   const footerRef = useRef(null);
   const footerInView = useInView(footerRef, { once: true, amount: 0.2 });
@@ -32,7 +30,7 @@ function CosmicFooter({ variant = "default" }) {
   // Theme configuration based on variant
   const themeConfig = {
     default: {
-      containerClass: "rounded-2xl bg-blue-700",
+      containerClass: "rounded-none md:rounded-2xl bg-blue-700",
       textColor: "text-white",
       dividerColor: "border-white/20",
       linkHoverColor: "hover:text-white",
@@ -186,7 +184,7 @@ function CosmicFooter({ variant = "default" }) {
         animate="animate"
         whileHover="hover"
         variants={footerVariants}
-        className={`${theme.containerClass} relative overflow-hidden p-5 sm:p-8 lg:p-12 mt-12 mb-6 ${
+        className={`${theme.containerClass} relative overflow-hidden p-5 sm:p-8 lg:p-12 mt-12 mb-0 md:mb-6 ${
           variant === "editorial" ? "transition-all duration-300" : ""
         }`}
         onMouseEnter={() => setIsHovered(true)}
