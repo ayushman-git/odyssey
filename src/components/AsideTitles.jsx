@@ -28,6 +28,20 @@ export default function AsideTitles({ headings }) {
     spawnIntersectionObserverForTableOfContent();
   }, [headings]);
 
+  // Auto-scroll to keep the active heading in view
+  useEffect(() => {
+    if (currentSectionInView && itemRefs.current.has(currentSectionInView)) {
+      const activeElement = itemRefs.current.get(currentSectionInView);
+      if (activeElement) {
+        activeElement.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "nearest",
+        });
+      }
+    }
+  }, [currentSectionInView]);
+
   const spawnIntersectionObserverForTableOfContent = () => {
     const tableOfContentElement = document.getElementById("table-of-content");
 
@@ -59,14 +73,14 @@ export default function AsideTitles({ headings }) {
     return list.map((item) => {
       const isActive = currentSectionInView === underscoreDelimiter(item.title);
       const id = underscoreDelimiter(item.title);
-      
+
       return (
         <Fragment key={item.title}>
           {item.title && (
             <a
               className={`block text-sm font-light transition-all duration-300 ease-in-out ${
-                isActive 
-                  ? "text-black dark:text-white opacity-100" 
+                isActive
+                  ? "text-black dark:text-white opacity-100"
                   : "text-gray-500 dark:text-gray-400 opacity-70 hover:opacity-100"
               } hover:text-black dark:hover:text-white`}
               href={`#${id}`}
@@ -77,7 +91,7 @@ export default function AsideTitles({ headings }) {
               }}
             >
               <li className={`relative py-3 pl-4 leading-relaxed`}>
-                <span 
+                <span
                   className={`absolute left-0 top-0 h-full w-px transition-all duration-300 ${
                     isActive ? "bg-black dark:bg-white opacity-100" : "bg-transparent opacity-0"
                   }`}
