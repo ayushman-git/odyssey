@@ -175,7 +175,9 @@ export default async function Page({ params }) {
             {/* Main article content */}
             <article className="flex-1 max-w-4xl">
               {/* Main Content */}
-              <section className="prose prose-lg dark:prose-invert max-w-none
+              <section 
+                id="article-content"
+                className="prose prose-lg dark:prose-invert max-w-none
                 prose-headings:font-light prose-headings:tracking-tight
                 prose-h1:text-4xl prose-h1:mb-8 prose-h1:mt-12
                 prose-h2:text-3xl prose-h2:mb-6 prose-h2:mt-10

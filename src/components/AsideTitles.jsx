@@ -18,8 +18,8 @@ export default function AsideTitles({ headings }) {
 
   const handleTableOfContentVisibility = (entries) => {
     entries.forEach((entry) => {
-      // Show if at least 50% is visible (less strict visibility check)
-      setIsTableOfContentVisible(entry.intersectionRatio > 0.5);
+      // Show if any part of the article content is visible
+      setIsTableOfContentVisible(entry.intersectionRatio > 0);
     });
   };
 
@@ -43,13 +43,16 @@ export default function AsideTitles({ headings }) {
   }, [currentSectionInView]);
 
   const spawnIntersectionObserverForTableOfContent = () => {
-    const tableOfContentElement = document.getElementById("table-of-content");
+    const articleContentElement = document.getElementById("article-content");
+
+    if (!articleContentElement) return;
 
     const observer = new IntersectionObserver(handleTableOfContentVisibility, {
-      threshold: [0, 0.25, 0.5, 0.75, 1], // Multiple thresholds for better detection
+      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1], // Multiple thresholds for better detection
+      rootMargin: '-10% 0px -10% 0px' // Show TOC when article content is in the middle area of viewport
     });
 
-    observer.observe(tableOfContentElement);
+    observer.observe(articleContentElement);
   };
 
   const spawnIntersectionObserverForTitles = () => {
@@ -113,7 +116,7 @@ export default function AsideTitles({ headings }) {
     <aside
       className={`fixed top-32 left-8 w-64 max-h-[calc(100vh-200px)] overflow-y-auto p-6 bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg transition-all duration-300 ${
         isTableOfContentVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-      } hidden xl:block z-10`}
+      } hidden xl:block z-10 custom-scrollbar`}
       id="table-of-content"
     >
       <div className="mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
