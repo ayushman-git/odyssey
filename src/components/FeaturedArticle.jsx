@@ -20,7 +20,7 @@ export default function FeaturedArticle({ article }) {
 
   return (
     <motion.section
-      className="max-w-6xl mx-auto px-8 py-16"
+      className="max-w-6xl mx-auto px-0 md:px-8 py-16"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}

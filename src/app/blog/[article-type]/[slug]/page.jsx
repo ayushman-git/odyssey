@@ -72,12 +72,12 @@ export default async function Page({ params }) {
       {/* Editorial Header */}
       <section className="pt-0 relative w-full bg-white dark:bg-black">
         {/* Breadcrumb Navigation */}
-        <div className="max-w-4xl mx-auto px-8 pt-6 pb-2">
-          <nav className="flex items-center text-sm text-gray-500 dark:text-gray-400" aria-label="Breadcrumb">
-            <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="max-w-4xl mx-auto px-4 sm:px-8 pt-6 pb-2">
+          <nav className="flex items-center text-sm text-gray-500 dark:text-gray-400 min-w-0" aria-label="Breadcrumb">
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
               <Link 
                 href="/blog" 
-                className="hover:text-black dark:hover:text-white transition-colors font-medium"
+                className="hover:text-black dark:hover:text-white transition-colors font-medium whitespace-nowrap"
               >
                 Odyssey
               </Link>
@@ -86,15 +86,15 @@ export default async function Page({ params }) {
               </svg>
               <Link 
                 href={`/blog?filter=${encodeURIComponent(type)}`}
-                className="hover:text-black dark:hover:text-white transition-colors font-medium capitalize flex-shrink-0"
+                className="hover:text-black dark:hover:text-white transition-colors font-medium capitalize flex-shrink-0 whitespace-nowrap"
               >
                 {type}
               </Link>
-              <svg className="w-3 h-3 opacity-40 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-3 h-3 opacity-40 flex-shrink-0 hidden sm:block" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
               </svg>
             </div>
-            <span className="text-gray-600 dark:text-gray-400 font-light truncate min-w-0">
+            <span className="text-gray-600 dark:text-gray-400 font-light truncate min-w-0 ml-1 sm:ml-2 hidden sm:inline">
               {title}
             </span>
           </nav>
