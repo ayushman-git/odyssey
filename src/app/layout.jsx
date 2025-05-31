@@ -117,8 +117,10 @@ export default function RootLayout({ children }) {
         />
       </head>
       <GoogleAnalytics />
-      <body className={inter.className}>
-        <CustomThemeProvider>{children}</CustomThemeProvider>
+      <body className={`${inter.className} bg-white dark:bg-black min-h-screen`}>
+        <div className="relative z-10">
+          <CustomThemeProvider>{children}</CustomThemeProvider>
+        </div>
       </body>
     </html>
   );
