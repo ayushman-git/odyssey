@@ -90,8 +90,6 @@ export default function FeaturedArticle({ article }) {
             {/* Date and Meta */}
             <div className="flex items-center gap-4 mb-6 text-sm text-gray-500 dark:text-gray-400">
               <span className="font-mono">{formatDate(article.date)}</span>
-              <div className="h-px w-4 bg-current" />
-              {article.author && <span>BY {article.author.toUpperCase()}</span>}
             </div>
 
             {/* Title */}
