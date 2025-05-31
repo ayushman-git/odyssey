@@ -5,7 +5,7 @@ export const Heading = {
   H1: ({ children }) => {
     return (
       <h1
-        className="text-3xl md:text-4xl text-black dark:text-white font-light tracking-tight my-12 cursor-pointer group scroll-mt-20 relative leading-tight"
+        className="text-3xl md:text-4xl text-black dark:text-white font-light tracking-tight my-12 mb-0 cursor-pointer group scroll-mt-20 relative leading-tight"
         id={underscoreDelimiter(children)}
       >
         <a 

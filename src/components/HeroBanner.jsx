@@ -52,7 +52,7 @@ function HeroBanner() {
         }} />
       </div>
 
-      <div className="max-w-4xl mx-auto px-8 relative z-10">
+      <div className="max-w-4xl mx-auto px-0 md:px-8 relative z-10">
         {/* Issue Number / Date */}
         <motion.div 
           className="text-center mb-8"
@@ -70,7 +70,7 @@ function HeroBanner() {
           className="text-center mb-12"
           variants={itemVariants}
         >
-          <h1 className="text-8xl md:text-9xl lg:text-[12rem] font-light tracking-[-0.02em] leading-none">
+          <h1 className="text-6xl md:text-9xl lg:text-[12rem] font-light tracking-[-0.02em] leading-none">
             <span className="block text-black dark:text-white">ODYSSEY</span>
           </h1>
           

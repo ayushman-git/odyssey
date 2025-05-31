@@ -55,7 +55,7 @@ const ProjectGallery = () => {
               <div className="flex flex-col h-full cursor-pointer">
                 {/* Image container with its own clickable area */}
                 <div 
-                  className="aspect-video relative overflow-hidden rounded-2xl mb-4"
+                  className="aspect-video relative overflow-hidden rounded mb-4"
                   onClick={() => window.open(project.liveUrl, '_blank', 'noopener,noreferrer')}
                 >
                   <Image

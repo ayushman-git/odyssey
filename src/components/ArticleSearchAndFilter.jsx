@@ -112,7 +112,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
 
   return (
     <motion.section
-      className="max-w-6xl mx-auto px-8 py-8"
+      className="max-w-6xl mx-auto px-0 md:px-8 py-8"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
@@ -205,7 +205,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
       {/* Articles grid layout */}
       {filteredArticles.length === 0 ? (
         <motion.div 
-          className="text-center py-20"
+          className="text-center py-14"
           variants={itemVariants}
         >
           <div className="max-w-md mx-auto">
