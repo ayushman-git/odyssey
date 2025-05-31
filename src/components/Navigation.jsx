@@ -129,7 +129,7 @@ const Navigation = ({ logo, contactRef }) => {
               }}
               onMouseEnter={() => handleBlogHover(blogButtonRef)}
               onMouseLeave={() => handleBlogLeave(blogButtonRef)}
-              className="!bg-white !text-gray-900 !hover:bg-white !hover:text-gray-900 font-semibold px-6 py-2 rounded-full shadow-sm"
+              className="!bg-transparent !text-white !border !border-white/30 !hover:bg-white/10 !hover:border-white/50 font-semibold px-6 py-2 rounded-full"
             >
               Blog
             </NavButton>
@@ -185,7 +185,7 @@ const Navigation = ({ logo, contactRef }) => {
                   onClick={() => handleNavClick(() => router.push("/blog"))}
                   onMouseEnter={() => handleBlogHover(mobileBlogButtonRef)}
                   onMouseLeave={() => handleBlogLeave(mobileBlogButtonRef)}
-                  className="text-xl !bg-white !text-gray-900 !hover:bg-white !hover:text-gray-900 font-semibold px-6 py-2 rounded-full shadow-sm"
+                  className="text-xl !bg-transparent !text-white !border !border-white/30 !hover:bg-white/10 !hover:border-white/50 font-semibold px-6 py-2 rounded-full"
                 >
                   Blog
                 </NavButton>
