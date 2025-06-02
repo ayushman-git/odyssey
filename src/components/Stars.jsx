@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+import { CanvasTexture, AdditiveBlending } from "three";
 import { useCallback, useMemo } from "react";
 
 export default function Stars({ count = 500 }) {
@@ -54,7 +54,7 @@ export default function Stars({ count = 500 }) {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 32, 32);
 
-    const texture = new THREE.CanvasTexture(canvas);
+    const texture = new CanvasTexture(canvas);
     texture.needsUpdate = true;
     return texture;
   }, []);
@@ -83,7 +83,7 @@ export default function Stars({ count = 500 }) {
         opacity={0.8}
         fog={true}
         map={starTexture}
-        blending={THREE.AdditiveBlending}
+        blending={AdditiveBlending}
       />
     </points>
   );
