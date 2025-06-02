@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import CustomThemeProvider from "@/lib/CustomThemeProvider";
 import GoogleAnalytics from "@/lib/GoogleAnalyticsProvider";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({
   subsets: ["latin"], 
@@ -117,6 +118,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <GoogleAnalytics />
+      <SpeedInsights />
       <body className={`${inter.className} bg-white dark:bg-black min-h-screen`}>
         <div className="relative z-10">
           <CustomThemeProvider>{children}</CustomThemeProvider>
