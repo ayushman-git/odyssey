@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { sendWelcomeEmail } from '@/lib/email';
 
 export async function POST(request) {
   try {
@@ -55,10 +56,20 @@ export async function POST(request) {
       }
     }
 
+    // Send welcome email
+    const emailResult = await sendWelcomeEmail(email.toLowerCase().trim());
+    
+    if (!emailResult.success) {
+      console.error('Failed to send welcome email:', emailResult.error);
+      // Note: We don't fail the subscription if email fails
+      // The user is still successfully subscribed
+    }
+
     return NextResponse.json(
       { 
         message: 'Successfully subscribed to newsletter',
-        subscriber: data[0]
+        subscriber: data[0],
+        emailSent: emailResult.success
       },
       { status: 201 }
     );
