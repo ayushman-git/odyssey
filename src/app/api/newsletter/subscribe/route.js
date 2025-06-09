@@ -63,13 +63,19 @@ export async function POST(request) {
       console.error('Failed to send welcome email:', emailResult.error);
       // Note: We don't fail the subscription if email fails
       // The user is still successfully subscribed
+    } else {
+      console.log(`Welcome email sent successfully to ${email}. Articles included: ${emailResult.articlesIncluded}`);
     }
 
     return NextResponse.json(
       { 
         message: 'Successfully subscribed to newsletter',
         subscriber: data[0],
-        emailSent: emailResult.success
+        email: {
+          sent: emailResult.success,
+          articlesIncluded: emailResult.articlesIncluded || 0,
+          generated: emailResult.emailGenerated || false
+        }
       },
       { status: 201 }
     );
