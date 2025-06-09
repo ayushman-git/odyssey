@@ -7,9 +7,10 @@ export async function POST(request) {
     const { email, userAgent } = await request.json();
 
     // Validate email
-    if (!email || !email.includes('@')) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Valid email is required' },
+        { error: 'Valid email address is required' },
         { status: 400 }
       );
     }
@@ -25,6 +26,71 @@ export async function POST(request) {
       } catch (error) {
         console.warn('Failed to parse referer URL:', referer);
         source = 'unknown';
+      }
+    }
+
+    // Check if email previously bounced or already exists
+    const { data: existingSubscriber, error: checkError } = await supabase
+      .from('newsletter_subscribers')
+      .select('email, bounced, bounced_at')
+      .eq('email', email.toLowerCase().trim())
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows found
+      console.error('Error checking existing subscriber:', checkError);
+      return NextResponse.json(
+        { error: 'Failed to check subscription status' },
+        { status: 500 }
+      );
+    }
+
+    // Handle existing subscriber
+    if (existingSubscriber) {
+      if (existingSubscriber.bounced) {
+        // Reset bounce status for resubscription
+        const { data: updatedData, error: updateError } = await supabase
+          .from('newsletter_subscribers')
+          .update({
+            bounced: false,
+            bounced_at: null,
+            bounce_reason: null,
+            source: source,
+            user_agent: userAgent || 'unknown',
+            created_at: new Date().toISOString() // Update subscription time
+          })
+          .eq('email', email.toLowerCase().trim())
+          .select();
+
+        if (updateError) {
+          console.error('Error updating bounced subscriber:', updateError);
+          return NextResponse.json(
+            { error: 'Failed to resubscribe' },
+            { status: 500 }
+          );
+        }
+
+        // Send welcome email for resubscribed user
+        const emailResult = await sendWelcomeEmail(email.toLowerCase().trim());
+        
+        if (!emailResult.success) {
+          console.error('Failed to send welcome email to resubscribed user:', emailResult.error);
+        }
+
+        return NextResponse.json(
+          { 
+            message: 'Successfully resubscribed to newsletter',
+            subscriber: updatedData[0],
+            emailSent: emailResult.success,
+            resubscribed: true
+          },
+          { status: 200 }
+        );
+      } else {
+        // Already subscribed and not bounced
+        return NextResponse.json(
+          { error: 'Email already subscribed', type: 'duplicate' },
+          { status: 409 }
+        );
       }
     }
 
