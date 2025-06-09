@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import topographyBg from "@/assets/svgs/topography.svg";
 import SocialLinks from "../SocialLinks";
+import Newsletter from "../Newsletter";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -285,8 +286,13 @@ function CosmicFooter({ variant = "default" }) {
               </motion.h3>
               
               {/* Social Links */}
-              <motion.div variants={itemVariants} className="mb-4">
+              <motion.div variants={itemVariants} className="mb-6">
                 <SocialLinks variant={variant} />
+              </motion.div>
+              
+              {/* Newsletter Subscription */}
+              <motion.div variants={itemVariants} className="mb-4">
+                <Newsletter variant={variant} />
               </motion.div>
               
               <motion.p variants={itemVariants} className={`text-sm ${theme.textSecondary} ${variant === "editorial" ? "font-light" : ""}`}>
