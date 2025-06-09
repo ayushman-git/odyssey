@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 function Newsletter({ variant = "default" }) {
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState(null); // 'success', 'error', 'duplicate'
 
   // Theme configuration based on variant
   const themeConfig = {
@@ -24,10 +26,75 @@ function Newsletter({ variant = "default" }) {
 
   const theme = themeConfig[variant] || themeConfig.default;
 
-  const handleSubmit = (e) => {
+  // Status messages
+  const getStatusMessage = () => {
+    switch (status) {
+      case 'success':
+        return { text: 'Successfully subscribed!', color: 'text-green-500' };
+      case 'duplicate':
+        return { text: 'Already subscribed!', color: 'text-yellow-500' };
+      case 'error':
+        return { text: 'Something went wrong. Please try again.', color: 'text-red-500' };
+      default:
+        return null;
+    }
+  };
+
+  const statusMessage = getStatusMessage();
+
+  // Auto-clear status messages after 5 seconds
+  useEffect(() => {
+    if (status) {
+      const timer = setTimeout(() => {
+        setStatus(null);
+      }, 5000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Add newsletter subscription functionality
-    console.log("Newsletter subscription:", email);
+    
+    if (!email || !email.includes('@')) {
+      setStatus('error');
+      return;
+    }
+
+    setIsLoading(true);
+    setStatus(null);
+
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          userAgent: navigator.userAgent,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus('success');
+        setEmail(''); // Clear the input on success
+      } else {
+        if (response.status === 409 || data.type === 'duplicate') {
+          setStatus('duplicate');
+        } else {
+          console.error('Newsletter subscription error:', data.error);
+          setStatus('error');
+        }
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      setStatus('error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -43,30 +110,45 @@ function Newsletter({ variant = "default" }) {
           Stay updated with latest posts
         </motion.p>
         
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-2 mb-2">
           <motion.input
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={isLoading}
             className={`flex-1 px-3 py-2 text-sm rounded-md border transition-all duration-200 
               ${theme.inputClass} ${theme.focusRing} focus:ring-2 focus:outline-none
-              ${variant === "editorial" ? "font-light" : ""}`}
-            whileFocus={{ scale: 1.02 }}
+              ${variant === "editorial" ? "font-light" : ""} 
+              ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            whileFocus={{ scale: isLoading ? 1 : 1.02 }}
             transition={{ duration: 0.2 }}
           />
           
           <motion.button
             type="submit"
+            disabled={isLoading || !email}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 
-              ${theme.buttonClass} ${variant === "editorial" ? "font-light" : ""}`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
+              ${theme.buttonClass} ${variant === "editorial" ? "font-light" : ""}
+              ${isLoading || !email ? 'opacity-50 cursor-not-allowed' : ''}`}
+            whileHover={isLoading || !email ? {} : { scale: 1.05 }}
+            whileTap={isLoading || !email ? {} : { scale: 0.98 }}
             transition={{ duration: 0.2 }}
           >
-            Subscribe
+            {isLoading ? 'Subscribing...' : 'Subscribe'}
           </motion.button>
         </form>
+
+        {/* Status Message */}
+        {statusMessage && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`text-xs ${statusMessage.color} ${variant === "editorial" ? "font-light" : ""}`}
+          >
+            {statusMessage.text}
+          </motion.p>
+        )}
       </motion.div>
     </div>
   );
