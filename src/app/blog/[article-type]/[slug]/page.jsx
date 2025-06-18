@@ -199,10 +199,21 @@ export default async function Page({ params }) {
               </section>
 
               {/* Article Footer */}
-              <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
-                  {/* Article Info */}
-                  <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <footer className="mt-16 pt-12 border-t border-gray-200 dark:border-gray-800">
+                {/* Social Share Section */}
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 font-mono mb-4">
+                    <div className="h-px w-8 bg-current opacity-50" />
+                    <span className="tracking-wider uppercase">Share this article</span>
+                    <div className="h-px w-8 bg-current opacity-50" />
+                  </div>
+                  <SocialShare url={shareUrl} title={title} description={introduction} />
+                </div>
+
+                {/* Footer Info */}
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6 pt-8 border-t border-gray-100 dark:border-gray-800/50">
+                  {/* Article Metadata */}
+                  <div className="flex items-center justify-center sm:justify-start gap-4 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full"></div>
                       <span className="font-mono uppercase tracking-wider">{type}</span>
@@ -211,21 +222,18 @@ export default async function Page({ params }) {
                     <span className="font-mono">{formattedDate}</span>
                   </div>
 
-                  {/* Social share links */}
-                  <SocialShare url={shareUrl} title={title} />
-
-                  {/* Back to Blog */}
+                  {/* Navigation */}
                   <Link 
                     href="/blog" 
-                  className="group inline-flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
-                >
-                  <svg className="w-4 h-4 transform transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </svg>
-                  <span className="font-mono tracking-wider uppercase">Back to Journal</span>
-                </Link>
-              </div>
-            </footer>
+                    className="group inline-flex items-center justify-center sm:justify-start gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+                  >
+                    <svg className="w-4 h-4 transform transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span className="font-mono tracking-wider uppercase">Back to Journal</span>
+                  </Link>
+                </div>
+              </footer>
             </article>
           </div>
         </div>
