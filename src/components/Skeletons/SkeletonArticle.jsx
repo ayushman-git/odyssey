@@ -1,7 +1,7 @@
 import React from "react";
 import { Skeleton } from "@mui/material";
 
-function SkeletionArticle() {
+function SkeletonArticle() {
   return (
     <section className="pt-0 relative w-full bg-white dark:bg-black">
       {/* Breadcrumb Navigation Skeleton */}
@@ -101,4 +101,4 @@ function SkeletionArticle() {
   );
 }
 
-export default SkeletionArticle;
+export default SkeletonArticle;
