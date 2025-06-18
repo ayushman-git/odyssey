@@ -118,10 +118,10 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <GoogleAnalytics />
-      <Analytics />
-      <SpeedInsights />
       <body className={`${inter.className} bg-white dark:bg-black min-h-screen`}>
+        <GoogleAnalytics />
+        <Analytics />
+        <SpeedInsights />
         <div className="relative z-10">
           <CustomThemeProvider>{children}</CustomThemeProvider>
         </div>

@@ -61,6 +61,16 @@ export default function Home() {
           __html: JSON.stringify(homeJsonLd),
         }}
       />
+      <Script
+        id="prerender-blog"
+        strategy="afterInteractive"
+        type="speculationrules"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            prerender: [{ source: "list", urls: ["/blog"] }],
+          }),
+        }}
+      />
       <div className="bg-black min-h-screen md:p-4 p-0">
         <section
           className="rounded-none md:rounded-t-2xl min-h-screen px-6 md:px-16 lg:px-24 py-10 relative overflow-hidden"

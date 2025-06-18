@@ -265,3 +265,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Social Share hover backgrounds */
+.group:hover {
+  background-color: var(--hover-bg) !important;
+}
