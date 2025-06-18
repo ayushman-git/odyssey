@@ -1,8 +1,8 @@
-import SkeletionArticle from "@/components/Skeletions/SkeletionArticle";
+import SkeletonArticle from "@/components/Skeletons/SkeletonArticle";
 import React from "react";
 
 function loading() {
-  return <SkeletionArticle />;
+  return <SkeletonArticle />;
 }
 
 export default loading;
