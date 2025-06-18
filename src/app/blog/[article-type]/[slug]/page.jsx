@@ -5,6 +5,7 @@ import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import AsideTitles from "@/components/AsideTitles";
+import SocialShare from "@/components/SocialShare";
 import { formatDateString, generatePageMetadata } from "@/utils";
 import { extractHeadingsFromMDX } from "@/utils/extractHeadings";
 import { Meow_Script } from "next/font/google";
@@ -32,6 +33,7 @@ export default async function Page({ params }) {
   const { title, cover_img, type, fileContent, date, showAside, introduction } =
     await getArticle(params.slug);
   const formattedDate = formatDateString(date);
+  const shareUrl = `https://ayushman.dev/blog/${params['article-type']}/${params.slug}`;
   
   // Extract headings for table of contents
   const headings = showAside ? extractHeadingsFromMDX(fileContent) : [];
@@ -208,6 +210,9 @@ export default async function Page({ params }) {
                     <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
                     <span className="font-mono">{formattedDate}</span>
                   </div>
+
+                  {/* Social share links */}
+                  <SocialShare url={shareUrl} title={title} />
 
                   {/* Back to Blog */}
                   <Link 
