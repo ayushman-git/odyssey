@@ -1,4 +1,4 @@
-import { underscoreDelimiter } from "@/utils";
+import { underscoreDelimiter } from "@/utils/index.js";
 import { BiLink } from "react-icons/bi";
 
 export const Heading = {

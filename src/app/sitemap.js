@@ -1,5 +1,5 @@
 import { getArticles } from "@/lib/posts";
-import { convertToSlug } from "@/utils";
+import { convertToSlug } from "@/utils/index.js";
 
 export default async function sitemap() {
   const baseUrl = "https://ayushman.dev";
