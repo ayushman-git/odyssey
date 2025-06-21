@@ -6,7 +6,7 @@ import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import AsideTitles from "@/components/AsideTitles";
 import SocialShare from "@/components/SocialShare";
-import { formatDateString, generatePageMetadata } from "@/utils";
+import { formatDateString, generatePageMetadata } from "@/utils/index.js";
 import { extractHeadingsFromMDX } from "@/utils/extractHeadings";
 import { Meow_Script } from "next/font/google";
 

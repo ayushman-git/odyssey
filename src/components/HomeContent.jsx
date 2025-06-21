@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { scrollToSectionWithId } from "@/utils";
+import { scrollToSectionWithId } from "@/utils/index.js";
 
 export default function HomeContent({ meowScriptClassName }) {
   const introRef = useRef(null);
