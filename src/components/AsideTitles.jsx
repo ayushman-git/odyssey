@@ -1,6 +1,6 @@
 "use client";
 
-import { underscoreDelimiter } from "@/utils";
+import { underscoreDelimiter } from "@/utils/index.js";
 import { Fragment, useEffect, useState, useRef } from "react";
 
 export default function AsideTitles({ headings }) {

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { BLUR_DATA_URLS } from "@/data/constants";
-import { convertToSlug } from "@/utils";
+import { convertToSlug } from "@/utils/index.js";
 
 export default function FeaturedArticle({ article }) {
   // Format date from DD-MM-YYYY to Month DD, YYYY

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import NavButton from "./NavButton";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { scrollToSectionWithId } from "@/utils";
+import { scrollToSectionWithId } from "@/utils/index.js";
 import { gsap } from "gsap";
 
 const Navigation = ({ logo, contactRef }) => {
