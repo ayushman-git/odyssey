@@ -169,7 +169,7 @@ export default async function Page({ params }) {
         {/* Article Content */}
         <div className="relative max-w-4xl mx-auto px-8 pb-20">
           {showAside && headings.length > 0 && (
-            <div className="hidden xl:block absolute left-[-17rem] top-0 w-64">
+            <div className="hidden xl:block absolute left-[-17rem] top-0 w-64 h-full">
               <AsideTitles headings={headings} />
             </div>
           )}
