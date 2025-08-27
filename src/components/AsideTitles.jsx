@@ -114,9 +114,9 @@ export default function AsideTitles({ headings }) {
 
   return (
     <aside
-      className={`fixed top-32 left-8 w-64 max-h-[calc(100vh-200px)] overflow-y-auto p-6 bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg transition-all duration-300 ${
+      className={`sticky top-32 w-full max-h-[calc(100vh-200px)] overflow-y-auto p-6 bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg transition-all duration-300 ${
         isTableOfContentVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-      } hidden xl:block z-10 custom-scrollbar`}
+      } z-10 custom-scrollbar`}
       id="table-of-content"
     >
       <div className="mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
