@@ -4,7 +4,7 @@ import Script from "next/script";
 import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
-import AsideTitles from "@/components/AsideTitles";
+// import AsideTitles from "@/components/AsideTitles"; // Hidden for now
 import SocialShare from "@/components/SocialShare";
 import { formatDateString, generatePageMetadata } from "@/utils/index.js";
 import { extractHeadingsFromMDX } from "@/utils/extractHeadings";
@@ -35,8 +35,8 @@ export default async function Page({ params }) {
   const formattedDate = formatDateString(date);
   const shareUrl = `https://ayushman.dev/blog/${params['article-type']}/${params.slug}`;
   
-  // Extract headings for table of contents
-  const headings = showAside ? extractHeadingsFromMDX(fileContent) : [];
+  // Extract headings for table of contents (hidden for now)
+  // const headings = showAside ? extractHeadingsFromMDX(fileContent) : [];
   
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -167,15 +167,9 @@ export default async function Page({ params }) {
         </div>
 
         {/* Article Content */}
-        <div className="max-w-7xl mx-auto px-8 pb-20">
-          <div className="flex gap-12 relative">
-            {/* Left sidebar for table of contents */}
-            <div className="hidden xl:block w-64 flex-shrink-0">
-              {showAside && headings.length > 0 && <AsideTitles headings={headings} />}
-            </div>
-            
-            {/* Main article content */}
-            <article className="flex-1 max-w-4xl">
+        <div className="max-w-4xl mx-auto px-8 pb-20">
+          {/* Main article content - centered */}
+          <article className="w-full">
               {/* Main Content */}
               <section 
                 id="article-content"
@@ -234,8 +228,7 @@ export default async function Page({ params }) {
                   </Link>
                 </div>
               </footer>
-            </article>
-          </div>
+          </article>
         </div>
       </section>
     </>
