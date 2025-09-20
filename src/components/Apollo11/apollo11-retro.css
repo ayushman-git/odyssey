@@ -1,0 +1,446 @@
+/* Apollo 11 Minimal Blueprint Design */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --blueprint-white: #ffffff;
+  --blueprint-black: #000000;
+  --blueprint-gray-100: #f8f9fa;
+  --blueprint-gray-200: #e2e8f0;
+  --blueprint-gray-400: #94a3b8;
+  --blueprint-gray-600: #475569;
+  --blueprint-gray-800: #1e293b;
+  --blueprint-border: #d1d5db;
+  --blueprint-line: #374151;
+}
+
+/* Base styles */
+.apollo11-blueprint {
+  font-family: 'Space Mono', 'Courier New', monospace;
+  background: var(--blueprint-white);
+  color: var(--blueprint-black);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Mission progress indicator */
+.mission-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-blue), var(--accent-orange));
+  transform: scaleX(0);
+  transform-origin: left;
+  box-shadow: 0 0 10px var(--glow-color);
+}
+
+.progress-label {
+  position: absolute;
+  top: 8px;
+  right: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Background elements */
+.bg-stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+    radial-gradient(1px 1px at 40px 70px, #fff, transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+    radial-gradient(1px 1px at 160px 30px, #fff, transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  opacity: 0.6;
+  z-index: -2;
+}
+
+.bg-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(10, 10, 10, 0.8) 70%);
+  z-index: -1;
+}
+
+/* Section base styles */
+.mission-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2rem;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.section-content {
+  max-width: 1400px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.section-text {
+  z-index: 10;
+}
+
+.section-visual {
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Typography */
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  color: var(--accent-green);
+  margin-bottom: 2rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.section-description {
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+/* Mission phases indicators */
+.mission-phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--accent-green);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.mission-phase::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* SVG styles */
+.mission-svg {
+  width: 100%;
+  height: auto;
+  max-width: 600px;
+  filter: drop-shadow(0 0 20px rgba(0, 255, 65, 0.3));
+}
+
+.svg-outline {
+  fill: none;
+  stroke: var(--text-primary);
+  stroke-width: 2;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: all 0.3s ease;
+}
+
+.svg-outline.active {
+  stroke-dashoffset: 0;
+  stroke: var(--accent-green);
+  filter: drop-shadow(0 0 5px var(--accent-green));
+}
+
+.svg-fill {
+  fill: transparent;
+  transition: all 0.5s ease;
+}
+
+.svg-fill.active {
+  fill: rgba(0, 255, 65, 0.1);
+}
+
+/* Technical specifications grid */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.tech-item {
+  border: 1px solid var(--border-primary);
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.tech-item:hover::before {
+  transform: translateX(100%);
+}
+
+.tech-item:hover {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+}
+
+.tech-label {
+  font-size: 0.8rem;
+  color: var(--accent-green);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.tech-value {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* Code snippets */
+.code-display {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-primary);
+  padding: 2rem;
+  margin: 2rem 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--accent-green);
+  position: relative;
+  overflow: hidden;
+}
+
+.code-display::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--accent-green);
+  color: var(--primary-dark);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-line {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.code-line.active {
+  opacity: 1;
+  color: var(--text-primary);
+}
+
+/* Mission timeline */
+.mission-timeline {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.timeline-track {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-primary);
+  transform: translateX(-50%);
+}
+
+.timeline-progress {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  background: var(--accent-green);
+  transform: translateX(-50%);
+  transform-origin: top;
+  box-shadow: 0 0 10px var(--accent-green);
+}
+
+.timeline-event {
+  position: relative;
+  margin: 4rem 0;
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.timeline-event.active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.8s ease;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  background: var(--accent-green);
+  border: 3px solid var(--primary-dark);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px var(--accent-green);
+  z-index: 10;
+}
+
+.timeline-content {
+  width: calc(50% - 2rem);
+  padding: 1.5rem;
+  border: 1px solid var(--border-primary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.timeline-event:nth-child(even) .timeline-content {
+  margin-left: calc(50% + 2rem);
+}
+
+.timeline-event:nth-child(odd) .timeline-content {
+  margin-right: calc(50% + 2rem);
+  text-align: right;
+}
+
+/* Mission footer */
+.mission-footer {
+  padding: 4rem 2rem;
+  border-top: 1px solid var(--border-primary);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.status-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.status-item {
+  text-align: center;
+  padding: 1.5rem;
+  border: 1px solid var(--border-primary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.status-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--accent-green);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.status-value {
+  display: block;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .section-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .mission-section {
+    padding: 1rem;
+  }
+
+  .timeline-event:nth-child(even) .timeline-content,
+  .timeline-event:nth-child(odd) .timeline-content {
+    width: calc(100% - 4rem);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .timeline-track {
+    left: 2rem;
+  }
+
+  .timeline-marker {
+    left: 2rem;
+  }
+
+  .tech-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+}

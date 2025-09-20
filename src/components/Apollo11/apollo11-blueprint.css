@@ -1,0 +1,506 @@
+/* Apollo 11 Minimal Blueprint Design */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --blueprint-white: #ffffff;
+  --blueprint-black: #000000;
+  --blueprint-gray-100: #f8f9fa;
+  --blueprint-gray-200: #e2e8f0;
+  --blueprint-gray-300: #cbd5e1;
+  --blueprint-gray-400: #94a3b8;
+  --blueprint-gray-600: #475569;
+  --blueprint-gray-800: #1e293b;
+  --blueprint-border: #d1d5db;
+  --blueprint-line: #374151;
+}
+
+/* Base styles */
+.apollo11-blueprint {
+  font-family: 'Space Mono', 'Courier New', monospace;
+  background: var(--blueprint-white);
+  color: var(--blueprint-black);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Progress indicator */
+.mission-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--blueprint-gray-200);
+  z-index: 1000;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--blueprint-black);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.1s ease-out;
+}
+
+.progress-label {
+  position: absolute;
+  top: 8px;
+  right: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--blueprint-gray-600);
+  text-transform: uppercase;
+}
+
+/* Blueprint grid background */
+.blueprint-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(var(--blueprint-gray-200) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blueprint-gray-200) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.6;
+  z-index: -1;
+}
+
+/* Main container */
+.mission-container {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Section styles */
+.mission-section {
+  position: relative;
+  padding: 12rem 0;
+  min-height: 120vh;
+  border-bottom: 1px solid var(--blueprint-border);
+}
+
+.mission-section:last-child {
+  border-bottom: none;
+}
+
+/* Typography */
+.section-title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--blueprint-black);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+
+.section-subtitle {
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  color: var(--blueprint-gray-600);
+  margin-bottom: 2rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.section-description {
+  font-size: clamp(1rem, 1.1vw, 1.1rem);
+  color: var(--blueprint-gray-800);
+  margin-bottom: 3rem;
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+/* Mission phase indicator */
+.mission-phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--blueprint-gray-600);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  border: 1px solid var(--blueprint-border);
+  padding: 0.5rem 1rem;
+}
+
+.mission-phase::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--blueprint-black);
+  border-radius: 50%;
+}
+
+/* SVG container */
+.mission-svg-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 66.67%;
+  height: 100vh;
+  background: var(--blueprint-white);
+  border-left: 2px solid var(--blueprint-black);
+  padding: 3rem;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.mission-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* SVG elements */
+.mission-trajectory {
+  fill: none;
+  stroke: var(--blueprint-black);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.spacecraft-icon {
+  opacity: 0;
+  transform-origin: center;
+  transition: opacity 0.3s ease, transform 0.1s ease;
+}
+
+.mission-phase {
+  opacity: 0;
+  transform-origin: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.trajectory-marker {
+  opacity: 0;
+  transform-origin: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.celestial-body circle {
+  fill: none;
+  stroke: var(--blueprint-black);
+  stroke-width: 2;
+}
+
+.celestial-body circle[fill="black"] {
+  fill: var(--blueprint-black);
+}
+
+.technical-data line {
+  stroke: var(--blueprint-gray-400);
+  stroke-width: 1;
+}
+
+.velocity-vectors path {
+  stroke: var(--blueprint-black);
+  stroke-width: 1;
+  fill: none;
+}
+
+.coordinate-system line {
+  stroke: var(--blueprint-black);
+  stroke-width: 1;
+}
+
+.mission-parameters rect {
+  fill: var(--blueprint-white);
+  stroke: var(--blueprint-black);
+  stroke-width: 1;
+}
+
+/* Technical annotations */
+.tech-annotation {
+  font-size: 10px;
+  fill: var(--blueprint-gray-600);
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Code blocks */
+.code-block {
+  background: var(--blueprint-gray-100);
+  border: 1px solid var(--blueprint-border);
+  padding: 2rem;
+  margin: 2rem 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--blueprint-black);
+  position: relative;
+  overflow-x: auto;
+}
+
+.code-block::before {
+  content: attr(data-title);
+  position: absolute;
+  top: -1px;
+  left: 1rem;
+  background: var(--blueprint-white);
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--blueprint-gray-600);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Technical specifications */
+.tech-specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.tech-spec-item {
+  border: 1px solid var(--blueprint-border);
+  padding: 1.5rem;
+  background: var(--blueprint-white);
+  transition: border-color 0.3s ease;
+}
+
+.tech-spec-item:hover {
+  border-color: var(--blueprint-black);
+}
+
+.tech-spec-label {
+  font-size: 0.75rem;
+  color: var(--blueprint-gray-600);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.tech-spec-value {
+  font-size: 1.1rem;
+  color: var(--blueprint-black);
+  font-weight: 400;
+}
+
+/* Animation states */
+.animate-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+
+.animate-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mission timeline */
+.mission-timeline {
+  position: relative;
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 2rem 0;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 2rem;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--blueprint-border);
+}
+
+.timeline-progress {
+  position: absolute;
+  left: 2rem;
+  top: 0;
+  width: 1px;
+  background: var(--blueprint-black);
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.5s ease-out;
+}
+
+.timeline-event {
+  position: relative;
+  padding-left: 4rem;
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.6s ease-out;
+}
+
+.timeline-event.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timeline-marker {
+  position: absolute;
+  left: 1.5rem;
+  top: 0.5rem;
+  width: 8px;
+  height: 8px;
+  background: var(--blueprint-white);
+  border: 2px solid var(--blueprint-black);
+  border-radius: 50%;
+}
+
+.timeline-time {
+  font-size: 0.75rem;
+  color: var(--blueprint-gray-600);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.timeline-title {
+  font-size: 1rem;
+  color: var(--blueprint-black);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.timeline-description {
+  font-size: 0.9rem;
+  color: var(--blueprint-gray-800);
+  line-height: 1.5;
+}
+
+/* Footer */
+.mission-footer {
+  border-top: 2px solid var(--blueprint-black);
+  padding: 4rem 0;
+  margin-top: 4rem;
+}
+
+.mission-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid var(--blueprint-border);
+  background: var(--blueprint-white);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--blueprint-gray-600);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  color: var(--blueprint-black);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Content layout */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  align-items: start;
+  margin: 4rem 0;
+}
+
+.content-text {
+  max-width: 30%;
+  padding-right: 3rem;
+}
+
+.content-visual {
+  display: none; /* Hidden since SVG is now fixed positioned */
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .mission-svg-container {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    right: auto;
+    margin: 2rem 0;
+    position: sticky;
+    top: 2rem;
+  }
+
+  .content-text {
+    max-width: 100%;
+    padding-right: 0;
+  }
+
+  .mission-container {
+    padding: 0 1rem;
+  }
+
+  .mission-section {
+    min-height: auto;
+    padding: 6rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .mission-section {
+    padding: 4rem 0;
+  }
+
+  .tech-specs {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .timeline-event {
+    padding-left: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mission-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Print styles */
+@media print {
+  .apollo11-blueprint {
+    background: white !important;
+    color: black !important;
+  }
+
+  .blueprint-grid {
+    display: none;
+  }
+
+  .mission-progress {
+    display: none;
+  }
+}
