@@ -1,0 +1,173 @@
+---
+author: Ayushman
+title: "Building Authenticated MCP Servers"
+type: Technical Guide
+date: 23-09-2025
+cover_img: https://github.com/ayushman-git/moonbox/blob/main/assets/images/mcp_cover.jpeg?raw=true
+showAside: true
+introduction: Recently I got the opportunity to work on a POC that caught my attention immediately. The challenge? Give LLM chatbots like Claude and Cursor access to user data from our learning platform. The goal was elegant - suggest courses from our catalog based on each user's activity, aspirations, and the rich data we'd collected about their learning journey.
+---
+
+<Block>
+## The Beginning: A Real Problem
+
+Recently I got the opportunity to work on a POC that caught my attention immediately. The challenge? Give LLM chatbots like Claude and Cursor access to user data from our learning platform. The goal was elegant - suggest courses from our catalog based on each user's activity, aspirations, and the rich data we'd collected about their learning journey.
+
+That's when I discovered MCP - Model Context Protocol. And let me tell you, it changed everything about how I think about LLM integrations.
+
+## What MCP Actually Does (And Why You Should Care)
+
+MCP allows us to provide context to LLMs and even hand them fragments of functionality. Think about it - you can ask GPT or Claude to research topics and create a Notion page, all in one conversation. I've been using it across every AI platform I touch now.
+
+In ChatGPT, I've connected all the services I use daily. They call them "connectors," but under the hood? It's all MCP. ChatGPT now gives me insights from my Notion pages and Google Calendar on demand. Just a few weeks ago, they launched developer mode for custom MCP servers, so you can add your own tools to GPT as well.
+
+Claude makes it even easier - you can set up custom local or remote MCP servers with minimal configuration.
+
+There are great resources on what exactly MCP is and how it works (the official docs are actually awesome). But let me explain MCP the way I understand it - through building something real.
+</Block>
+
+<Block>
+## The Architecture: Three Key Players
+
+MCP standardizes and provides an interface for all LLMs to receive context and function calling capabilities. Here's the cast of characters:
+
+- **MCP Host**: The AI application that orchestrates everything - think of it as the conductor of an orchestra
+- **MCP Client**: The component that maintains connections to MCP servers and fetches context for the host
+- **MCP Server**: Your program that actually provides the context and tools
+
+The basic setup is refreshingly straightforward. You register your tools and provide context - a title, description, parameters, and a callback function. Here's what that looks like in practice:
+
+```javascript
+// tools.js
+import { z } from "zod";
+
+export function registerTools(server) {
+  // 1. Web Search Tool
+  server.registerTool("web_search", {
+    title: "Web Search",
+    description: "Search the web for information on a given query and return summarized results.",
+    inputSchema: {
+      query: z.string().describe("Search query text")
+    }
+  }, async () => {
+    // Implementation here
+  });
+
+  // 2. Database Query Tool
+  server.registerTool("db_query", {
+    title: "Database Query",
+    description: "Run a safe SQL query against a company database and return rows.",
+    inputSchema: {
+      sql: z.string().describe("SQL SELECT query (read-only)")
+    }
+  }, async () => {
+    // Implementation here
+  });
+
+  // 3. Weather Forecast Tool
+  server.registerTool("weather_forecast", {
+    title: "Weather Forecast",
+    description: "Get the weather forecast for a specific city and date.",
+    inputSchema: {
+      city: z.string(),
+      date: z.string().describe("ISO date format")
+    }
+  }, async () => {
+    // Implementation here
+  });
+
+  // ... more tools
+}
+```
+</Block>
+
+<Block>
+## The Plot Twist: Authentication
+
+Now here's where it gets interesting. The example above? It's neat, but it's not real-world. We don't want just anyone sending Slack messages or pulling data from our servers. We need proper authentication.
+
+Auth with MCP is different from what you might expect. To make it work, we need to create an auth server that handles authorization, redirections, and exposes specific GET API endpoints.
+
+### Setting Up the Auth Server
+
+First, we expose a `.well-known` endpoint that's automatically called by the host to discover information about our identity provider and other endpoints:
+
+```javascript
+// .well-known/oauth-authorization-server endpoint
+res.json({
+  issuer: process.env.AS_BASE_URL,
+  authorization_endpoint: `${process.env.AS_BASE_URL}/authorize`,
+  token_endpoint: `${process.env.AS_BASE_URL}/token`,
+  jwks_uri: `${process.env.AS_BASE_URL}/jwks.json`,
+  response_types_supported: ["code"],
+  grant_types_supported: ["authorization_code", "refresh_token"],
+  code_challenge_methods_supported: ["S256"],
+  scopes_supported: ["mcp.read", "mcp.tools", "offline"]
+});
+```
+
+Next, we create an `/authorize` GET endpoint that handles authentication. This gets called as soon as the host opens. Here's where we implement the logic for hitting our IDP API (Google, Notion, etc.) for authentication.
+
+We need another endpoint to handle the callback when the IDP redirects back - let's call it `/idp/callback`. This is where we exchange the authorization code from the IDP for an access token that identifies our user.
+
+Don't forget the `/token` endpoint to handle token management and provide it to our MCP server.
+
+### Bringing It All Together
+
+In our MCP server (`http.ts`), we expose an `/mcp` endpoint with authentication middleware:
+
+```javascript
+app.all("/mcp", requireAuth, async (req: any, res) => {
+  // Pass user context to MCP server
+  const userContext = {
+    userId: req.user,
+    scope: req.scope,
+    name: req.name,
+    email: req.email,
+  };
+
+  const server = buildServer(userContext);
+  const transport = new StreamableHTTPServerTransport({
+    sessionIdGenerator: undefined, // Stateless mode
+  });
+
+  res.on("close", () => transport.close());
+
+  await server.connect(transport);
+  await transport.handleRequest(req, res, req.body);
+});
+```
+</Block>
+
+<Block>
+## The Authentication Dance: A Step-by-Step Journey
+
+Here's where the magic happens - let me walk you through the complete flow:
+
+1. **The Initial Contact**: The host first checks `/.well-known/oauth-protected-resource` to discover our resource server
+2. **The 401 Challenge**: It calls `https://our-domain/mcp` and gets a 401 (unauthorized) error - exactly what we want
+3. **Discovery**: Using the well-known endpoints, the host learns about our auth server by calling `https://auth-domain/.well-known/oauth-authorization-server`
+4. **The Authorization Request**: The host hits our `/authorize` endpoint mentioned in the auth well-known response
+5. **IDP Handoff**: In `/authorize`, we redirect to our IDP server with the client ID and secret. The IDP returns a redirection URL where the user logs in
+6. **The Callback**: After login, the IDP redirects to our callback URL (`auth-domain/idp/callback`) with an authorization code
+7. **Token Exchange**: We exchange that code for an access token. Now we have options - store it in Redis for distributed access, use quick remote memory, or simply keep it in memory for simpler setups
+8. **Token Service**: We expose `/token` that the host calls when MCP servers need the token
+
+Once we have the token, we can create tools that call our APIs with both the token and dynamic parameters set by the LLM. Read information from the server, write data back - the possibilities open up.
+</Block>
+
+<Block>
+## Deployment: Making It Real
+
+The final step is configuring all this MCP information in the config files of Claude, GPT, or Cursor. Once configured, the LLM chatbot has access to these tools and prompts, which get called automatically when the LLM senses that a tool matches the user's query.
+
+## The Result
+
+What started as a POC to suggest courses has become a powerful pattern I use everywhere. MCP isn't just about giving LLMs access to data - it's about creating secure, authenticated bridges between AI and your existing infrastructure.
+
+The beauty is in the standardization. Write once, use everywhere. Your MCP server works with Claude, ChatGPT, Cursor, and any future LLM that supports the protocol.
+
+And that learning platform POC? It's now suggesting personalized courses based on real user data, understanding context from their learning history, and providing recommendations that actually make sense. All while keeping the data secure and the users authenticated.
+
+That's the power of MCP - turning LLMs from smart chatbots into integrated assistants that understand your world.
+</Block>
