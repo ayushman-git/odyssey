@@ -19,61 +19,17 @@ export default function CodeBlock({ code, language }) {
       .catch((err) => console.error("Failed to copy code: ", err));
   };
 
-  // Use a custom wrapper component to control overflow
-  useEffect(() => {
-    if (containerRef.current) {
-      const preElements = containerRef.current.querySelectorAll("pre");
-      preElements.forEach((pre) => {
-        pre.style.overflow = "auto";
-        pre.style.maxWidth = "100%";
-        pre.style.width = "100%";
-        pre.style.minWidth = "0";
-        pre.style.boxSizing = "border-box";
-      });
-
-      const codeElements = containerRef.current.querySelectorAll("code");
-      codeElements.forEach((code) => {
-        code.style.whiteSpace = "pre";
-        code.style.wordBreak = "normal";
-        code.style.overflowWrap = "normal";
-        code.style.minWidth = "0";
-        code.style.display = "block";
-        code.style.width = "100%";
-        code.style.maxWidth = "100%";
-        code.style.boxSizing = "border-box";
-      });
-
-      // Force container to respect parent width
-      containerRef.current.style.maxWidth = "100%";
-      containerRef.current.style.width = "100%";
-      containerRef.current.style.boxSizing = "border-box";
-    }
-  }, [code]);
 
   return (
-    <div 
-      className="w-full max-w-full overflow-hidden"
-      style={{ 
-        maxWidth: "100%", 
-        width: "100%", 
-        boxSizing: "border-box",
-        overflow: "hidden"
-      }}
-    >
+    <div className="w-full max-w-full overflow-hidden" style={{ minWidth: 0 }}>
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="my-4 sm:my-6 rounded-xl sm:rounded-2xl border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden w-full max-w-full"
-        style={{ 
-          maxWidth: "100%", 
-          width: "100%", 
-          boxSizing: "border-box",
-          overflow: "hidden"
-        }}
+        className="my-4 sm:my-6 rounded-xl sm:rounded-2xl border border-border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden w-full" style={{ minWidth: 0 }}
       >
         {/* Header with gradient background */}
-        <div className="bg-gradient-to-r from-muted via-muted to-muted/80 px-2 sm:px-3 md:px-4 py-2 sm:py-3 flex items-center justify-between border-b border-border min-h-[40px] sm:min-h-[44px]">
+        <div className="bg-gradient-to-r from-muted via-muted to-muted/80 px-2 sm:px-3 md:px-4 py-2 sm:py-3 flex items-center justify-between border-b border-border min-h-[40px] sm:min-h-[44px]" style={{ minWidth: 0 }}>
           <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate flex-1 min-w-0 mr-1 sm:mr-2">
             {language || "code"}
           </span>
@@ -174,59 +130,48 @@ export default function CodeBlock({ code, language }) {
               transition={{ duration: 0.3, ease: "easeOut" }}
             />
           </motion.button>
-      </div>
+        </div>
 
         {/* Code content */}
         <div
           ref={containerRef}
-          className="relative bg-gradient-to-br from-card via-card to-card/90 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-muted-foreground/30 scrollbar-track-muted p-4"
-          style={{ 
-            maxWidth: "100%", 
-            width: "100%", 
-            boxSizing: "border-box",
-            overflow: "auto"
-          }}
+          className="relative bg-gradient-to-br from-card via-card to-card/90 w-full overflow-x-auto p-4"
+          style={{ minWidth: 0 }}
         >
           <SyntaxHighlighter
             language={language}
             style={tomorrow}
             customStyle={{
-              padding: "0 !important",
+              padding: 0,
               margin: 0,
               background: "transparent",
-              fontSize: "0.875rem",
-              lineHeight: "1.5",
-              width: "100%",
-              display: "block",
-              overflowX: "auto",
+              fontSize: "0.75rem",
+              lineHeight: "1.4",
               fontFamily: "'JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace",
-              minWidth: "0",
-              maxWidth: "100%",
               color: "hsl(var(--card-foreground))",
+              minWidth: 0,
+              wordBreak: "break-all"
             }}
-            wrapLongLines={false}
+            wrapLongLines={true}
             showLineNumbers={false}
             PreTag={({ children, ...props }) => (
-              <pre {...props} className="overflow-x-auto w-full max-w-full" style={{ 
-                margin: 0, 
+              <pre {...props} style={{
+                margin: 0,
                 padding: 0,
-                maxWidth: "100%",
-                width: "100%",
-                overflow: "auto",
-                boxSizing: "border-box"
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+                overflowWrap: "break-word",
+                minWidth: 0
               }}>
                 {children}
               </pre>
             )}
             CodeTag={({ children, ...props }) => (
               <code {...props} style={{
-                display: "block",
-                width: "100%",
-                maxWidth: "100%",
-                overflow: "auto",
-                whiteSpace: "pre",
-                wordBreak: "normal",
-                boxSizing: "border-box"
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+                overflowWrap: "break-word",
+                minWidth: 0
               }}>
                 {children}
               </code>
