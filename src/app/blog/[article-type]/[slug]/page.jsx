@@ -35,6 +35,13 @@ export default async function Page({ params }) {
   const formattedDate = formatDateString(date);
   const shareUrl = `https://ayushman.dev/blog/${params['article-type']}/${params.slug}`;
   
+  // Safely extract year from date
+  const getYearFromDate = (dateString) => {
+    if (!dateString) return new Date().getFullYear();
+    const year = new Date(dateString).getFullYear();
+    return isNaN(year) ? new Date().getFullYear() : year;
+  };
+  
   // Extract headings for table of contents (hidden for now)
   // const headings = showAside ? extractHeadingsFromMDX(fileContent) : [];
   
@@ -108,7 +115,7 @@ export default async function Page({ params }) {
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 font-mono tracking-wider uppercase">
               <div className="h-px w-8 bg-current opacity-50" />
-              <span>VOL. I — {new Date(date).getFullYear()}</span>
+              <span>VOL. I</span>
               <div className="h-px w-8 bg-current opacity-50" />
             </div>
           </div>
