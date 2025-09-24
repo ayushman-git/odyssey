@@ -33,7 +33,7 @@ MCP standardises and provides an interface for all LLMs to receive context and f
     style={{
     margin: "72px 0px"
  }}>
-    <img src="https://github.com/ayushman-git/moonbox/blob/main/assets/images/mcp_arch.jpg?raw=true" alt="arecobo message grid" style={{
+    <img src="https://github.com/ayushman-git/moonbox/blob/main/assets/images/mcp_arch.jpg?raw=true" alt="MCP architecture: the Host (LLM), the Client (connection manager), and the Server (tools + context)" style={{
         borderRadius: "8px",
         margin: "24px auto"
     }} />
@@ -94,6 +94,18 @@ MCP uses OAuth 2.1 with PKCE for authentication, but with some extra rules that 
 
 ### Setting Up the Auth Server
 To secure our MCP server, we need an **authorisation layer**. Without it, anyone could hit our endpoints and start pulling data or sending requests. MCP builds this on top of OAuth 2.1, so the flow might look familiar if you’ve worked with modern auth systems.
+
+ <figure
+    style={{
+    margin: "72px 0px"
+ }}>
+    <img src="https://github.com/ayushman-git/moonbox/blob/main/assets/images/mcp_auth.png?raw=true" alt="MCP authentication flow: OAuth tokens, authorization server, and secure access to tools" style={{
+        borderRadius: "8px",
+        margin: "24px auto",
+        width: "100vw"
+    }} />
+    <Figcaption>Fig.2 - MCP authentication flow: OAuth tokens, authorization server, and secure access to tools</Figcaption>
+    </figure>
 
 #### 1. Expose a `.well-known` Endpoint
 The first step is to let clients know how to talk to our authorization server. MCP follows the OAuth 2.0 Protected Resource Metadata (RFC 9728) and Authorization Server Metadata (RFC 8414) standards, which means clients look for metadata at predictable paths under `.well-known`.
@@ -197,19 +209,6 @@ async function requireAuth(req, res, next) {
   }
 }
 ```
-
- <figure
-    style={{
-    margin: "72px 0px"
- }}>
-    <img src="https://github.com/ayushman-git/moonbox/blob/main/assets/images/mcp_auth.png?raw=true" alt="arecobo message grid" style={{
-        borderRadius: "8px",
-        margin: "24px auto",
-        width: "100vw"
-    }} />
-    <Figcaption>Fig.1 - MCP architecture: the Host (LLM), the Client (connection manager), and the Server (tools + context)</Figcaption>
-    </figure>
-
 
 
 ## Bringing It All Together

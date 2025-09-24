@@ -12,6 +12,8 @@ import NetflixEncodingVersions from "../ArticleBased/StreamingTech/NetflixEncodi
 import NetflixOpenConnectFlow from "../ArticleBased/StreamingTech/NetflixOpenConnectFlow";
 import Totoro from "../ArticleBased/StreamingTech/Totoro";
 import MCPConfigTable from "./MCPConfigTable";
+import PreviewableImage from "../PreviewableImage";
+import MDXImageWrapper from "../MDXImageWrapper";
 
 const components = {
   h1: Heading.H1,
@@ -25,6 +27,7 @@ const components = {
   b: Typography.B,
   strong: Typography.Strong,
   code: Typography.Code,
+  img: PreviewableImage,
 };
 
 export default function CustomMDX(props) {
@@ -51,6 +54,8 @@ export default function CustomMDX(props) {
   );
 
   return (
-    <div>{mdx}</div>
+    <MDXImageWrapper>
+      {mdx}
+    </MDXImageWrapper>
   );
 }
