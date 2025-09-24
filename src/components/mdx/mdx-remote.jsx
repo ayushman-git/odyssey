@@ -11,6 +11,7 @@ import PerTitleEncodingDemo from "../ArticleBased/StreamingTech/PerTitleEncoding
 import NetflixEncodingVersions from "../ArticleBased/StreamingTech/NetflixEncodingVersions";
 import NetflixOpenConnectFlow from "../ArticleBased/StreamingTech/NetflixOpenConnectFlow";
 import Totoro from "../ArticleBased/StreamingTech/Totoro";
+import MCPConfigTable from "./MCPConfigTable";
 
 const components = {
   h1: Heading.H1,
@@ -44,6 +45,7 @@ export default function CustomMDX(props) {
         NetflixEncodingVersions,
         NetflixOpenConnectFlow,
         Totoro,
+        MCPConfigTable,
       }}
     />
   );

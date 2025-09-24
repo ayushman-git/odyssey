@@ -56,4 +56,21 @@ export const Heading = {
       </a>
     </h3>
   ),
+  H4: ({ children }) => (
+    <h4 
+      className="text-lg md:text-xl text-black dark:text-white font-light tracking-tight mt-10 mb-4 leading-tight"
+      id={underscoreDelimiter(children)}
+    >
+      <a 
+        href={`#${underscoreDelimiter(children)}`}
+        className="group cursor-pointer flex items-center"
+      >
+        {children}
+        <BiLink 
+          className="text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2" 
+          size={14}
+        />
+      </a>
+    </h4>
+  ),
 };

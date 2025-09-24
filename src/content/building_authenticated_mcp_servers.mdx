@@ -11,29 +11,34 @@ introduction: Recently I got the opportunity to work on a POC that caught my att
 <Block>
 ## The Beginning: A Real Problem
 
-Recently I got the opportunity to work on a POC that caught my attention immediately. The challenge? Give LLM chatbots like Claude and Cursor access to user data from our learning platform. The goal was elegant - suggest courses from our catalog based on each user's activity, aspirations, and the rich data we'd collected about their learning journey.
+Recently, I had the opportunity to work on a proof of concept where we needed to let LLM chatbots fetch courses from our catalog. With that context, the bots could recommend options tailored to each person’s activity, goals, and learning history.
 
-That's when I discovered MCP - Model Context Protocol. And let me tell you, it changed everything about how I think about LLM integrations.
+That's when I came across MCP - the **Model Context Protocol**. It’s a simple but powerful way to personalise LLMs by giving them access to your own data or functionality whenever they need it.
 
-## What MCP Actually Does (And Why You Should Care)
+In ChatGPT and Claude, all the services I use daily are connected through what they call *connectors*. Under the hood, those connectors are powered by MCP. Thanks to that, ChatGPT can now pull insights directly from my Notion pages or Google Calendar whenever I ask.
 
-MCP allows us to provide context to LLMs and even hand them fragments of functionality. Think about it - you can ask GPT or Claude to research topics and create a Notion page, all in one conversation. I've been using it across every AI platform I touch now.
+And just a few weeks ago, ChatGPT introduced developer mode for custom MCP servers, which means you can now add your own tools to GPT as well.
 
-In ChatGPT, I've connected all the services I use daily. They call them "connectors," but under the hood? It's all MCP. ChatGPT now gives me insights from my Notion pages and Google Calendar on demand. Just a few weeks ago, they launched developer mode for custom MCP servers, so you can add your own tools to GPT as well.
-
-Claude makes it even easier - you can set up custom local or remote MCP servers with minimal configuration.
-
-There are great resources on what exactly MCP is and how it works (the official docs are actually awesome). But let me explain MCP the way I understand it - through building something real.
 </Block>
 
 <Block>
-## The Architecture: Three Key Players
+## The Architecture
 
-MCP standardizes and provides an interface for all LLMs to receive context and function calling capabilities. Here's the cast of characters:
+MCP standardises and provides an interface for all LLMs to receive context and function calling capabilities.
+- **MCP Host**: This is a chatbot with LLM capabilities. It can be ChatGPT, Claude, or even our own custom chatbot powered by an LLM.
+- **MCP Client**: The component that manages one-on-one connections to MCP servers and retrieves context for the host
+- **MCP Server**: Our program that actually provides the context and tools
 
-- **MCP Host**: The AI application that orchestrates everything - think of it as the conductor of an orchestra
-- **MCP Client**: The component that maintains connections to MCP servers and fetches context for the host
-- **MCP Server**: Your program that actually provides the context and tools
+ <figure
+    style={{
+    margin: "72px 0px"
+ }}>
+    <img src="https://github.com/ayushman-git/moonbox/blob/main/assets/images/mcp_arch.jpg?raw=true" alt="arecobo message grid" style={{
+        borderRadius: "8px",
+        margin: "24px auto"
+    }} />
+    <Figcaption>Fig.1 - MCP architecture: the Host (LLM), the Client (connection manager), and the Server (tools + context)</Figcaption>
+    </figure>
 
 The basic setup is refreshingly straightforward. You register your tools and provide context - a title, description, parameters, and a callback function. Here's what that looks like in practice:
 
@@ -53,18 +58,7 @@ export function registerTools(server) {
     // Implementation here
   });
 
-  // 2. Database Query Tool
-  server.registerTool("db_query", {
-    title: "Database Query",
-    description: "Run a safe SQL query against a company database and return rows.",
-    inputSchema: {
-      sql: z.string().describe("SQL SELECT query (read-only)")
-    }
-  }, async () => {
-    // Implementation here
-  });
-
-  // 3. Weather Forecast Tool
+  // 2. Weather Forecast Tool
   server.registerTool("weather_forecast", {
     title: "Weather Forecast",
     description: "Get the weather forecast for a specific city and date.",
@@ -76,45 +70,80 @@ export function registerTools(server) {
     // Implementation here
   });
 
-  // ... more tools
+  // 3. Slack Message Tool
+  server.registerTool("slack_message", {
+    title: "Slack Message",
+    description: "Send a message to a Slack channel or user.",
+    inputSchema: {
+      channel: z.string().describe("Slack channel ID or user ID to send the message to"),
+      message: z.string().describe("The message text to send")
+    }
+  }, async () => {
+    // Implementation here
+  });
 }
 ```
 </Block>
 
 <Block>
-## The Plot Twist: Authentication
+## Authentication
 
-Now here's where it gets interesting. The example above? It's neat, but it's not real-world. We don't want just anyone sending Slack messages or pulling data from our servers. We need proper authentication.
+The example above is neat, but it isn’t realistic. We don’t want just anyone sending Slack messages or pulling data from our servers - proper authentication is a must.
 
-Auth with MCP is different from what you might expect. To make it work, we need to create an auth server that handles authorization, redirections, and exposes specific GET API endpoints.
+MCP uses OAuth 2.1 with PKCE for authentication, but with some extra rules that make it different from what you might expect. Specifically, MCP requires discovery documents, resource indicators, and strict audience checks to keep tokens bound to the right server.
 
 ### Setting Up the Auth Server
+To secure our MCP server, we need an **authorisation layer**. Without it, anyone could hit our endpoints and start pulling data or sending requests. MCP builds this on top of OAuth 2.1, so the flow might look familiar if you’ve worked with modern auth systems.
 
-First, we expose a `.well-known` endpoint that's automatically called by the host to discover information about our identity provider and other endpoints:
+#### 1. Expose a `.well-known` Endpoint
+The first step is to let clients know how to talk to our authorization server. MCP follows the OAuth 2.0 Protected Resource Metadata (RFC 9728) and Authorization Server Metadata (RFC 8414) standards, which means clients look for metadata at predictable paths under `.well-known`.
 
-```javascript
-// .well-known/oauth-authorization-server endpoint
-res.json({
-  issuer: process.env.AS_BASE_URL,
-  authorization_endpoint: `${process.env.AS_BASE_URL}/authorize`,
-  token_endpoint: `${process.env.AS_BASE_URL}/token`,
-  jwks_uri: `${process.env.AS_BASE_URL}/jwks.json`,
-  response_types_supported: ["code"],
-  grant_types_supported: ["authorization_code", "refresh_token"],
-  code_challenge_methods_supported: ["S256"],
-  scopes_supported: ["mcp.read", "mcp.tools", "offline"]
-});
+For example, a request to:
+
+`https://our-domain.com/.well-known/oauth-authorization-server`
+
+should return JSON describing metadata for our auth server’s capabilities:
+
+```json
+{
+  "issuer": "https://our-domain.com",
+  "authorization_endpoint": "https://our-domain.com/authorize",
+  "token_endpoint": "https://our-domain.com/token",
+  "jwks_uri": "https://our-domain.com/jwks.json",
+  "response_types_supported": ["code"],
+  "grant_types_supported": ["authorization_code", "refresh_token"],
+  "code_challenge_methods_supported": ["S256"],
+  "scopes_supported": ["mcp.read", "mcp.tools", "offline"]
+}
 ```
 
-Next, we create an `/authorize` GET endpoint that handles authentication. This gets called as soon as the host opens. Here's where we implement the logic for hitting our IDP API (Google, Notion, etc.) for authentication.
+This document tells the MCP client where to send users for login (`/authorize`), where to swap codes for tokens (`/token`), and which scopes and flows are supported.
 
-We need another endpoint to handle the callback when the IDP redirects back - let's call it `/idp/callback`. This is where we exchange the authorization code from the IDP for an access token that identifies our user.
+#### 2. `/authorize` – Starting Authentication
 
-Don't forget the `/token` endpoint to handle token management and provide it to our MCP server.
+The `/authorize` endpoint is where the login flow begins. When the MCP host opens, it redirects the user to our IDP (Google, Notion, GitHub, etc.) through this endpoint.  
+We need to generate a PKCE challenge for security and include the resource=https://our-domain.com/mcp parameter so the token is bound to our MCP server only.
 
-### Bringing It All Together
+#### 3. `/idp/callback` – Handling Redirects
+After the user logs into the IDP (Identity Provider), they’re redirected back to our server at a callback endpoint, such as `/idp/callback`. This is where we exchange the **authorization code** for an **access token**. That token is proof of who the user is and what they’re allowed to do.
 
-In our MCP server (`http.ts`), we expose an `/mcp` endpoint with authentication middleware:
+#### 4. `/token` – Issuing and Refreshing Tokens
+
+Finally, our `/token` endpoint issues tokens (access + refresh) and handles renewals. Every request the MCP client makes to your server will carry:
+
+`Authorization: Bearer <access-token>`
+
+Our server must validate:
+
+- Signature (`jwks.json`)
+- Issuer `https://our-domain.com`
+- Audience `https://our-domain.com/mcp`
+
+If invalid or expired, return 401.
+
+#### 5. `/mcp` – Protecting the MCP Endpoint
+
+We need to protect our MCP endpoint with middleware that checks the token before connecting the client.
 
 ```javascript
 app.all("/mcp", requireAuth, async (req: any, res) => {
@@ -136,38 +165,77 @@ app.all("/mcp", requireAuth, async (req: any, res) => {
   await server.connect(transport);
   await transport.handleRequest(req, res, req.body);
 });
+
+async function requireAuth(req, res, next) {
+  const h = req.headers.authorization || "";
+  const token = h.startsWith("Bearer ") ? h.slice(7) : "";
+
+  if (!token) {
+    return res.status(401).set(
+      "WWW-Authenticate",
+      `Bearer resource="${process.env.MCP_BASE_URL}", resource_metadata="${process.env.AS_RESOURCE_METADATA_URL}"`
+    ).end();
+  }
+
+  try {
+    const { payload } = await jwtVerify(token, JWKS, {
+      issuer: process.env.AS_BASE_URL,
+      audience: process.env.MCP_BASE_URL
+    });
+
+    req.user = payload.sub;
+    req.scope = payload.scope;
+    req.name = payload.name;
+    req.email = payload.email;
+
+    next();
+  } catch {
+    return res.status(401).set(
+      "WWW-Authenticate",
+      `Bearer error="invalid_token", resource="${process.env.MCP_BASE_URL}", resource_metadata="${process.env.AS_RESOURCE_METADATA_URL}"`
+    ).end();
+  }
+}
 ```
-</Block>
 
-<Block>
-## The Authentication Dance: A Step-by-Step Journey
+ <figure
+    style={{
+    margin: "72px 0px"
+ }}>
+    <img src="https://github.com/ayushman-git/moonbox/blob/main/assets/images/mcp_auth.png?raw=true" alt="arecobo message grid" style={{
+        borderRadius: "8px",
+        margin: "24px auto",
+        width: "100vw"
+    }} />
+    <Figcaption>Fig.1 - MCP architecture: the Host (LLM), the Client (connection manager), and the Server (tools + context)</Figcaption>
+    </figure>
 
-Here's where the magic happens - let me walk you through the complete flow:
 
-1. **The Initial Contact**: The host first checks `/.well-known/oauth-protected-resource` to discover our resource server
-2. **The 401 Challenge**: It calls `https://our-domain/mcp` and gets a 401 (unauthorized) error - exactly what we want
-3. **Discovery**: Using the well-known endpoints, the host learns about our auth server by calling `https://auth-domain/.well-known/oauth-authorization-server`
-4. **The Authorization Request**: The host hits our `/authorize` endpoint mentioned in the auth well-known response
-5. **IDP Handoff**: In `/authorize`, we redirect to our IDP server with the client ID and secret. The IDP returns a redirection URL where the user logs in
-6. **The Callback**: After login, the IDP redirects to our callback URL (`auth-domain/idp/callback`) with an authorization code
-7. **Token Exchange**: We exchange that code for an access token. Now we have options - store it in Redis for distributed access, use quick remote memory, or simply keep it in memory for simpler setups
-8. **Token Service**: We expose `/token` that the host calls when MCP servers need the token
 
-Once we have the token, we can create tools that call our APIs with both the token and dynamic parameters set by the LLM. Read information from the server, write data back - the possibilities open up.
-</Block>
+## Bringing It All Together
 
-<Block>
-## Deployment: Making It Real
+Now that we’ve got authentication and the `/mcp` endpoint in place, let’s look at how to actually use this setup.
 
-The final step is configuring all this MCP information in the config files of Claude, GPT, or Cursor. Once configured, the LLM chatbot has access to these tools and prompts, which get called automatically when the LLM senses that a tool matches the user's query.
+### Deploying Options
+We’ve got multiple options to deploy this service. Since it’s just a JavaScript runtime, we can spin it up with Node, Deno, or any other JS runtime - either locally or on a remote server.
 
-## The Result
+- **Local Development:** Run with `node http.js` (MCP Server) and `node auth.ts` (Auth Server), or use Docker. In this setup, you’ll usually have `http://localhost:3000` for the MCP server and `http://localhost:4000` for the auth server.
+- **Cloud Deployments:** Vercel, Railway, Fly.io, or even a bare EC2 box. Just make sure everything is served over HTTPS. In this case, instead of `localhost`, you’ll point to your domain, e.g. `https://mcp.your-domain.com` and `https://auth.your-domain.com`.
 
-What started as a POC to suggest courses has become a powerful pattern I use everywhere. MCP isn't just about giving LLMs access to data - it's about creating secure, authenticated bridges between AI and your existing infrastructure.
+The only hard requirement: your `.well-known` endpoints and `/mcp` must be reachable over HTTPS.
 
-The beauty is in the standardization. Write once, use everywhere. Your MCP server works with Claude, ChatGPT, Cursor, and any future LLM that supports the protocol.
+### Configuration Examples
 
-And that learning platform POC? It's now suggesting personalized courses based on real user data, understanding context from their learning history, and providing recommendations that actually make sense. All while keeping the data secure and the users authenticated.
+Here are the different ways you can configure and connect to your MCP server depending on your deployment scenario:
 
-That's the power of MCP - turning LLMs from smart chatbots into integrated assistants that understand your world.
+<MCPConfigTable />
+
+## Result
+What started as a simple proof of concept - letting a chatbot recommend courses - has now become a pattern I use everywhere. By building an authenticated MCP server, I’ve been able to give LLMs secure access to tools and data that actually matter: Slack for communication, Notion for notes, Google Calendar for scheduling, or even custom APIs inside a company.
+
+The amazing thing about MCP is its plug and play capability. Write once, and your server works across Claude, ChatGPT, Cursor, or even your own in-house chatbot. Instead of reinventing integrations, you simply register tools and let the LLM call them securely.
+
+Of course, it wasn’t all smooth sailing. While testing with Cursor, I kept running into an annoying issue: every time I changed a tool on my server, I had to restart both Cursor and the server before the updates would show up. It really slowed me down in the early stages. I eventually solved this by adding nodemon to automatically restart the server whenever files changed, and then triggering the tools update method from the MCP SDK so that changes were detected without having to reconnect or restart Cursor.
+
+And the possibilities are still wide open. Imagine LLMs booking meetings directly into your calendar, summarizing Notion or Obsidian notes, or managing deployment pipelines — all gated by OAuth and standardized by MCP. It’s also a great way for products, services, and apps to extend their knowledge and functionality into the world of LLMs.
 </Block>
