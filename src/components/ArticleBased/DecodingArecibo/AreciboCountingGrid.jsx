@@ -30,8 +30,8 @@ const AreciboGrid = () => {
           row.split('').map((bit, colIndex) => (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className={`w-5 h-5 border border-gray-400 ${
-                colIndex === currentNumber ? 'bg-purple-500' : bit === '1' ? 'bg-black' : 'bg-gray-200'
+              className={`w-5 h-5 border border-gray-400 dark:border-gray-600 ${
+                colIndex === currentNumber ? 'bg-purple-500' : bit === '1' ? 'bg-black dark:bg-white' : 'bg-gray-200 dark:bg-gray-700'
               }`}
             >
               {bit === 'X' ? 'X' : ''}
@@ -39,7 +39,7 @@ const AreciboGrid = () => {
           ))
         )}
       </div>
-      <div className="mt-4 text-lg font-semibold text-center">
+      <div className="mt-4 text-lg font-semibold text-center text-gray-900 dark:text-gray-100">
         Counting: {currentNumber + 1}
       </div>
     </div>

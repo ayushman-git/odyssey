@@ -73,71 +73,113 @@ export default function CodeBlock({ code, language }) {
         }}
       >
         {/* Header with gradient background */}
-        <div className="bg-gradient-to-r from-gray-800 via-gray-800 to-gray-700 px-2 sm:px-3 md:px-4 py-2 sm:py-3 flex items-center justify-between border-b border-border min-h-[40px] sm:min-h-[44px]">
-          <span className="text-xs sm:text-sm font-medium text-gray-200 truncate flex-1 min-w-0 mr-1 sm:mr-2">
+        <div className="bg-gradient-to-r from-muted via-muted to-muted/80 px-2 sm:px-3 md:px-4 py-2 sm:py-3 flex items-center justify-between border-b border-border min-h-[40px] sm:min-h-[44px]">
+          <span className="text-xs sm:text-sm font-medium text-muted-foreground truncate flex-1 min-w-0 mr-1 sm:mr-2">
             {language || "code"}
           </span>
         
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={copyToClipboard}
-            className="px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg text-xs font-medium bg-gray-700/50 hover:bg-gray-600/70 transition-all duration-200 flex items-center gap-1 sm:gap-2 border border-gray-600/30 hover:border-gray-500/50 backdrop-blur-sm flex-shrink-0 min-w-0"
+            className="group relative px-3 py-2 rounded-lg text-xs font-medium bg-background/80 hover:bg-background/90 border border-border/50 hover:border-border/70 backdrop-blur-md transition-all duration-150 flex items-center gap-2 flex-shrink-0 min-w-0 shadow-sm hover:shadow-md"
             aria-label="Copy code to clipboard"
           >
-          <AnimatePresence mode="wait">
-            {copied ? (
-              <motion.div
-                key="copied"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                className="flex items-center gap-1 sm:gap-2 text-green-400"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3 sm:h-4 sm:w-4"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+            {/* Animated background gradient */}
+            <motion.div
+              className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+              initial={false}
+              animate={{ opacity: copied ? 0.2 : 0 }}
+              transition={{ duration: 0.15 }}
+            />
+            
+            <AnimatePresence mode="wait">
+              {copied ? (
+                <motion.div
+                  key="copied"
+                  initial={{ opacity: 0, scale: 0.8, y: 5 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, y: -5 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 800, 
+                    damping: 25,
+                    duration: 0.1 
+                  }}
+                  className="flex items-center gap-2 text-emerald-500"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span className="hidden sm:inline">Copied!</span>
-                <span className="sm:hidden">✓</span>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="copy"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                className="flex items-center gap-1 sm:gap-2 text-gray-300"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3 sm:h-4 sm:w-4"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+                  <motion.svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 1000, 
+                      damping: 20,
+                      delay: 0.05 
+                    }}
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </motion.svg>
+                  <motion.span 
+                    className="hidden sm:inline font-medium"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    Copied!
+                  </motion.span>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="copy"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 600, 
+                    damping: 20 
+                  }}
+                  className="flex items-center gap-2 text-muted-foreground group-hover:text-foreground transition-colors duration-100"
                 >
-                  <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
-                  <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
-                </svg>
-                <span className="hidden sm:inline">Copy</span>
-                <span className="sm:hidden">📋</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.button>
+                  <motion.svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    whileHover={{ rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 600, damping: 20 }}
+                  >
+                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                  </motion.svg>
+                  <span className="hidden sm:inline font-medium">Copy</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
+            {/* Ripple effect */}
+            <motion.div
+              className="absolute inset-0 rounded-lg bg-white/20"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={copied ? { scale: 1.5, opacity: [0, 0.3, 0] } : { scale: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            />
+          </motion.button>
       </div>
 
         {/* Code content */}
         <div
           ref={containerRef}
-          className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 p-4"
+          className="relative bg-gradient-to-br from-card via-card to-card/90 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-muted-foreground/30 scrollbar-track-muted p-4"
           style={{ 
             maxWidth: "100%", 
             width: "100%", 
@@ -160,6 +202,7 @@ export default function CodeBlock({ code, language }) {
               fontFamily: "'JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace",
               minWidth: "0",
               maxWidth: "100%",
+              color: "hsl(var(--card-foreground))",
             }}
             wrapLongLines={false}
             showLineNumbers={false}
