@@ -364,7 +364,7 @@ const WhatImListeningTo = ({ variant = "default" }) => {
                 ref={el => expandedImagesRef.current[index] = el}
                 className="group relative opacity-0 scale-0"
               >
-                <div className="aspect-[4/3] rounded-lg overflow-hidden relative bg-gradient-to-br from-gray-800 to-gray-900">
+                <div className="aspect-[4/3] rounded-xl overflow-hidden relative bg-gradient-to-br from-gray-800 to-gray-900">
                   {item.image ? (
                     <img
                       src={item.image}
@@ -386,7 +386,7 @@ const WhatImListeningTo = ({ variant = "default" }) => {
                       className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <ExternalLink className="w-2.5 h-2.5 text-white" />
+                      <ExternalLink className="w-4 h-4 text-white" />
                     </a>
                   </div>
                 </div>
@@ -410,11 +410,15 @@ const WhatImListeningTo = ({ variant = "default" }) => {
               href="https://open.spotify.com/user/fluxenon"
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 ${theme.spotifyGreen} text-black text-xs font-medium rounded-full hover:bg-green-600 transition-colors`}
+              className={`inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 ${
+                variant === "default"
+                  ? "bg-green-500 hover:bg-green-400 text-white shadow-lg hover:shadow-xl hover:scale-105"
+                  : "bg-green-500 hover:bg-green-600 text-white border border-green-600 hover:border-green-500 shadow-md hover:shadow-lg"
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
-              <Music className="w-3 h-3" />
-              Follow on Spotify
+              <Music className="w-3.5 h-3.5" />
+              <span>Follow on Spotify</span>
             </a>
           </div>
         </div>
