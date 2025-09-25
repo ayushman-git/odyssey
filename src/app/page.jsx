@@ -113,6 +113,7 @@ export default function Home() {
           <MyStack />
         </div>
 
+
         <CosmicFooter />
       </div>
     </main>

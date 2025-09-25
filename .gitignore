@@ -15,6 +15,7 @@
 
 # production
 /build
+/scripts/spotify_auth.js
 
 # misc
 .DS_Store

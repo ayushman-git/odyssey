@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import topographyBg from "@/assets/svgs/topography.svg";
 import SocialLinks from "../SocialLinks";
 import Newsletter from "../Newsletter";
+import WhatImListeningTo from "../WhatImListeningTo";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -179,13 +180,16 @@ function CosmicFooter({ variant = "default" }) {
 
   return (
     <div className="h-auto relative z-20 max-w-7xl mx-auto">
+      {/* Spotify Integration - Above Footer */}
+      <WhatImListeningTo variant={variant} />
+
       <motion.footer
         ref={footerRef}
         initial="initial"
         animate="animate"
         whileHover="hover"
         variants={footerVariants}
-        className={`${theme.containerClass} relative overflow-hidden p-5 sm:p-8 lg:p-12 mt-12 mb-0 md:mb-6 ${
+        className={`${theme.containerClass} relative overflow-hidden p-5 sm:p-8 lg:p-12 mb-0 md:mb-6 ${
           variant === "editorial" ? "transition-all duration-300" : ""
         }`}
         onMouseEnter={() => setIsHovered(true)}
