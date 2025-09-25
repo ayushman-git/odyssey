@@ -88,7 +88,7 @@ function Contact() {
       >
         <section className="relative max-w-[800px] w-full">
           <p className="text-black absolute z-10 left-0 top-1/2 transform -translate-y-1/2 -translate-x-2 sm:-translate-x-6 -rotate-90 whitespace-nowrap text-xs sm:text-sm font-medium">
-            New Delhi, India
+            Hyderabad, India
           </p>
 
           <div className="overflow-hidden rounded-2xl">

@@ -233,7 +233,7 @@ function CosmicFooter({ variant = "default" }) {
                 >
                   Based in{" "}
                   <span className={`${theme.textColor} ${variant === "editorial" ? "font-normal" : "font-medium"}`}>
-                    New Delhi, India
+                    Hyderabad, India
                   </span>
                 </motion.p>
               </motion.address>
