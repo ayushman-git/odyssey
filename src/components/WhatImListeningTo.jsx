@@ -236,8 +236,8 @@ const WhatImListeningTo = ({ variant = "default" }) => {
       <div
         ref={containerRef}
         className={`${theme.containerClass} relative w-[94%] overflow-hidden h-[48px] cursor-pointer transition-all duration-300 ${
-          variant === "default" ? "rounded-none md:rounded-t-2xl" : ""
-        } ${variant === "editorial" ? "border-b-0 rounded-t-2xl" : ""} -mb-px`}
+          variant === "default" ? "rounded-none md:rounded-2xl" : ""
+        } ${variant === "editorial" ? "border-b-0" : ""} -mb-px`}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
