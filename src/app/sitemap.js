@@ -1,6 +1,21 @@
 import { getArticles } from "@/lib/posts";
 import { convertToSlug } from "@/utils/index.js";
 
+// Helper function to convert DD-MM-YYYY to ISO date
+function convertDateToISO(dateString) {
+  if (!dateString) return new Date().toISOString();
+  
+  try {
+    // Convert DD-MM-YYYY to YYYY-MM-DD
+    const [day, month, year] = dateString.split('-');
+    const date = new Date(`${year}-${month}-${day}`);
+    return date.toISOString();
+  } catch (error) {
+    console.error('Error parsing date:', dateString, error);
+    return new Date().toISOString();
+  }
+}
+
 export default async function sitemap() {
   const baseUrl = "https://ayushman.dev";
   
@@ -10,7 +25,7 @@ export default async function sitemap() {
   // Generate entries for blog posts
   const blogEntries = articles.map((article) => ({
     url: `${baseUrl}/blog/${convertToSlug(article.type)}/${article.slug}`,
-    lastModified: article.date || new Date().toISOString(),
+    lastModified: convertDateToISO(article.date),
     changeFrequency: 'monthly',
     priority: 0.8,
   }));
