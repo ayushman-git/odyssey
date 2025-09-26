@@ -3,16 +3,16 @@ import { convertToSlug } from "@/utils/index.js";
 
 // Helper function to convert DD-MM-YYYY to ISO date
 function convertDateToISO(dateString) {
-  if (!dateString) return new Date().toISOString();
+  if (!dateString) return new Date().toISOString().split('.')[0] + 'Z';
   
   try {
     // Convert DD-MM-YYYY to YYYY-MM-DD
     const [day, month, year] = dateString.split('-');
     const date = new Date(`${year}-${month}-${day}`);
-    return date.toISOString();
+    return date.toISOString().split('.')[0] + 'Z';
   } catch (error) {
     console.error('Error parsing date:', dateString, error);
-    return new Date().toISOString();
+    return new Date().toISOString().split('.')[0] + 'Z';
   }
 }
 
@@ -34,19 +34,19 @@ export default async function sitemap() {
   const standardPages = [
     {
       url: baseUrl,
-      lastModified: new Date().toISOString(),
+      lastModified: new Date().toISOString().split('.')[0] + 'Z',
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date().toISOString(),
+      lastModified: new Date().toISOString().split('.')[0] + 'Z',
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/api/rss`,
-      lastModified: new Date().toISOString(),
+      lastModified: new Date().toISOString().split('.')[0] + 'Z',
       changeFrequency: 'daily',
       priority: 0.7,
     },
