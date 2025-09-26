@@ -118,9 +118,9 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
     >
-      {/* Search and Filter Controls - Single Row */}
-      <motion.div 
-        className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8"
+      {/* Search and Filter Controls */}
+      <motion.div
+        className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:gap-6 mb-8"
         variants={itemVariants}
       >
         {/* Search Section */}
@@ -146,17 +146,17 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
         </div>
 
         {/* Filter Controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
           {/* Category Filters */}
           {articleTypes.length > 1 && (
-            <div className="inline-flex items-center border border-gray-200 dark:border-gray-700">
+            <div className="flex sm:inline-flex items-stretch border border-gray-200 dark:border-gray-700">
               {articleTypes.map((type, index) => (
                 <motion.button
                   key={type}
                   onClick={() => handleFilterChange(type)}
-                  className={`px-3 py-2 text-xs font-medium tracking-[0.1em] uppercase transition-all duration-300 relative ${
-                    filter === type 
-                      ? 'bg-black dark:bg-white text-white dark:text-black' 
+                  className={`flex-1 sm:flex-initial px-3 py-2 text-xs font-medium tracking-[0.1em] uppercase transition-all duration-300 relative whitespace-nowrap ${
+                    filter === type
+                      ? 'bg-black dark:bg-white text-white dark:text-black'
                       : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
                   } ${index > 0 ? 'border-l border-gray-200 dark:border-gray-700' : ''}`}
                   whileHover={{ y: -1 }}
@@ -172,16 +172,16 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
           {/* Sort Control */}
           <motion.button
             onClick={() => setSortOrder(sortOrder === "newest" ? "oldest" : "newest")}
-            className="inline-flex items-center gap-2 px-3 py-2 border border-gray-200 dark:border-gray-700 text-xs font-medium tracking-[0.1em] uppercase text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:border-black dark:hover:border-white transition-all duration-300"
+            className="inline-flex items-center justify-center gap-2 px-3 py-2 border border-gray-200 dark:border-gray-700 text-xs font-medium tracking-[0.1em] uppercase text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:border-black dark:hover:border-white transition-all duration-300 w-full sm:w-auto"
             whileHover={{ y: -1 }}
             whileTap={{ y: 0 }}
           >
             {sortOrder === "newest" ? (
-              <SortDesc className="h-3 w-3" />
+              <SortDesc className="h-4 w-4" />
             ) : (
-              <SortAsc className="h-3 w-3" />
+              <SortAsc className="h-4 w-4" />
             )}
-            {sortOrder === "newest" ? "Newest First" : "Oldest First"}
+            {sortOrder === "newest" ? "Newest" : "Oldest"}
           </motion.button>
         </div>
       </motion.div>
