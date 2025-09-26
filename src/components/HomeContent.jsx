@@ -93,7 +93,7 @@ export default function HomeContent({ meowScriptClassName }) {
               className="group relative bg-white border border-white py-3 px-8 opacity-0 rounded-md hover:bg-transparent hover:text-white transition-all duration-300 text-black"
               onClick={() => scrollToSectionWithId("projects")}
             >
-              <span className="flex items-center font-medium">
+              <span className="flex items-center font-medium text-black">
                 <span>View My Work</span>
                 <svg
                   className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1"

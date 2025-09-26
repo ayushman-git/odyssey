@@ -73,10 +73,7 @@ export default function Home() {
       />
       <div className="bg-black min-h-screen md:p-4 p-0">
         <section
-          className="rounded-none md:rounded-t-2xl min-h-screen px-6 md:px-16 lg:px-24 py-10 relative overflow-hidden"
-          style={{
-            background: "linear-gradient(to bottom right, #242424, #000000)",
-          }}
+          className="rounded-none md:rounded-t-2xl min-h-screen px-6 md:px-16 lg:px-24 py-10 relative overflow-hidden bg-gradient-to-br from-[#0a0a0a] to-black"
         >
           {/* Black overlay gradient starting at 70% height */}
           <div
@@ -84,7 +81,7 @@ export default function Home() {
             style={{
               height: "70%",
               background:
-                "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)",
+                "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,1) 100%)",
               pointerEvents: "none",
             }}
           ></div>
