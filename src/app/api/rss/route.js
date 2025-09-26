@@ -7,8 +7,10 @@ export const revalidate = 3600; // Revalidate every hour
 export const dynamic = 'force-dynamic'; // Ensure we can use dynamic data
 
 // Generate RSS feed using the rss package
-function generateRSSFeed(articles) {
-  const baseUrl = 'https://ayushman.dev';
+function generateRSSFeed(articles, requestUrl) {
+  // Extract the actual domain from the request to handle www vs non-www
+  const url = new URL(requestUrl);
+  const baseUrl = `${url.protocol}//${url.host}`;
   const feedUrl = `${baseUrl}/api/rss`;
   const blogUrl = `${baseUrl}/blog`;
   const currentDate = new Date();
@@ -110,7 +112,7 @@ function generateRSSFeed(articles) {
   return feed.xml({ indent: true });
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
     // Get articles using the existing function
     const articles = getArticles();
@@ -124,8 +126,8 @@ export async function GET() {
       });
     }
 
-    // Generate RSS XML
-    const rssXml = generateRSSFeed(articles);
+    // Generate RSS XML with dynamic URL based on request
+    const rssXml = generateRSSFeed(articles, request.url);
 
     // Return RSS feed with proper headers for SEO and caching
     return new NextResponse(rssXml, {
@@ -152,12 +154,15 @@ export async function GET() {
   } catch (error) {
     console.error('RSS Feed Generation Error:', error);
     
-    // Create error feed using RSS package
+    // Create error feed using RSS package with dynamic URL
+    const url = new URL(request.url);
+    const baseUrl = `${url.protocol}//${url.host}`;
+    
     const errorFeed = new RSS({
       title: 'RSS Feed Error',
       description: 'Failed to generate RSS feed',
-      site_url: 'https://ayushman.dev',
-      feed_url: 'https://ayushman.dev/api/rss',
+      site_url: baseUrl,
+      feed_url: `${baseUrl}/api/rss`,
     });
 
     errorFeed.item({

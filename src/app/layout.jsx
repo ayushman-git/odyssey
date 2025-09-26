@@ -63,7 +63,7 @@ export const metadata = {
       'en-US': 'https://ayushman.dev',
     },
     types: {
-      'application/rss+xml': 'https://ayushman.dev/api/rss',
+      'application/rss+xml': '/api/rss',
     },
   },
 };
@@ -117,7 +117,7 @@ export default function RootLayout({ children }) {
           rel="alternate" 
           type="application/rss+xml" 
           title="Ayushman Gupta's Blog RSS Feed" 
-          href="https://ayushman.dev/api/rss" 
+          href="/api/rss" 
         />
         <script 
           id="schema-person"
