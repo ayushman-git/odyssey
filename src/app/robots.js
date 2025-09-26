@@ -6,5 +6,9 @@ export default function robots() {
     },
     sitemap: 'https://ayushman.dev/sitemap.xml',
     host: 'https://ayushman.dev',
+    // Add RSS feed for better discoverability
+    other: {
+      'RSS-Feed': 'https://ayushman.dev/api/rss',
+    },
   };
 }
