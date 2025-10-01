@@ -16,6 +16,15 @@ module.exports = {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+  		animation: {
+  			'wiggle': 'wiggle 1s ease-in-out infinite',
+  		},
+  		keyframes: {
+  			wiggle: {
+  				'0%, 100%': { transform: 'rotate(-3deg)' },
+  				'50%': { transform: 'rotate(3deg)' },
+  			}
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
