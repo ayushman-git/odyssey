@@ -7,6 +7,7 @@ export default function TableOfContents({ headings }) {
   const [activeId, setActiveId] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const itemRefs = useRef(new Map());
   const observerRef = useRef(null);
 
@@ -220,60 +221,90 @@ export default function TableOfContents({ headings }) {
 
       {/* Desktop Sidebar */}
       <aside
-        className={`hidden lg:block fixed top-32 right-8 xl:right-12 w-64 max-h-[calc(100vh-180px)] transition-all duration-300 ${
+        className={`hidden lg:block fixed top-32 right-8 xl:right-12 transition-all duration-300 ${
           isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
         } z-10`}
         aria-label="Table of contents"
         role="navigation"
       >
-        <div className="sticky top-32 bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg shadow-sm p-6 overflow-y-auto max-h-[calc(100vh-180px)] custom-scrollbar">
-          {/* Header */}
-          <div className="mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-xs font-medium tracking-[0.15em] text-gray-500 dark:text-gray-400 uppercase">
-              On this page
-            </h2>
-          </div>
+        <div className="sticky top-32">
+          {/* Collapse/Expand Button */}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className={`absolute ${isCollapsed ? 'top-0 right-0' : 'top-4 right-4'} z-20 p-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-300 shadow-sm`}
+            aria-label={isCollapsed ? "Expand table of contents" : "Collapse table of contents"}
+          >
+            <svg
+              className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-300 ${
+                isCollapsed ? "rotate-180" : ""
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
 
-          {/* Navigation Links */}
-          <nav>
-            <ul className="space-y-0.5">
-              {headings.map(({ level, text, id }) => {
-                const isActive = activeId === id;
-                return (
-                  <li key={id} className={`relative ${level === 1 ? 'mt-3 first:mt-0' : level === 2 ? 'mt-1.5' : 'mt-1'}`}>
-                    <a
-                      href={`#${id}`}
-                      onClick={(e) => scrollToHeading(e, id)}
-                      className={`block py-2 pl-4 pr-3 rounded-md transition-all duration-200 ${getIndentClass(
-                        level
-                      )} ${getFontSizeClass(level)} ${
-                        isActive
-                          ? "text-black dark:text-white"
-                          : level === 1
-                            ? "text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white"
-                            : "text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
-                      }`}
-                      ref={(el) => {
-                        if (el) itemRefs.current.set(id, el);
-                      }}
-                    >
-                      {/* Active indicator - positioned relative to li */}
-                      <span
-                        className={`absolute left-0 top-0 h-full ${level === 1 ? 'w-1' : 'w-0.5'} rounded-full transition-all duration-200 ${
-                          isActive
-                            ? "bg-black dark:bg-white opacity-100"
-                            : "bg-transparent opacity-0"
-                        }`}
-                      />
-                      <span className="transition-all duration-200 leading-snug block">
-                        {text}
-                      </span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
+          {/* TOC Content */}
+          <div className={`transition-all duration-300 ${
+            isCollapsed ? "opacity-0 invisible w-0" : "opacity-100 visible w-64"
+          }`}>
+            <div className="bg-white/80 dark:bg-black/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg shadow-sm p-6 overflow-y-auto max-h-[calc(100vh-180px)] custom-scrollbar">
+              {/* Header */}
+              <div className="mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-xs font-medium tracking-[0.15em] text-gray-500 dark:text-gray-400 uppercase">
+                  On this page
+                </h2>
+              </div>
+
+              {/* Navigation Links */}
+              <nav>
+                <ul className="space-y-0.5">
+                  {headings.map(({ level, text, id }) => {
+                    const isActive = activeId === id;
+                    return (
+                      <li key={id} className={`relative ${level === 1 ? 'mt-3 first:mt-0' : level === 2 ? 'mt-1.5' : 'mt-1'}`}>
+                        <a
+                          href={`#${id}`}
+                          onClick={(e) => scrollToHeading(e, id)}
+                          className={`block py-2 pl-4 pr-3 rounded-md transition-all duration-200 ${getIndentClass(
+                            level
+                          )} ${getFontSizeClass(level)} ${
+                            isActive
+                              ? "text-black dark:text-white"
+                              : level === 1
+                                ? "text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white"
+                                : "text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
+                          }`}
+                          ref={(el) => {
+                            if (el) itemRefs.current.set(id, el);
+                          }}
+                        >
+                          {/* Active indicator - positioned relative to li */}
+                          <span
+                            className={`absolute left-0 top-0 h-full ${level === 1 ? 'w-1' : 'w-0.5'} rounded-full transition-all duration-200 ${
+                              isActive
+                                ? "bg-black dark:bg-white opacity-100"
+                                : "bg-transparent opacity-0"
+                            }`}
+                          />
+                          <span className="transition-all duration-200 leading-snug block">
+                            {text}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
       </aside>
     </>
