@@ -4,10 +4,11 @@ import Script from "next/script";
 import { getArticle } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
-// import AsideTitles from "@/components/AsideTitles"; // Hidden for now
+import TableOfContents from "@/components/TableOfContents";
 import SocialShare from "@/components/SocialShare";
 import { formatDateString, generatePageMetadata } from "@/utils/index.js";
 import { extractHeadingsFromMDX } from "@/utils/extractHeadings";
+import { formatReadingTime } from "@/utils/readingTime";
 import { Meow_Script } from "next/font/google";
 
 const meowScript = Meow_Script({
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const { title, cover_img, type, fileContent, date, showAside, introduction } =
+  const { title, cover_img, type, fileContent, date, showAside, introduction, readingTime } =
     await getArticle(params.slug);
   const formattedDate = formatDateString(date);
   const shareUrl = `https://ayushman.dev/blog/${params['article-type']}/${params.slug}`;
@@ -41,9 +42,9 @@ export default async function Page({ params }) {
     const year = new Date(dateString).getFullYear();
     return isNaN(year) ? new Date().getFullYear() : year;
   };
-  
-  // Extract headings for table of contents (hidden for now)
-  // const headings = showAside ? extractHeadingsFromMDX(fileContent) : [];
+
+  // Extract headings for table of contents
+  const headings = showAside ? extractHeadingsFromMDX(fileContent) : [];
   
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -146,9 +147,15 @@ export default async function Page({ params }) {
               </div>
               <div className="h-px w-12 bg-gray-300 dark:bg-gray-600" />
             </div>
-            
-            <div className="text-sm text-gray-500 dark:text-gray-400 font-mono">
-              {formattedDate}
+
+            <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400 font-mono">
+              <span>{formattedDate}</span>
+              {readingTime && (
+                <>
+                  <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+                  <span>{formatReadingTime(readingTime)}</span>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -175,10 +182,15 @@ export default async function Page({ params }) {
 
         {/* Article Content */}
         <div className="max-w-4xl mx-auto px-8 pb-20">
+          {/* Table of Contents */}
+          {showAside && headings.length > 0 && (
+            <TableOfContents headings={headings} />
+          )}
+
           {/* Main article content - centered */}
           <article className="w-full">
               {/* Main Content */}
-              <section 
+              <section
                 id="article-content"
                 className="prose prose-lg dark:prose-invert max-w-none
                 prose-headings:font-light prose-headings:tracking-tight
@@ -187,7 +199,7 @@ export default async function Page({ params }) {
                 prose-h3:text-2xl prose-h3:mb-4 prose-h3:mt-8
                 prose-p:leading-relaxed prose-p:text-gray-700 dark:prose-p:text-gray-300
                 prose-p:mb-6 prose-p:font-light prose-p:text-lg
-                prose-a:text-black dark:prose-a:text-white prose-a:no-underline 
+                prose-a:text-black dark:prose-a:text-white prose-a:no-underline
                 prose-a:border-b prose-a:border-gray-300 dark:prose-a:border-gray-600
                 hover:prose-a:border-black dark:hover:prose-a:border-white
                 prose-blockquote:border-l-2 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600
@@ -195,7 +207,7 @@ export default async function Page({ params }) {
                 prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8
                 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
                 prose-pre:bg-gray-100 dark:prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700">
-                
+
                 <CustomMDX source={fileContent} showAside={showAside} />
               </section>
 

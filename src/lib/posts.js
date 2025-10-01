@@ -3,6 +3,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { calculateReadingTime } from "@/utils/readingTime";
 
 // Add this check to prevent client-side execution
 if (typeof window !== 'undefined') {
@@ -64,8 +65,11 @@ export function getArticles() {
         
         try {
           const fileContents = fs.readFileSync(fullPath, "utf8");
-          const { data } = matter(fileContents);
-          
+          const { data, content } = matter(fileContents);
+
+          // Calculate reading time from content
+          const readingTime = calculateReadingTime(content);
+
           // Extract metadata with defaults
           return {
             id,
@@ -75,6 +79,7 @@ export function getArticles() {
             date: data.date || '01-01-1970',
             disabled: Boolean(data.disabled),
             hidden: Boolean(data.hidden),
+            readingTime,
             ...data,
           };
         } catch (error) {
@@ -118,9 +123,13 @@ export async function getArticle(slug) {
   const fileContent = fs.readFileSync(file, "utf-8");
   const parsedMatter = matter(fileContent);
 
+  // Calculate reading time for individual article
+  const readingTime = calculateReadingTime(parsedMatter.content);
+
   return {
     slug,
     ...parsedMatter.data,
     fileContent,
+    readingTime,
   };
 }

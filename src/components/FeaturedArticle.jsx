@@ -5,17 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import { convertToSlug } from "@/utils/index.js";
+import { formatReadingTime } from "@/utils/readingTime";
 
 export default function FeaturedArticle({ article }) {
-  // Format date from DD-MM-YYYY to Month DD, YYYY
+  // Format date from DD-MM-YYYY to compact format (24th Sep, 25)
   const formatDate = (dateString) => {
     const [day, month, year] = dateString.split('-');
     const date = new Date(year, month - 1, day);
-    return date.toLocaleDateString('en-US', { 
-      month: 'long', 
-      day: 'numeric', 
-      year: 'numeric'
-    });
+    const dayNum = parseInt(day, 10);
+    const dayWithSuffix = dayNum + (['st', 'nd', 'rd'][((dayNum % 10) - 1)] || 'th');
+    const monthShort = date.toLocaleDateString('en-US', { month: 'short' });
+    const yearShort = year.slice(-2);
+    return `${dayWithSuffix} ${monthShort}, ${yearShort}`;
   };
 
   return (
@@ -90,6 +91,12 @@ export default function FeaturedArticle({ article }) {
             {/* Date and Meta */}
             <div className="flex items-center gap-4 mb-6 text-sm text-gray-500 dark:text-gray-400">
               <span className="font-mono">{formatDate(article.date)}</span>
+              {article.readingTime && (
+                <>
+                  <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+                  <span className="font-mono">{formatReadingTime(article.readingTime)}</span>
+                </>
+              )}
             </div>
 
             {/* Title */}
