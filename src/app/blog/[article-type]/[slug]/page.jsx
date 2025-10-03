@@ -6,6 +6,7 @@ import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import TableOfContents from "@/components/TableOfContents";
 import SocialShare from "@/components/SocialShare";
+import ReadProgressBar from "@/components/ReadProgressBar";
 import { formatDateString, generatePageMetadata } from "@/utils/index.js";
 import { extractHeadingsFromMDX } from "@/utils/extractHeadings";
 import { formatReadingTime } from "@/utils/readingTime";
@@ -71,6 +72,7 @@ export default async function Page({ params }) {
   
   return (
     <>
+      <ReadProgressBar />
       <Script
         id="article-schema"
         type="application/ld+json"
