@@ -9,6 +9,7 @@ import { motion, useAnimation, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import { MapPin, Navigation } from "lucide-react";
 
 // Register ScrollTrigger plugin
 if (typeof window !== "undefined") {
@@ -178,6 +179,27 @@ function CosmicFooter({ variant = "default" }) {
     { name: "Blog", href: "/blog" },
   ];
 
+  const locationTheme =
+    variant === "default"
+      ? {
+          card:
+            "bg-white/10 border-white/15 backdrop-blur-sm shadow-[0_8px_20px_-18px_rgba(15,23,42,0.7)]",
+          iconWrap:
+            "bg-white/15 border border-white/20 text-white shadow-[0_6px_18px_-15px_rgba(15,23,42,0.9)]",
+          heading: "text-white/90",
+          description: "text-white/70",
+          meta: "text-white/60",
+        }
+      : {
+          card:
+            "bg-white/80 dark:bg-slate-950/60 border border-gray-200/70 dark:border-slate-800/80 shadow-[0_10px_28px_-22px_rgba(15,23,42,0.18)]",
+          iconWrap:
+            "bg-black/5 dark:bg-white/5 border border-gray-200/80 dark:border-white/10 text-slate-900 dark:text-white",
+          heading: "text-slate-900 dark:text-white",
+          description: "text-slate-600 dark:text-slate-300",
+          meta: "text-slate-500 dark:text-slate-400",
+        };
+
   return (
     <div className="h-auto relative z-20 max-w-7xl mx-auto">
       {/* Spotify Integration - Above Footer */}
@@ -220,27 +242,46 @@ function CosmicFooter({ variant = "default" }) {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 mb-10"
           >
             {/* Location Info */}
-            <motion.div variants={itemVariants}>
+            <motion.div variants={itemVariants} className="space-y-4">
               <motion.h3
                 variants={itemVariants}
-                className={`text-xl ${variant === "editorial" ? "font-light" : "font-bold"} mb-4 tracking-tight`}
+                className={`text-xl ${variant === "editorial" ? "font-light" : "font-bold"} tracking-tight`}
               >
                 Location
               </motion.h3>
-              <motion.address
-                variants={containerVariants}
-                className={`not-italic text-sm ${theme.textSecondary}`}
+              <motion.div
+                variants={itemVariants}
+                className={`relative flex flex-col gap-3 rounded-xl transition-transform duration-500 ease-out hover:-translate-y-0.5 ${locationTheme.card} p-4 sm:flex-row sm:items-center`}
               >
+                <div className="flex items-center gap-3">
+                  <span className={`flex h-11 w-11 items-center justify-center rounded-lg ${locationTheme.iconWrap}`}>
+                    <MapPin className="h-4 w-4" />
+                  </span>
+                  <motion.div
+                    variants={containerVariants}
+                    className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-3"
+                  >
+                    <motion.p
+                      variants={itemVariants}
+                      className={`text-sm font-medium ${locationTheme.heading}`}
+                    >
+                      Hyderabad, India
+                    </motion.p>
+                    <motion.span
+                      variants={itemVariants}
+                      className={`inline-flex items-center gap-1 text-xs uppercase tracking-[0.14em] ${locationTheme.meta}`}
+                    >
+                      <Navigation className="h-3 w-3" /> 17.3850° N · 78.4867° E
+                    </motion.span>
+                  </motion.div>
+                </div>
                 <motion.p
                   variants={itemVariants}
-                  className="leading-relaxed"
+                  className={`text-xs leading-relaxed ${locationTheme.description}`}
                 >
-                  Based in{" "}
-                  <span className={`${theme.textColor} ${variant === "editorial" ? "font-normal" : "font-medium"}`}>
-                    Hyderabad, India
-                  </span>
+                  Thoughtfully building digital experiences and collaborating across time zones.
                 </motion.p>
-              </motion.address>
+              </motion.div>
             </motion.div>
 
             {/* Navigation Links Column */}
