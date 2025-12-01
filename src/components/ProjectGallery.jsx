@@ -1,133 +1,126 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { FaCode } from "react-icons/fa";
 import { projects } from "@/data/projects";
 import Image from "next/image";
 
 const ProjectGallery = () => {
-  // Using a simple conditional to ensure the component only 
-  // renders its complete structure client-side
-  const [isClient, setIsClient] = React.useState(false);
-  
-  React.useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   return (
-    <div className="relative max-w-screen-xl mx-auto px-4 py-16">
-      <motion.h2 
-        className="text-3xl md:text-4xl font-bold mb-2 text-center text-white"
-        initial={{ opacity: 0, y: 30, scale: 0.95 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+    <motion.section
+      className="max-w-6xl mx-auto px-4 md:px-8 py-20"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true, margin: "-100px" }}
+    >
+      {/* Header */}
+      <motion.div 
+        className="flex items-end justify-between mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
       >
-        Featured Projects
-      </motion.h2>
-      <motion.p 
-        className="text-center text-gray-400 mb-10 max-w-2xl mx-auto"
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-      >
-        A collection of my recent work and side projects showcasing my skills and interests in software development.
-      </motion.p>
+        <h2 className="text-3xl md:text-4xl font-light text-black dark:text-white tracking-tight">
+          Projects
+        </h2>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+      {/* Projects */}
+      <div className="space-y-20">
         {projects.map((project, index) => (
-          <motion.div
+          <motion.article
             key={project.id}
-            className="flex flex-col group h-full relative"
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            className="group"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ 
-              duration: 0.6, 
-              delay: index * 0.15,
-              ease: "easeOut" 
-            }}
-            whileHover={{ y: -5 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            {isClient ? (
-              // Card is no longer wrapped in an anchor tag
-              <div className="flex flex-col h-full cursor-pointer">
-                {/* Image container with its own clickable area */}
-                <div 
-                  className="aspect-video relative overflow-hidden rounded mb-4"
-                  onClick={() => window.open(project.liveUrl, '_blank', 'noopener,noreferrer')}
-                >
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority
-                  />
-                </div>
-                
-                {/* Content below the image */}
-                <div className="px-1 flex flex-col flex-grow">
-                  {/* Title */}
-                  <h3 
-                    className="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors cursor-pointer"
-                    onClick={() => window.open(project.liveUrl, '_blank', 'noopener,noreferrer')}
-                  >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+              {/* Image - Smaller */}
+              <a
+                href={project.liveUrl || project.codeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block relative aspect-video overflow-hidden bg-gray-100 dark:bg-gray-900"
+              >
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  sizes="(max-width: 1024px) 100vw, 576px"
+                  priority={index < 2}
+                />
+              </a>
+
+              {/* Content */}
+              <div className="flex flex-col justify-center">
+                {/* Number */}
+                <span className="text-xs font-mono text-gray-400 dark:text-gray-600 mb-3">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+
+                {/* Title */}
+                <a href={project.liveUrl || project.codeUrl} target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-2xl font-medium text-black dark:text-white mb-2 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
                     {project.title}
                   </h3>
-                  
-                  {/* Tagline */}
-                  <p className="text-gray-300 mb-3 text-sm">
-                    {project.tagline}
-                  </p>
-                  
-                  {/* Description */}
-                  <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-3">
-                    {project.description}
-                  </p>
-                  
-                  {/* Tech stack */}
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {project.techStack.map((tech, index) => (
-                      <span
-                        key={index}
-                        className="text-xs px-2 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                </a>
+
+                {/* Tagline */}
+                <p className="text-gray-600 dark:text-gray-300 text-base mb-3">
+                  {project.tagline}
+                </p>
+
+                {/* Description */}
+                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5">
+                  {project.description}
+                </p>
+
+                {/* Tech stack - More visible */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.techStack.map((tech, i) => (
+                    <span 
+                      key={i} 
+                      className="text-xs font-mono px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
-                
-                {/* Code link button positioned absolutely */}
-                <div className="absolute top-3 right-3 z-10">
+
+                {/* Links */}
+                <div className="flex items-center gap-5">
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-black dark:text-white text-sm font-medium hover:opacity-60 transition-opacity"
+                    >
+                      View Project
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                      </svg>
+                    </a>
+                  )}
                   <a
                     href={project.codeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded-full text-white shadow-lg hover:shadow-gray-500/30 transform transition-all duration-200 hover:scale-110"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                    aria-label={`View code for ${project.title}`}
+                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
                   >
-                    <FaCode size={14} />
+                    Source Code
                   </a>
                 </div>
               </div>
-            ) : (
-              // Render a simple placeholder during SSR to avoid hydration errors
-              <div className="aspect-video relative overflow-hidden rounded-2xl mb-4 bg-gray-800">
-                {/* Static placeholder that matches the structure but doesn't cause hydration issues */}
-                <div className="w-full h-full bg-gray-800"></div>
-              </div>
-            )}
-          </motion.div>
+            </div>
+          </motion.article>
         ))}
       </div>
-    </div>
+    </motion.section>
   );
 };
 

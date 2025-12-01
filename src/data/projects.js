@@ -1,5 +1,5 @@
 // Import the images from the assets folder
-import astronomiaImg from "@/assets/images/astronomia.webp";
+import astronomiaImg from "@/assets/images/astronomia.jpg";
 import protoImg from "@/assets/images/proto.webp";
 import taskImg from "@/assets/images/task.webp";
 import stashImg from "@/assets/images/stash.png";
