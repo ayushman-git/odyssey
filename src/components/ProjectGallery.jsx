@@ -79,14 +79,17 @@ const ProjectGallery = () => {
                   {project.description}
                 </p>
 
-                {/* Tech stack - More visible */}
-                <div className="flex flex-wrap gap-2 mb-6">
+                {/* Tech stack */}
+                <div className="flex flex-wrap items-center gap-3 mb-6">
                   {project.techStack.map((tech, i) => (
                     <span 
                       key={i} 
-                      className="text-xs font-mono px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded"
+                      className="text-xs font-mono text-gray-500 dark:text-gray-400 flex items-center gap-3"
                     >
                       {tech}
+                      {i < project.techStack.length - 1 && (
+                        <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
+                      )}
                     </span>
                   ))}
                 </div>
