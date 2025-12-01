@@ -2,8 +2,21 @@
 import astronomiaImg from "@/assets/images/astronomia.webp";
 import protoImg from "@/assets/images/proto.webp";
 import taskImg from "@/assets/images/task.webp";
+import stashImg from "@/assets/images/stash.png";
 
 export const projects = [
+  {
+    id: 4,
+    title: "Stash",
+    tagline: "A fast, local-first CLI article manager",
+    image: stashImg,
+    gif: "",
+    techStack: ["Rust", "Clap"],
+    codeUrl: "https://github.com/ayushman-git/stash",
+    liveUrl: "https://ayushman-git.github.io/stash-landing?utm_source=portfolio&utm_medium=project_link&utm_campaign=stash",
+    description:
+      "Stash is built with Rust. It's a CLI tool where you can stash your articles, manage them, and read them.",
+  },
   {
     id: 1,
     title: "Astronomia",
