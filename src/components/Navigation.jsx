@@ -122,11 +122,6 @@ const Navigation = ({ logo, contactRef }) => {
             </NavButton>
           </motion.li>
           <motion.li variants={itemVariants}>
-            <NavButton onClick={() => scrollToSectionWithId("music")}>
-              Music
-            </NavButton>
-          </motion.li>
-          <motion.li variants={itemVariants}>
             <NavButton
               ref={blogButtonRef}
               onClick={() => {
@@ -182,16 +177,6 @@ const Navigation = ({ logo, contactRef }) => {
                   className="text-xl"
                 >
                   Skills
-                </NavButton>
-              </motion.li>
-              <motion.li variants={itemVariants}>
-                <NavButton
-                  onClick={() =>
-                    handleNavClick(() => scrollToSectionWithId("music"))
-                  }
-                  className="text-xl"
-                >
-                  Music
                 </NavButton>
               </motion.li>
               <motion.li variants={itemVariants}>
