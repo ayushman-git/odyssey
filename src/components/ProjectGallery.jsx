@@ -21,7 +21,7 @@ const ProjectGallery = () => {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-3xl md:text-4xl font-light text-black dark:text-white tracking-tight">
+        <h2 className="text-3xl md:text-4xl font-light text-white tracking-tight">
           Projects
         </h2>
       </motion.div>
@@ -43,7 +43,7 @@ const ProjectGallery = () => {
                 href={project.liveUrl || project.codeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block relative aspect-video overflow-hidden bg-gray-100 dark:bg-gray-900"
+                className="block relative aspect-video overflow-hidden bg-gray-900"
               >
                 <Image
                   src={project.image}
@@ -58,24 +58,24 @@ const ProjectGallery = () => {
               {/* Content */}
               <div className="flex flex-col justify-center">
                 {/* Number */}
-                <span className="text-xs font-mono text-gray-400 dark:text-gray-600 mb-3">
+                <span className="text-xs font-mono text-gray-500 mb-3">
                   {String(index + 1).padStart(2, '0')}
                 </span>
 
                 {/* Title */}
                 <a href={project.liveUrl || project.codeUrl} target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-2xl font-medium text-black dark:text-white mb-2 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
+                  <h3 className="text-2xl font-medium text-white mb-2 group-hover:text-gray-300 transition-colors">
                     {project.title}
                   </h3>
                 </a>
 
                 {/* Tagline */}
-                <p className="text-gray-600 dark:text-gray-300 text-base mb-3">
+                <p className="text-gray-300 text-base mb-3">
                   {project.tagline}
                 </p>
 
                 {/* Description */}
-                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5">
+                <p className="text-gray-400 text-sm leading-relaxed mb-5">
                   {project.description}
                 </p>
 
@@ -84,11 +84,11 @@ const ProjectGallery = () => {
                   {project.techStack.map((tech, i) => (
                     <span 
                       key={i} 
-                      className="text-xs font-mono text-gray-500 dark:text-gray-400 flex items-center gap-3"
+                      className="text-xs font-mono text-gray-400 flex items-center gap-3"
                     >
                       {tech}
                       {i < project.techStack.length - 1 && (
-                        <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
+                        <span className="w-1 h-1 rounded-full bg-gray-600" />
                       )}
                     </span>
                   ))}
@@ -101,7 +101,7 @@ const ProjectGallery = () => {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-black dark:text-white text-sm font-medium hover:opacity-60 transition-opacity"
+                      className="inline-flex items-center gap-1.5 text-white text-sm font-medium hover:opacity-60 transition-opacity"
                     >
                       View Project
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -113,7 +113,7 @@ const ProjectGallery = () => {
                     href={project.codeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+                    className="text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Source Code
                   </a>
