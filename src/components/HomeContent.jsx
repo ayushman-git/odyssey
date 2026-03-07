@@ -90,10 +90,10 @@ export default function HomeContent({ meowScriptClassName }) {
           <div ref={ctaRef} className="flex flex-wrap gap-6 mb-12">
             {/* Primary CTA - View My Work Button */}
             <button
-              className="group relative bg-white border border-white py-3 px-8 opacity-0 rounded-md hover:bg-transparent hover:text-white transition-all duration-300 text-black"
+              className="group relative bg-white border border-white py-3 px-8 opacity-0 rounded-md hover:bg-transparent transition-all duration-300"
               onClick={() => scrollToSectionWithId("projects")}
             >
-              <span className="flex items-center font-medium text-black hover:text-white">
+              <span className="flex items-center font-medium text-black group-hover:text-white transition-colors duration-300">
                 <span>View My Work</span>
                 <svg
                   className="w-4 h-4 ml-2 transform transition-transform duration-300 group-hover:translate-x-1"
@@ -114,7 +114,7 @@ export default function HomeContent({ meowScriptClassName }) {
 
             {/* Secondary CTA - Resume Button */}
             <button
-              className="group relative bg-transparent border border-gray-700 py-3 px-8 opacity-0 rounded-md hover:border-white transition-colors duration-300"
+              className="group relative bg-transparent border border-gray-600 py-3 px-8 opacity-0 rounded-md hover:border-white transition-colors duration-300"
               onClick={handleResumeClick}
             >
               <span className="flex items-center text-white font-medium">
@@ -127,7 +127,7 @@ export default function HomeContent({ meowScriptClassName }) {
                 >
                   <path
                     d="M7 17L17 7M17 7H8M17 7V16"
-                    stroke="currentColor"
+                    stroke="white"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
