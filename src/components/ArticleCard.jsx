@@ -5,33 +5,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import { convertToSlug } from "@/utils/index.js";
-import { Tooltip } from "@mui/material";
 
 export default function ArticleCard({ details }) {
-  // Format date from DD-MM-YYYY to Month DD, YYYY
   const formatDate = (dateString) => {
     const [day, month, year] = dateString.split('-');
     const date = new Date(year, month - 1, day);
-    return date.toLocaleDateString('en-US', { 
-      month: 'long', 
-      day: 'numeric', 
+    return date.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
       year: 'numeric'
     });
   };
 
   return (
-    <Tooltip
-      title={
-        details.disabled ? (
-          <div className="text-center">
-            <p>In the Works</p>
-          </div>
-        ) : (
-          ""
-        )
-      }
-      followCursor
-    >
+    <div className="relative group/card">
+      {details.disabled && (
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-10 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover/card:opacity-100 transition-opacity duration-200 pointer-events-none">
+          In the Works
+        </div>
+      )}
       <Link
         href={
           details.disabled
@@ -88,15 +80,15 @@ export default function ArticleCard({ details }) {
             <div className="text-sm text-muted-foreground mb-2">
               <span>{formatDate(details.date)}</span>
             </div>
-            
+
             <h2 className="text-xl font-bold mb-3 text-foreground line-clamp-2 text-left">{details.title}</h2>
-            
+
             {details.introduction && (
               <p className="text-muted-foreground text-sm line-clamp-3 mb-4">
                 {details.introduction}
               </p>
             )}
-            
+
             <div className="mt-auto pt-3 border-t border-border">
               <span className="text-sm font-semibold inline-flex items-center text-primary transition-transform group">
                 Read more
@@ -108,6 +100,6 @@ export default function ArticleCard({ details }) {
           </div>
         </motion.article>
       </Link>
-    </Tooltip>
+    </div>
   );
 }

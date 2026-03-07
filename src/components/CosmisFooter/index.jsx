@@ -5,15 +5,8 @@ import topographyBg from "@/assets/svgs/topography.svg";
 import SocialLinks from "../SocialLinks";
 import Newsletter from "../Newsletter";
 import WhatImListeningTo from "../WhatImListeningTo";
-import { motion, useAnimation, useInView } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, useAnimation, useInView, useMotionValue, useSpring } from "framer-motion";
 import Link from "next/link";
-
-// Register ScrollTrigger plugin
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 function CosmicFooter({ variant = "default" }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -22,12 +15,11 @@ function CosmicFooter({ variant = "default" }) {
   const controls = useAnimation();
   const [bgLoaded, setBgLoaded] = useState(false);
 
-  // Add mouse position tracking states
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [footerDimensions, setFooterDimensions] = useState({
-    width: 0,
-    height: 0,
-  });
+  // Framer Motion values for pattern parallax
+  const patternX = useMotionValue(0);
+  const patternY = useMotionValue(0);
+  const springX = useSpring(patternX, { stiffness: 100, damping: 30 });
+  const springY = useSpring(patternY, { stiffness: 100, damping: 30 });
 
   // Theme configuration based on variant
   const themeConfig = {
@@ -55,33 +47,12 @@ function CosmicFooter({ variant = "default" }) {
 
   const theme = themeConfig[variant] || themeConfig.default;
 
-  // Update footer dimensions on mount and resize
-  useEffect(() => {
-    if (!footerRef.current) return;
-
-    const updateDimensions = () => {
-      const { width, height } = footerRef.current.getBoundingClientRect();
-      setFooterDimensions({ width, height });
-    };
-
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-
-    return () => window.removeEventListener("resize", updateDimensions);
-  }, []);
-
-  // Handle mouse movement
+  // Handle mouse movement for pattern parallax
   const handleMouseMove = (e) => {
     if (!footerRef.current || !isHovered) return;
-
-    const { left, top } = footerRef.current.getBoundingClientRect();
-    const x = e.clientX - left;
-    const y = e.clientY - top;
-
-    setMousePosition({
-      x: x / footerDimensions.width - 0.5,
-      y: y / footerDimensions.height - 0.5,
-    });
+    const { left, top, width, height } = footerRef.current.getBoundingClientRect();
+    patternX.set(((e.clientX - left) / width - 0.5) * 25);
+    patternY.set(((e.clientY - top) / height - 0.5) * 25);
   };
 
   // Lazy load the background pattern (only for default variant)
@@ -94,30 +65,6 @@ function CosmicFooter({ variant = "default" }) {
       };
     }
   }, [footerInView, variant]);
-
-  // Enhanced background pattern animation with GSAP (only for default variant)
-  useEffect(() => {
-    if (!footerRef.current || variant !== "default") return;
-
-    const patternEl = footerRef.current.querySelector(".pattern-bg");
-    if (!patternEl) return;
-
-    gsap.to(patternEl, {
-      opacity: isHovered ? 0.4 : 0,
-      scale: isHovered ? 1.1 : 1,
-      duration: 0.4,
-      ease: "power2.inOut",
-    });
-
-    if (isHovered) {
-      gsap.to(patternEl, {
-        x: mousePosition.x * 25,
-        y: mousePosition.y * 25,
-        duration: 0.8,
-        ease: "power1.out",
-      });
-    }
-  }, [isHovered, mousePosition.x, mousePosition.y, variant]);
 
   // Animate content when in view
   useEffect(() => {
@@ -198,15 +145,18 @@ function CosmicFooter({ variant = "default" }) {
       >
         {/* Background div with repeating pattern - only for default variant */}
         {variant === "default" && (
-          <div
-            className={`pattern-bg absolute inset-0 w-full h-full ${theme.bgOpacity}`}
+          <motion.div
+            className="pattern-bg absolute inset-0 w-full h-full"
+            animate={{ opacity: isHovered ? 0.4 : 0, scale: isHovered ? 1.1 : 1 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
             style={{
               backgroundImage: bgLoaded ? `url(${topographyBg.src})` : "none",
               backgroundRepeat: "repeat",
               backgroundSize: "400px 400px",
               mixBlendMode: "soft-light",
               transformOrigin: "center center",
-              willChange: "transform, opacity",
+              x: springX,
+              y: springY,
             }}
           />
         )}

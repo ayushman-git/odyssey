@@ -1,19 +1,36 @@
 // components/mdx-remote.js
 import { MDXRemote } from "next-mdx-remote/rsc";
+import dynamic from "next/dynamic";
 import { Heading } from "./Heading";
 import Blockquote from "./Blockquote";
 import { Typography } from "./Typography";
 import Figcaption from "./BaseElements/Figcaption";
 import Block from "./BaseElements/Block";
 import AreciboCountingGrid from "../ArticleBased/DecodingArecibo/AreciboCountingGrid";
-import AdaptiveBitrateDemo from "../ArticleBased/StreamingTech/AdaptiveBitrateDemo";
-import PerTitleEncodingDemo from "../ArticleBased/StreamingTech/PerTitleEncodingDemo";
-import NetflixEncodingVersions from "../ArticleBased/StreamingTech/NetflixEncodingVersions";
-import NetflixOpenConnectFlow from "../ArticleBased/StreamingTech/NetflixOpenConnectFlow";
-import Totoro from "../ArticleBased/StreamingTech/Totoro";
 import MCPConfigTable from "./MCPConfigTable";
 import PreviewableImage from "../PreviewableImage";
 import MDXImageWrapper from "../MDXImageWrapper";
+
+const AdaptiveBitrateDemo = dynamic(
+  () => import("../ArticleBased/StreamingTech/AdaptiveBitrateDemo"),
+  { ssr: false }
+);
+const PerTitleEncodingDemo = dynamic(
+  () => import("../ArticleBased/StreamingTech/PerTitleEncodingDemo"),
+  { ssr: false }
+);
+const NetflixEncodingVersions = dynamic(
+  () => import("../ArticleBased/StreamingTech/NetflixEncodingVersions"),
+  { ssr: false }
+);
+const NetflixOpenConnectFlow = dynamic(
+  () => import("../ArticleBased/StreamingTech/NetflixOpenConnectFlow"),
+  { ssr: false }
+);
+const Totoro = dynamic(
+  () => import("../ArticleBased/StreamingTech/Totoro"),
+  { ssr: false }
+);
 
 const components = {
   h1: Heading.H1,

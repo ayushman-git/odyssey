@@ -1,5 +1,5 @@
 import { underscoreDelimiter } from "@/utils/index.js";
-import { BiLink } from "react-icons/bi";
+import { Link2 } from "lucide-react";
 
 export const Heading = {
   H1: ({ children }) => {
@@ -14,7 +14,7 @@ export const Heading = {
         >
           {children}
         </a>
-        <BiLink 
+        <Link2 
           href={`#${underscoreDelimiter(children)}`} 
           className="text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-all duration-300 absolute -right-7 top-1/2 -translate-y-1/2" 
           size={18}
@@ -32,7 +32,7 @@ export const Heading = {
         className="group cursor-pointer flex items-center"
       >
         {children}
-        <BiLink 
+        <Link2 
           className="text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2" 
           size={16}
         />
@@ -49,7 +49,7 @@ export const Heading = {
         className="group cursor-pointer flex items-center"
       >
         {children}
-        <BiLink 
+        <Link2 
           className="text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2" 
           size={14}
         />
@@ -66,7 +66,7 @@ export const Heading = {
         className="group cursor-pointer flex items-center"
       >
         {children}
-        <BiLink 
+        <Link2 
           className="text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2" 
           size={14}
         />

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 
 import BaseChip from "./BaseChip";
-import { AiFillClockCircle } from "react-icons/ai";
 
 export default function DetailChips({ type, date }) {
   const [timeToRead, setTimeToRead] = useState(0);

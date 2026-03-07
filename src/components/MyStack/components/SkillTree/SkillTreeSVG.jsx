@@ -305,7 +305,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
       }
       // Clear all transitions to prevent memory leaks
       svg.selectAll("*").interrupt();
-      resizeObserver.unobserve(container);
+      resizeObserver.disconnect();
     };
   }, [data, onNodeHover, onNodeLeave]);
 

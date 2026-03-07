@@ -7,7 +7,7 @@ import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({
   subsets: ["latin"], 
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // All font weights
+  weight: ["400", "500", "600", "700"],
   style: ["normal"], // Optional: include italic if needed
 });
 

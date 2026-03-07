@@ -1,63 +1,19 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import React, { useRef } from "react";
+import { motion } from "framer-motion";
 import { scrollToSectionWithId } from "@/utils/index.js";
 
+const fadeUp = {
+  hidden: { y: 20, opacity: 0 },
+  visible: (delay = 0) => ({
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay },
+  }),
+};
+
 export default function HomeContent({ meowScriptClassName }) {
-  const introRef = useRef(null);
-  const headingRef = useRef(null);
-  const descriptionRef = useRef(null);
-  const ctaRef = useRef(null);
-
-  useEffect(() => {
-    // Initial animation timeline
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-    // Animate elements in sequence - with null checks
-    if (introRef.current) {
-      tl.fromTo(
-        introRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8 }
-      );
-    }
-    
-    if (headingRef.current) {
-      tl.fromTo(
-        headingRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8 },
-        "-=0.4" // Start slightly before previous animation ends
-      );
-    }
-    
-    // Subtle animation for description - starting from already visible state
-    if (descriptionRef.current) {
-      tl.fromTo(
-        descriptionRef.current,
-        { y: 15, opacity: 0.85 }, // Start slightly offset but mostly visible
-        { y: 0, opacity: 1, duration: 0.8 },
-        "-=0.4"
-      );
-    }
-    
-    if (ctaRef.current && ctaRef.current.children.length > 0) {
-      tl.fromTo(
-        ctaRef.current.children,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, stagger: 0.2 },
-        "-=0.4"
-      );
-    }
-    
-    // Clean up animations on component unmount
-    return () => {
-      tl.kill();
-    };
-  }, []);
-
-  // Handler to open resume PDF
   const handleResumeClick = () => {
     window.open("/ayushman_resume.pdf", "_blank");
   };
@@ -67,30 +23,42 @@ export default function HomeContent({ meowScriptClassName }) {
       {/* Hero Section */}
       <div className="relative z-10 flex flex-col h-[80vh] justify-center">
         <div>
-          <p
-            ref={introRef}
-            className="text-gray-400 font-medium mb-4 opacity-0"
+          <motion.p
+            custom={0}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="text-gray-400 font-medium mb-4"
           >
             Hello, I'm
-          </p>
-          <h1
-            ref={headingRef}
-            className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-8 opacity-0"
+          </motion.p>
+          <motion.h1
+            custom={0.1}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
           >
             Full-Stack Engineer
-          </h1>
-          <p
-            ref={descriptionRef}
-            className="text-gray-300 text-xl md:text-2xl max-w-2xl mb-10 md:leading-relaxed opacity-0,"
+          </motion.h1>
+          <motion.p
+            custom={0.2}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            className="text-gray-300 text-xl md:text-2xl max-w-2xl mb-10 md:leading-relaxed"
           >
             Crafting elegant frontends, architecting robust backends, and
             building exceptional digital experiences that solve real problems.
-          </p>
+          </motion.p>
 
-          <div ref={ctaRef} className="flex flex-wrap gap-6 mb-12">
-            {/* Primary CTA - View My Work Button */}
-            <button
-              className="group relative bg-white border border-white py-3 px-8 opacity-0 rounded-md hover:bg-transparent transition-all duration-300"
+          <div className="flex flex-wrap gap-6 mb-12">
+            <motion.button
+              custom={0.3}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              className="group relative bg-white border border-white py-3 px-8 rounded-md hover:bg-transparent transition-all duration-300"
               onClick={() => scrollToSectionWithId("projects")}
             >
               <span className="flex items-center font-medium text-black group-hover:text-white transition-colors duration-300">
@@ -110,11 +78,14 @@ export default function HomeContent({ meowScriptClassName }) {
                   />
                 </svg>
               </span>
-            </button>
+            </motion.button>
 
-            {/* Secondary CTA - Resume Button */}
-            <button
-              className="group relative bg-transparent border border-gray-600 py-3 px-8 opacity-0 rounded-md hover:border-white transition-colors duration-300"
+            <motion.button
+              custom={0.5}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              className="group relative bg-transparent border border-gray-600 py-3 px-8 rounded-md hover:border-white transition-colors duration-300"
               onClick={handleResumeClick}
             >
               <span className="flex items-center text-white font-medium">
@@ -134,7 +105,7 @@ export default function HomeContent({ meowScriptClassName }) {
                   />
                 </svg>
               </span>
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>

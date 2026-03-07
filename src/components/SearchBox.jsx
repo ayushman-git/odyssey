@@ -1,6 +1,6 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { BsSearch } from "react-icons/bs";
+import { Search } from "lucide-react";
 
 export default function SearchBox({ searchString, onChange }) {
   const [showSearchField, setShowSearchField] = useState(false);
@@ -58,8 +58,8 @@ export default function SearchBox({ searchString, onChange }) {
           <kbd>{key}</kbd> + <kbd>k</kbd>
         </span>
       )}
-      <BsSearch
-        size="1.125rem"
+      <Search
+        size={18}
         className="cursor-pointer"
         onClick={handleSearchTrigger}
       />

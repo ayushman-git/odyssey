@@ -2,8 +2,32 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import SyntaxHighlighter from "react-syntax-highlighter/dist/cjs/prism-light";
 import { tomorrow } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import js from "react-syntax-highlighter/dist/cjs/languages/prism/javascript";
+import ts from "react-syntax-highlighter/dist/cjs/languages/prism/typescript";
+import jsx from "react-syntax-highlighter/dist/cjs/languages/prism/jsx";
+import tsx from "react-syntax-highlighter/dist/cjs/languages/prism/tsx";
+import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash";
+import python from "react-syntax-highlighter/dist/cjs/languages/prism/python";
+import json from "react-syntax-highlighter/dist/cjs/languages/prism/json";
+import css from "react-syntax-highlighter/dist/cjs/languages/prism/css";
+import markdown from "react-syntax-highlighter/dist/cjs/languages/prism/markdown";
+
+SyntaxHighlighter.registerLanguage("javascript", js);
+SyntaxHighlighter.registerLanguage("js", js);
+SyntaxHighlighter.registerLanguage("typescript", ts);
+SyntaxHighlighter.registerLanguage("ts", ts);
+SyntaxHighlighter.registerLanguage("jsx", jsx);
+SyntaxHighlighter.registerLanguage("tsx", tsx);
+SyntaxHighlighter.registerLanguage("bash", bash);
+SyntaxHighlighter.registerLanguage("shell", bash);
+SyntaxHighlighter.registerLanguage("python", python);
+SyntaxHighlighter.registerLanguage("py", python);
+SyntaxHighlighter.registerLanguage("json", json);
+SyntaxHighlighter.registerLanguage("css", css);
+SyntaxHighlighter.registerLanguage("markdown", markdown);
+SyntaxHighlighter.registerLanguage("md", markdown);
 
 export default function CodeBlock({ code, language }) {
   const [copied, setCopied] = useState(false);

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import SkillTreeSVG from './SkillTreeSVG';
+import dynamic from 'next/dynamic';
 import Tooltip from './Tooltip';
+
+const SkillTreeSVG = dynamic(() => import('./SkillTreeSVG'), { ssr: false });
 
 const SkillTree = ({ data }) => {
   const [tooltipData, setTooltipData] = useState(null);
