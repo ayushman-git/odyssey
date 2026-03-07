@@ -1,11 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { getDescendants, getPathToRoot, createGlowFilters } from './utils';
 
 const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
   const svgRef = useRef(null);
-  const [isRendered, setIsRendered] = useState(false);
-  const animationTimeoutRef = useRef(null);
+  const onNodeHoverRef = useRef(onNodeHover);
+  const onNodeLeaveRef = useRef(onNodeLeave);
+
+  useEffect(() => {
+    onNodeHoverRef.current = onNodeHover;
+    onNodeLeaveRef.current = onNodeLeave;
+  }, [onNodeHover, onNodeLeave]);
 
   useEffect(() => {
     if (!data || !svgRef.current) return;
@@ -13,13 +18,6 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
     // Clear any existing SVG content and animations
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
-    
-    // Clear any pending animations
-    if (animationTimeoutRef.current) {
-      clearTimeout(animationTimeoutRef.current);
-    }
-    
-    setIsRendered(false);
     
     // Set up dimensions with extra padding to prevent cropping
     const container = svgRef.current.parentElement;
@@ -114,7 +112,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
       const tooltipX = event.pageX - container.getBoundingClientRect().left - window.scrollX;
       const tooltipY = event.pageY - container.getBoundingClientRect().top - window.scrollY;
       
-      onNodeHover({
+      onNodeHoverRef.current?.({
         name: d.data.name,
         description: d.data.description || null,
         x: tooltipX,
@@ -147,11 +145,11 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
         .attr("stroke-width", 3);
       
       // Call parent component's leave handler
-      onNodeLeave();
+      onNodeLeaveRef.current?.();
     };
 
-    // Append links - with shorter animation and immediate fallback
-    const links = svg.append("g")
+    // Append links in final state (no draw animation to avoid partial renders)
+    svg.append("g")
       .attr("fill", "none")
       .attr("stroke-opacity", 0.6)
       .attr("stroke-width", 1)
@@ -165,39 +163,15 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
       .attr("data-source", d => d.source.data.name)
       .attr("data-target", d => d.target.data.name);
 
-    // Now animate the links with a shorter duration
-    links.attr("stroke-dasharray", function() {
-        const length = this.getTotalLength();
-        return `${length} ${length}`;
-      })
-      .attr("stroke-dashoffset", function() {
-        return this.getTotalLength();
-      })
-      .transition()
-      .duration(1000) // Reduced from 1500
-      .delay((d, i) => i * 30) // Reduced from 50
-      .attr("stroke-dashoffset", 0)
-      .on("end", (d, i) => {
-        // If last link, ensure all links are visible regardless
-        if (i === root.links().length - 1) {
-          svg.selectAll("path")
-            .attr("stroke-dashoffset", 0);
-        }
-      })
-      .on("interrupt", function() {
-        // If animation gets interrupted, immediately show the link
-        d3.select(this).attr("stroke-dashoffset", 0);
-      });
-
-    // Append nodes with immediate fallback
-    const nodes = svg.append("g")
+    // Append nodes in final state
+    svg.append("g")
       .selectAll()
       .data(root.descendants())
       .join("circle")
       .attr("class", "skill-node")
       .attr("transform", d => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y},0)`)
       .attr("fill", d => d.data.color || (d.children ? "#3B82F6" : "#60A5FA")) // Blue shades
-      .attr("r", 0) // Start with radius 0
+      .attr("r", d => d.data.size || (d.children ? 4 : 3))
       .attr("filter", "url(#glow)")
       .attr("data-node", d => d.data.name)
       .on("mouseover", handleMouseOver)
@@ -213,25 +187,8 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
           .attr("r", d.data.size || (d.children ? 4 : 3));
       });
 
-    // Animate nodes with shorter duration
-    nodes.transition()
-      .duration(600) // Reduced from 800
-      .delay((d, i) => 300 + i * 30) // Reduced from 500 + i * 50
-      .attr("r", d => d.data.size || (d.children ? 4 : 3))
-      .on("interrupt", function() {
-        // If animation gets interrupted, immediately show the node
-        d3.select(this).attr("r", d => d.data.size || (d.children ? 4 : 3));
-      })
-      .on("end", (d, i) => {
-        // If last node, ensure all nodes are visible regardless
-        if (i === root.descendants().length - 1) {
-          svg.selectAll(".skill-node")
-            .attr("r", d => d.data.size || (d.children ? 4 : 3));
-        }
-      });
-
-    // Append labels with fade-in and immediate fallback
-    const labels = svg.append("g")
+    // Append labels in final state
+    svg.append("g")
       .attr("stroke-linejoin", "round")
       .attr("stroke-width", 3)
       .selectAll()
@@ -245,38 +202,12 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
       .attr("paint-order", "stroke")
       .attr("stroke", "#111827") // Dark background
       .attr("fill", d => d.data.labelColor || "white")
-      .attr("opacity", 0)
+      .attr("opacity", 1)
       .style("font-size", d => d.depth === 0 ? "20px" : d.depth === 1 ? "18px" : "16px")
       .text(d => d.data.name)
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut)
       .style("cursor", "pointer");
-
-    // Animate labels with shorter duration
-    labels.transition()
-      .duration(300)
-      .delay((d, i) => 600 + i * 30) // Reduced from 800 + i * 60
-      .attr("opacity", 1)
-      .on("interrupt", function() {
-        // If animation gets interrupted, immediately show the label
-        d3.select(this).attr("opacity", 1);
-      })
-      .on("end", (d, i) => {
-        // If last label, ensure all labels are visible
-        if (i === root.descendants().length - 1) {
-          svg.selectAll(".skill-label").attr("opacity", 1);
-          setIsRendered(true);
-        }
-      });
-
-    // Set a fallback timeout to ensure everything is visible after a certain time
-    animationTimeoutRef.current = setTimeout(() => {
-      // Force all elements to be visible if animations didn't complete
-      svg.selectAll("path").attr("stroke-dashoffset", 0);
-      svg.selectAll(".skill-node").attr("r", d => d.data.size || (d.children ? 4 : 3));
-      svg.selectAll(".skill-label").attr("opacity", 1);
-      setIsRendered(true);
-    }, 2000); // Fallback after 2 seconds
 
     // Add responsive behavior
     const resizeObserver = new ResizeObserver(entries => {
@@ -299,31 +230,11 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
     resizeObserver.observe(container);
 
     return () => {
-      // Clean up all animations and timeouts
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
       // Clear all transitions to prevent memory leaks
       svg.selectAll("*").interrupt();
       resizeObserver.disconnect();
     };
-  }, [data, onNodeHover, onNodeLeave]);
-
-  // Add extra safety to ensure full rendering
-  useEffect(() => {
-    if (!isRendered && svgRef.current) {
-      const checkTimer = setTimeout(() => {
-        const svg = d3.select(svgRef.current);
-        // Force all elements to be visible as a final fallback
-        svg.selectAll("path").attr("stroke-dashoffset", 0);
-        svg.selectAll(".skill-node").attr("r", d => d.data.size || (d.children ? 4 : 3));
-        svg.selectAll(".skill-label").attr("opacity", 1);
-        setIsRendered(true);
-      }, 3000); // Final fallback after 3 seconds
-      
-      return () => clearTimeout(checkTimer);
-    }
-  }, [isRendered]);
+  }, [data]);
 
   return <svg ref={svgRef} className="skill-tree-svg"></svg>;
 };

@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
 // Import components
-import SkillTree from "./components/SkillTree";
+import SkillTree from "./components/SkillTree/index";
 import MobileSkillView from "./components/MobileSkillView";
 
 // Import data
