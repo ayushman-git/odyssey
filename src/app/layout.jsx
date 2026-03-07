@@ -40,7 +40,7 @@ export const metadata = {
     siteName: 'Ayushman Gupta',
     images: [
       {
-        url: '/cover.jpg', // Updated to use your cover.jpgn.dev/cover.jpg', // Use absolute URL in production
+        url: '/cover.jpg',
         width: 1200,
         height: 630,
         alt: 'Ayushman Gupta Portfolio',
@@ -51,11 +51,8 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Ayushman Gupta | Fullstack Engineer',
     description: 'Personal portfolio and blog of Ayushman Gupta, a developer and designer specializing in web development and creative solutions.',
-    images: ['/cover.jpg'], // Updated to use your cover.jpg.dev/cover.jpg'], // Use absolute URL in production
+    images: ['/cover.jpg'],
     creator: '@ayushman_gupta',
-  },
-  verification: {
-    google: 'googleVerificationString', // Replace with your verification string
   },
   alternates: {
     canonical: 'https://ayushman.dev',

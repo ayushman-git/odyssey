@@ -6,7 +6,6 @@ import Blockquote from "./Blockquote";
 import { Typography } from "./Typography";
 import Figcaption from "./BaseElements/Figcaption";
 import Block from "./BaseElements/Block";
-import AreciboCountingGrid from "../ArticleBased/DecodingArecibo/AreciboCountingGrid";
 import MCPConfigTable from "./MCPConfigTable";
 import PreviewableImage from "../PreviewableImage";
 import MDXImageWrapper from "../MDXImageWrapper";
@@ -59,7 +58,6 @@ export default function CustomMDX(props) {
         ...(props.components || {}),
         Figcaption,
         Block,
-        AreciboCountingGrid,
         AdaptiveBitrateDemo,
         PerTitleEncodingDemo,
         NetflixEncodingVersions,

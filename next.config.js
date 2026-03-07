@@ -9,24 +9,11 @@ const nextConfig = {
         hostname: "**",
       },
     ],
-    domains: [
-      'images.unsplash.com',
-      'm.media-amazon.com',
-      // Add other domains as needed
-    ],
     unoptimized: process.env.NODE_ENV === 'development',
   },
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
-  poweredByHeader: false, // Remove the X-Powered-By header
-  trailingSlash: true, // Consistent URL trailing slashes improves SEO
-  
-  // Internationalization support - uncomment and configure if needed
-  // i18n: {
-  //   locales: ['en', 'fr', 'es'],
-  //   defaultLocale: 'en',
-  // },
-  
-  swcMinify: true, // More efficient minification
+  poweredByHeader: false,
+  trailingSlash: true,
   // Custom headers for better SEO, security and caching
   async headers() {
     return [
@@ -40,7 +27,7 @@ const nextConfig = {
           {
             key: 'X-Frame-Options',
             value: 'DENY',
-          },  
+          },
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',

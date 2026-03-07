@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
-import { getArticle } from "@/lib/posts";
+import { getArticle, getArticles } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import TableOfContents from "@/components/TableOfContents";
@@ -17,6 +17,13 @@ const meowScript = Meow_Script({
   subsets: ["latin"],
   display: "swap",
 });
+
+export async function generateStaticParams() {
+  const articles = getArticles();
+  return articles
+    .filter((a) => !a.disabled)
+    .map((a) => ({ 'article-type': a.type, slug: a.slug }));
+}
 
 export async function generateMetadata({ params }) {
   const { title, cover_img, introduction, date } = await getArticle(params.slug);
