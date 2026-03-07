@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { getSupabaseAdminClient } from '@/lib/supabase';
 import { sendWelcomeEmail } from '@/lib/email';
 
 export async function POST(request) {
   try {
+    const supabase = getSupabaseAdminClient();
     const { email, userAgent } = await request.json();
 
     // Validate email

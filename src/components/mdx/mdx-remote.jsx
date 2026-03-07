@@ -47,22 +47,34 @@ const components = {
 };
 
 export default function CustomMDX(props) {
-  const mdx = (
-    <MDXRemote
-      options={{
-        parseFrontmatter: true,
-      }}
-      {...props}
-      components={{
-        ...components,
-        ...(props.components || {}),
-        Figcaption,
-        Block,
+  const {
+    usesStreamingDemos = false,
+    components: customComponents,
+    ...mdxProps
+  } = props;
+
+  const streamingComponents = usesStreamingDemos
+    ? {
         AdaptiveBitrateDemo,
         PerTitleEncodingDemo,
         NetflixEncodingVersions,
         NetflixOpenConnectFlow,
         Totoro,
+      }
+    : {};
+
+  const mdx = (
+    <MDXRemote
+      options={{
+        parseFrontmatter: true,
+      }}
+      {...mdxProps}
+      components={{
+        ...components,
+        ...(customComponents || {}),
+        Figcaption,
+        Block,
+        ...streamingComponents,
         MCPConfigTable,
       }}
     />

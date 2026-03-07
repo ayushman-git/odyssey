@@ -1,16 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
+import dynamic from "next/dynamic";
 import { getArticle, getArticles } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
-import TableOfContents from "@/components/TableOfContents";
-import SocialShare from "@/components/SocialShare";
-import ReadProgressBar from "@/components/ReadProgressBar";
 import { formatDateString, generatePageMetadata } from "@/utils/index.js";
 import { extractHeadingsFromMDX } from "@/utils/extractHeadings";
 import { formatReadingTime } from "@/utils/readingTime";
 import { Meow_Script } from "next/font/google";
+
+const TableOfContents = dynamic(() => import("@/components/TableOfContents"), {
+  ssr: false,
+});
+const SocialShare = dynamic(() => import("@/components/SocialShare"), {
+  ssr: false,
+});
+const ReadProgressBar = dynamic(() => import("@/components/ReadProgressBar"), {
+  ssr: false,
+});
 
 const meowScript = Meow_Script({
   weight: "400",
@@ -53,6 +61,12 @@ export default async function Page({ params }) {
 
   // Extract headings for table of contents
   const headings = showAside ? extractHeadingsFromMDX(fileContent) : [];
+  const usesStreamingDemos =
+    fileContent.includes("<AdaptiveBitrateDemo") ||
+    fileContent.includes("<PerTitleEncodingDemo") ||
+    fileContent.includes("<NetflixEncodingVersions") ||
+    fileContent.includes("<NetflixOpenConnectFlow") ||
+    fileContent.includes("<Totoro");
   
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -174,12 +188,13 @@ export default async function Page({ params }) {
           <div className="relative h-[50vh] md:h-[60vh] rounded-lg overflow-hidden shadow-2xl">
             <Image
               src={cover_img}
-              quality={100}
+              quality={85}
               fill
               priority
               placeholder="blur"
               blurDataURL={BLUR_DATA_URLS.COVER_IMG}
               alt={`Cover image for article: ${title}`}
+              sizes="(max-width: 768px) 100vw, 1200px"
               style={{
                 objectFit: "cover",
               }}
@@ -217,7 +232,11 @@ export default async function Page({ params }) {
                 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
                 prose-pre:bg-gray-100 dark:prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700">
 
-                <CustomMDX source={fileContent} showAside={showAside} />
+                <CustomMDX
+                  source={fileContent}
+                  showAside={showAside}
+                  usesStreamingDemos={usesStreamingDemos}
+                />
               </section>
 
               {/* Article Footer */}

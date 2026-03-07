@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef } from "react";
 import Me from "@/assets/images/cover.webp";
 import Image from "next/image";

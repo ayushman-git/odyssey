@@ -1,9 +1,10 @@
 // Webhook handler for email events (bounces, deliveries, etc.)
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseAdminClient } from "@/lib/supabase";
 
 export async function POST(request) {
   try {
+    const supabase = getSupabaseAdminClient();
     const payload = await request.json();
 
     // Log the payload for debugging

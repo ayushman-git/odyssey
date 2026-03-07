@@ -1,10 +1,26 @@
-import { Resend } from 'resend';
-import { generateDynamicWelcomeEmail, EMAIL_CONFIG } from './email-service';
+import { Resend } from "resend";
+import { generateDynamicWelcomeEmail, EMAIL_CONFIG } from "./email-service";
 
-const resend = new Resend(process.env.RESEND_KEY);
+let resendClient = null;
+
+function getResendClient() {
+  if (resendClient) {
+    return resendClient;
+  }
+
+  const resendKey = process.env.RESEND_KEY;
+  if (!resendKey) {
+    throw new Error("Missing RESEND_KEY environment variable.");
+  }
+
+  resendClient = new Resend(resendKey);
+  return resendClient;
+}
 
 export const sendWelcomeEmail = async (email) => {
   try {
+    const resend = getResendClient();
+
     // Generate dynamic email content with latest articles
     const emailData = generateDynamicWelcomeEmail(email);
     

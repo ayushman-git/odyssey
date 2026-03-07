@@ -4,10 +4,17 @@ const withMDX = require("@next/mdx")();
 const nextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
+      { protocol: "https", hostname: "m.media-amazon.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "i.imgur.com" },
+      { protocol: "https", hostname: "github.com" },
+      { protocol: "https", hostname: "upload.wikimedia.org" },
+      { protocol: "https", hostname: "s17233.pcdn.co" },
+      { protocol: "https", hostname: "cdn.mos.cms.futurecdn.net" },
+      { protocol: "https", hostname: "qrcodedynamic.com" },
+      { protocol: "https", hostname: "huonw.github.io" },
+      { protocol: "https", hostname: "help.scantrust.com" },
+      { protocol: "https", hostname: "www.metablocks.com" },
     ],
     unoptimized: process.env.NODE_ENV === 'development',
   },
@@ -39,6 +46,24 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/:path*\\.(jpg|jpeg|png|webp|avif|svg|ico|css|js|woff|woff2|ttf|otf|pdf)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, stale-while-revalidate=86400',
           },
         ],
       },

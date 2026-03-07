@@ -12,6 +12,7 @@ const inter = Inter({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://ayushman.dev"),
   title: {
     default: 'Ayushman Gupta | Fullstack Engineer',
     template: '%s | Ayushman Gupta'

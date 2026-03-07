@@ -1,19 +1,9 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 import { scrollToSectionWithId } from "@/utils/index.js";
 
-const fadeUp = {
-  hidden: { y: 20, opacity: 0 },
-  visible: (delay = 0) => ({
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay },
-  }),
-};
-
-export default function HomeContent({ meowScriptClassName }) {
+export default function HomeContent() {
   const handleResumeClick = () => {
     window.open("/ayushman_resume.pdf", "_blank");
   };
@@ -23,42 +13,22 @@ export default function HomeContent({ meowScriptClassName }) {
       {/* Hero Section */}
       <div className="relative z-10 flex flex-col h-[80vh] justify-center">
         <div>
-          <motion.p
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="text-gray-400 font-medium mb-4"
-          >
+          <p className="text-gray-400 font-medium mb-4 opacity-0 animate-[fadeInUp_500ms_ease-out_forwards]">
             Hello, I'm
-          </motion.p>
-          <motion.h1
-            custom={0.1}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
+          </p>
+          <h1
+            className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-8 opacity-0 animate-[fadeInUp_500ms_ease-out_120ms_forwards]"
           >
             Full-Stack Engineer
-          </motion.h1>
-          <motion.p
-            custom={0.2}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="text-gray-300 text-xl md:text-2xl max-w-2xl mb-10 md:leading-relaxed"
-          >
+          </h1>
+          <p className="text-gray-300 text-xl md:text-2xl max-w-2xl mb-10 md:leading-relaxed opacity-0 animate-[fadeInUp_500ms_ease-out_240ms_forwards]">
             Crafting elegant frontends, architecting robust backends, and
             building exceptional digital experiences that solve real problems.
-          </motion.p>
+          </p>
 
           <div className="flex flex-wrap gap-6 mb-12">
-            <motion.button
-              custom={0.3}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              className="group relative bg-white border border-white py-3 px-8 rounded-md hover:bg-transparent transition-all duration-300"
+            <button
+              className="group relative bg-white border border-white py-3 px-8 rounded-md hover:bg-transparent transition-all duration-300 opacity-0 animate-[fadeInUp_500ms_ease-out_320ms_forwards]"
               onClick={() => scrollToSectionWithId("projects")}
             >
               <span className="flex items-center font-medium text-black group-hover:text-white transition-colors duration-300">
@@ -78,14 +48,10 @@ export default function HomeContent({ meowScriptClassName }) {
                   />
                 </svg>
               </span>
-            </motion.button>
+            </button>
 
-            <motion.button
-              custom={0.5}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              className="group relative bg-transparent border border-gray-600 py-3 px-8 rounded-md hover:border-white transition-colors duration-300"
+            <button
+              className="group relative bg-transparent border border-gray-600 py-3 px-8 rounded-md hover:border-white transition-colors duration-300 opacity-0 animate-[fadeInUp_500ms_ease-out_420ms_forwards]"
               onClick={handleResumeClick}
             >
               <span className="flex items-center text-white font-medium">
@@ -105,7 +71,7 @@ export default function HomeContent({ meowScriptClassName }) {
                   />
                 </svg>
               </span>
-            </motion.button>
+            </button>
           </div>
         </div>
       </div>
