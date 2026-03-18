@@ -19,6 +19,9 @@ const SocialShare = dynamic(() => import("@/components/SocialShare"), {
 const ReadProgressBar = dynamic(() => import("@/components/ReadProgressBar"), {
   ssr: false,
 });
+const ViewCounter = dynamic(() => import("@/components/ViewCounter"), {
+  ssr: false,
+});
 
 const meowScript = Meow_Script({
   weight: "400",
@@ -136,12 +139,10 @@ export default async function Page({ params }) {
         {/* Magazine-style Header */}
         <div className="max-w-4xl mx-auto px-8 pt-12 pb-8">
           {/* Issue/Date Line */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 font-mono tracking-wider uppercase">
-              <div className="h-px w-8 bg-current opacity-50" />
-              <span>VOL. I</span>
-              <div className="h-px w-8 bg-current opacity-50" />
-            </div>
+          <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500 font-mono tracking-wider uppercase mb-8">
+            <span className="shrink-0">VOL. I</span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+            <ViewCounter slug={params.slug} />
           </div>
 
           {/* Article Type */}
