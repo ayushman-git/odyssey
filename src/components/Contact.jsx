@@ -115,6 +115,7 @@ function Contact() {
                 height={600}
                 priority
                 className="rounded-2xl w-full transform-gpu"
+                style={{ height: "auto" }}
                 alt="Ayushman Gupta"
               />
             </motion.div>

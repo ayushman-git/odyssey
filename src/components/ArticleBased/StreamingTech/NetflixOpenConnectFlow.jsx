@@ -6,6 +6,7 @@ import "@xyflow/react/dist/style.css";
 
 const NetflixOpenConnectFlow = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [flowReady, setFlowReady] = useState(false);
 
   useEffect(() => {
     // Check if we're on mobile
@@ -185,6 +186,7 @@ const NetflixOpenConnectFlow = () => {
   return (
     <div
       style={{
+        position: "relative",
         width: "100%",
         height: isMobile ? "450px" : "600px",
         border: "1px solid #ddd",
@@ -203,8 +205,9 @@ const NetflixOpenConnectFlow = () => {
         nodesDraggable={false}
         nodesConnectable={false}
         elementsSelectable={false}
+        onInit={() => setFlowReady(true)}
       >
-        <Background variant="dots" gap={12} size={1} color="#aaa" />
+        {flowReady && <Background variant="dots" gap={12} size={1} color="#aaa" />}
         <Controls showZoom={true} showFitView={true} />
       </ReactFlow>
     </div>

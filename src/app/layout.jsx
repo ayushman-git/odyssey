@@ -87,9 +87,8 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      style={{
-        scrollBehavior: "smooth",
-      }}
+      data-scroll-behavior="smooth"
+      style={{ scrollBehavior: "smooth" }}
     >
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { getDescendants, getPathToRoot, createGlowFilters } from './utils';
+import { getPathToRoot, createGlowFilters } from './utils';
 
 const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
   const svgRef = useRef(null);
@@ -63,36 +63,25 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
         .attr("r", d.data.size || (d.children ? 6 : 4.5))
         .attr("filter", "url(#hover-glow)");
       
-      // Get all descendants
-      const descendants = getDescendants(d);
-      const descendantNodes = descendants.map(n => n.data.name);
-      
-      // Get path to root
+      // Get path to root (ancestors + hovered node itself)
       const pathToRoot = getPathToRoot(d);
-      const ancestorNodes = pathToRoot.map(n => n.data.name);
-      
-      // Highlight related nodes
+      const ancestorSet = new Set([d.data.name, ...pathToRoot.map(n => n.data.name)]);
+
+      // Highlight only ancestor nodes on the path to root
       d3.selectAll(".skill-node")
-        .filter(n => descendantNodes.includes(n.data.name) || ancestorNodes.includes(n.data.name))
+        .filter(n => ancestorSet.has(n.data.name))
         .transition()
         .duration(200)
         .attr("r", n => n.data.size || (n.children ? 5 : 4))
         .attr("filter", "url(#hover-glow)");
-      
-      // Highlight links that connect to or from this node
+
+      // Highlight only links where BOTH endpoints are on the ancestor path
       d3.selectAll("path")
         .filter(function() {
           const link = d3.select(this);
           const source = link.attr("data-source");
           const target = link.attr("data-target");
-          
-          // Check if the link is connected to this node or its descendants
-          return source === d.data.name || 
-                target === d.data.name || 
-                descendantNodes.includes(source) || 
-                descendantNodes.includes(target) ||
-                ancestorNodes.includes(source) ||
-                ancestorNodes.includes(target);
+          return ancestorSet.has(source) && ancestorSet.has(target);
         })
         .transition()
         .duration(200)

@@ -16,6 +16,7 @@ const nextConfig = {
       { protocol: "https", hostname: "help.scantrust.com" },
       { protocol: "https", hostname: "www.metablocks.com" },
     ],
+    qualities: [75, 85],
     unoptimized: process.env.NODE_ENV === 'development',
   },
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
