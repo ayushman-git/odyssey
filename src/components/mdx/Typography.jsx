@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-// Dynamically import the client-side CodeBlock component
-const CodeBlock = dynamic(() => import('./CodeBlock'), { ssr: false });
+// Dynamically import CodeBlock to keep it out of the initial server bundle
+const CodeBlock = dynamic(() => import('./CodeBlock'));
 
 // Helper function to style list items
 const styleListItems = (children) => {

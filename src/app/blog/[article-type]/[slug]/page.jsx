@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
-import dynamic from "next/dynamic";
 import { getArticle, getArticles } from "@/lib/posts";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
@@ -9,19 +8,12 @@ import { formatDateString, generatePageMetadata } from "@/utils/index.js";
 import { extractHeadingsFromMDX } from "@/utils/extractHeadings";
 import { formatReadingTime } from "@/utils/readingTime";
 import { Meow_Script } from "next/font/google";
-
-const TableOfContents = dynamic(() => import("@/components/TableOfContents"), {
-  ssr: false,
-});
-const SocialShare = dynamic(() => import("@/components/SocialShare"), {
-  ssr: false,
-});
-const ReadProgressBar = dynamic(() => import("@/components/ReadProgressBar"), {
-  ssr: false,
-});
-const ViewCounter = dynamic(() => import("@/components/ViewCounter"), {
-  ssr: false,
-});
+import {
+  TableOfContents,
+  SocialShare,
+  ReadProgressBar,
+  ViewCounter,
+} from "./ArticleClientComponents";
 
 const meowScript = Meow_Script({
   weight: "400",
@@ -37,23 +29,25 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const { title, cover_img, introduction, date } = await getArticle(params.slug);
-  
+  const { slug, 'article-type': articleType } = await params;
+  const { title, cover_img, introduction, date } = await getArticle(slug);
+
   return generatePageMetadata({
     title,
     description: introduction || `Read ${title} by Ayushman Gupta on Odyssey blog.`,
     image: cover_img,
     type: 'article',
-    url: `/blog/${params['article-type']}/${params.slug}`,
+    url: `/blog/${articleType}/${slug}`,
     date
   });
 }
 
 export default async function Page({ params }) {
+  const { slug, 'article-type': articleType } = await params;
   const { title, cover_img, type, fileContent, date, showAside, introduction, readingTime } =
-    await getArticle(params.slug);
+    await getArticle(slug);
   const formattedDate = formatDateString(date);
-  const shareUrl = `https://ayushman.dev/blog/${params['article-type']}/${params.slug}`;
+  const shareUrl = `https://ayushman.dev/blog/${articleType}/${slug}`;
   
   // Safely extract year from date
   const getYearFromDate = (dateString) => {
@@ -142,7 +136,7 @@ export default async function Page({ params }) {
           <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500 font-mono tracking-wider uppercase mb-8">
             <span className="shrink-0">VOL. I</span>
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
-            <ViewCounter slug={params.slug} />
+            <ViewCounter slug={slug} />
           </div>
 
           {/* Article Type */}

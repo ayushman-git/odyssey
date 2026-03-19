@@ -49,24 +49,6 @@ const nextConfig = {
           },
         ],
       },
-      {
-        source: '/_next/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/:path*\\.(jpg|jpeg|png|webp|avif|svg|ico|css|js|woff|woff2|ttf|otf|pdf)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, stale-while-revalidate=86400',
-          },
-        ],
-      },
     ];
   },
 };
