@@ -48,15 +48,7 @@ export default async function Page({ params }) {
     await getArticle(slug);
   const formattedDate = formatDateString(date);
   const shareUrl = `https://ayushman.dev/blog/${articleType}/${slug}`;
-  
-  // Safely extract year from date
-  const getYearFromDate = (dateString) => {
-    if (!dateString) return new Date().getFullYear();
-    const year = new Date(dateString).getFullYear();
-    return isNaN(year) ? new Date().getFullYear() : year;
-  };
 
-  // Extract headings for table of contents
   const headings = showAside ? extractHeadingsFromMDX(fileContent) : [];
   const usesStreamingDemos =
     fileContent.includes("<AdaptiveBitrateDemo") ||
@@ -64,7 +56,7 @@ export default async function Page({ params }) {
     fileContent.includes("<NetflixEncodingVersions") ||
     fileContent.includes("<NetflixOpenConnectFlow") ||
     fileContent.includes("<Totoro");
-  
+
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -87,7 +79,7 @@ export default async function Page({ params }) {
     },
     "description": introduction || `Article about ${title} by Ayushman Gupta`
   };
-  
+
   return (
     <>
       <ReadProgressBar />
@@ -98,117 +90,106 @@ export default async function Page({ params }) {
           __html: JSON.stringify(articleJsonLd)
         }}
       />
-      
-      {/* Editorial Header */}
-      <section className="pt-0 relative w-full bg-white dark:bg-black">
-        {/* Breadcrumb Navigation */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-8 pt-6 pb-2">
-          <nav className="flex items-center text-sm text-gray-500 dark:text-gray-400 min-w-0" aria-label="Breadcrumb">
-            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-              <Link 
-                href="/blog" 
-                className="hover:text-black dark:hover:text-white transition-colors font-medium whitespace-nowrap"
+
+      <div className="w-full">
+        {/* Full-bleed Hero */}
+        <div className="relative w-full h-[72vh] min-h-[440px] max-h-[740px] overflow-hidden">
+          {/* Floating breadcrumb */}
+          <div className="absolute top-0 left-0 right-0 z-20 pt-6">
+            <div className="max-w-3xl mx-auto px-6 sm:px-8">
+              <nav
+                className="flex items-center gap-2 text-[11px] font-mono tracking-widest uppercase text-white/50"
+                aria-label="Breadcrumb"
               >
-                Odyssey
-              </Link>
-              <svg className="w-3 h-3 opacity-40 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
-              <Link 
-                href={`/blog?filter=${encodeURIComponent(type)}`}
-                className="hover:text-black dark:hover:text-white transition-colors font-medium capitalize flex-shrink-0 whitespace-nowrap"
-              >
+                <Link href="/blog" className="hover:text-white/90 transition-colors">
+                  Odyssey
+                </Link>
+                <span className="opacity-30">/</span>
+                <Link
+                  href={`/blog?filter=${encodeURIComponent(type)}`}
+                  className="hover:text-white/90 transition-colors capitalize"
+                >
+                  {type}
+                </Link>
+              </nav>
+            </div>
+          </div>
+
+          {/* Cover Image */}
+          <Image
+            src={cover_img}
+            quality={85}
+            fill
+            priority
+            placeholder="blur"
+            blurDataURL={BLUR_DATA_URLS.COVER_IMG}
+            alt={`Cover image for article: ${title}`}
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+          />
+
+          {/* Gradient: subtle dark vignette + strong bottom fade */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/15" />
+
+          {/* Title block anchored to the bottom of the hero */}
+          <div className="absolute bottom-0 left-0 right-0 pb-10 sm:pb-14">
+            <div className="max-w-3xl mx-auto px-6 sm:px-8">
+              {/* Article type tag */}
+              <span className="inline-block mb-5 text-[10px] font-mono tracking-[0.22em] uppercase text-white/50 border border-white/20 px-2.5 py-1 rounded-[2px]">
                 {type}
-              </Link>
-              <svg className="w-3 h-3 opacity-40 flex-shrink-0 hidden sm:block" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <span className="text-gray-600 dark:text-gray-400 font-light truncate min-w-0 ml-1 sm:ml-2 hidden sm:inline">
-              {title}
-            </span>
-          </nav>
-        </div>
+              </span>
 
-        {/* Magazine-style Header */}
-        <div className="max-w-4xl mx-auto px-8 pt-12 pb-8">
-          {/* Issue/Date Line */}
-          <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500 font-mono tracking-wider uppercase mb-8">
-            <span className="shrink-0">VOL. I</span>
-            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
-            <ViewCounter slug={slug} />
-          </div>
+              {/* Title */}
+              <h1 className="text-white text-[clamp(1.75rem,5vw,3.5rem)] font-light tracking-tight leading-[1.1] mb-6 max-w-3xl">
+                {title}
+              </h1>
 
-          {/* Article Type */}
-          <div className="text-center mb-6">
-            <span className="text-sm font-medium tracking-[0.2em] text-gray-600 dark:text-gray-400 uppercase">
-              {type}
-            </span>
-          </div>
-
-          {/* Main Title */}
-          <h1 className="text-center text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-tight mb-8 text-black dark:text-white">
-            {title}
-          </h1>
-
-          {/* Author & Date */}
-          <div className="text-center space-y-4 mb-12">
-            <div className="flex items-center justify-center gap-6">
-              <div className="h-px w-12 bg-gray-300 dark:bg-gray-600" />
-              <div className="space-y-1">
-                <p className="text-xs font-medium tracking-[0.1em] text-gray-500 dark:text-gray-400 uppercase">
-                  Written by
-                </p>
-                <p className={`${meowScript.className} text-2xl text-black dark:text-white`}>
-                  Ayushman
-                </p>
+              {/* Author + metadata row */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-5 h-px bg-white/30" />
+                  <p className={`${meowScript.className} text-[1.15rem] text-white/80 leading-none`}>
+                    Ayushman
+                  </p>
+                </div>
+                <div className="w-px h-3.5 bg-white/20 hidden sm:block" />
+                <span className="text-[11px] font-mono text-white/45 tracking-wide">
+                  {formattedDate}
+                </span>
+                {readingTime && (
+                  <>
+                    <div className="w-px h-3.5 bg-white/20 hidden sm:block" />
+                    <span className="text-[11px] font-mono text-white/45 tracking-wide">
+                      {formatReadingTime(readingTime)}
+                    </span>
+                  </>
+                )}
               </div>
-              <div className="h-px w-12 bg-gray-300 dark:bg-gray-600" />
-            </div>
-
-            <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400 font-mono">
-              <span>{formattedDate}</span>
-              {readingTime && (
-                <>
-                  <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
-                  <span>{formatReadingTime(readingTime)}</span>
-                </>
-              )}
             </div>
           </div>
         </div>
 
-        {/* Hero Image */}
-        <div className="max-w-5xl mx-auto px-8 mb-16">
-          <div className="relative h-[50vh] md:h-[60vh] rounded-lg overflow-hidden shadow-2xl">
-            <Image
-              src={cover_img}
-              quality={85}
-              fill
-              priority
-              placeholder="blur"
-              blurDataURL={BLUR_DATA_URLS.COVER_IMG}
-              alt={`Cover image for article: ${title}`}
-              sizes="(max-width: 768px) 100vw, 1200px"
-              style={{
-                objectFit: "cover",
-              }}
-              className="transition-all duration-700 ease-out hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-          </div>
-        </div>
+        {/* Article body */}
+        <div className="bg-white dark:bg-black">
+          <div className="max-w-3xl mx-auto px-6 sm:px-8">
 
-        {/* Article Content */}
-        <div className="max-w-4xl mx-auto px-8 pb-20">
-          {/* Table of Contents */}
-          {showAside && headings.length > 0 && (
-            <TableOfContents headings={headings} />
-          )}
+            {/* Slim metadata + share bar */}
+            <div className="flex items-center justify-between py-5 border-b border-gray-100 dark:border-gray-800/60 mb-12">
+              <div className="flex items-center gap-3 text-[11px] font-mono tracking-widest text-gray-400 dark:text-gray-500 uppercase select-none">
+                <span>Vol. I</span>
+                <span className="opacity-30">·</span>
+                <ViewCounter slug={slug} />
+              </div>
+              <SocialShare url={shareUrl} title={title} description={introduction} />
+            </div>
 
-          {/* Main article content - centered */}
-          <article className="w-full">
-              {/* Main Content */}
+            {/* Table of Contents */}
+            {showAside && headings.length > 0 && (
+              <TableOfContents headings={headings} />
+            )}
+
+            {/* Main article */}
+            <article className="w-full pb-20">
               <section
                 id="article-content"
                 className="prose prose-lg dark:prose-invert max-w-none
@@ -225,8 +206,8 @@ export default async function Page({ params }) {
                 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:font-light
                 prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8
                 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded
-                prose-pre:bg-gray-100 dark:prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700">
-
+                prose-pre:bg-gray-100 dark:prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700"
+              >
                 <CustomMDX
                   source={fileContent}
                   showAside={showAside}
@@ -234,45 +215,35 @@ export default async function Page({ params }) {
                 />
               </section>
 
-              {/* Article Footer */}
-              <footer className="mt-16 pt-12 border-t border-gray-200 dark:border-gray-800">
-                {/* Social Share Section */}
-                <div className="text-center mb-8">
-                  <div className="inline-flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 font-mono mb-4">
-                    <div className="h-px w-8 bg-current opacity-50" />
-                    <span className="tracking-wider uppercase">Share this article</span>
-                    <div className="h-px w-8 bg-current opacity-50" />
-                  </div>
-                  <SocialShare url={shareUrl} title={title} description={introduction} />
-                </div>
-
-                {/* Footer Info */}
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6 pt-8 border-t border-gray-100 dark:border-gray-800/50">
-                  {/* Article Metadata */}
-                  <div className="flex items-center justify-center sm:justify-start gap-4 text-sm text-gray-500 dark:text-gray-400">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full"></div>
-                      <span className="font-mono uppercase tracking-wider">{type}</span>
-                    </div>
-                    <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
-                    <span className="font-mono">{formattedDate}</span>
-                  </div>
-
-                  {/* Navigation */}
-                  <Link 
-                    href="/blog" 
-                    className="group inline-flex items-center justify-center sm:justify-start gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+              {/* Article footer */}
+              <footer className="mt-16 pt-8 border-t border-gray-100 dark:border-gray-800/60">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+                  <Link
+                    href="/blog"
+                    className="group inline-flex items-center gap-2.5 text-[11px] font-mono tracking-widest text-gray-400 hover:text-black dark:hover:text-white transition-colors uppercase"
                   >
-                    <svg className="w-4 h-4 transform transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    <span className="font-mono tracking-wider uppercase">Back to Journal</span>
+                    Back to Odyssey
                   </Link>
+
+                  <div className="flex items-center gap-3 text-[11px] font-mono text-gray-400 dark:text-gray-500 uppercase tracking-widest">
+                    <span className="capitalize">{type}</span>
+                    <span className="opacity-30">·</span>
+                    <span>{formattedDate}</span>
+                  </div>
                 </div>
               </footer>
-          </article>
+            </article>
+          </div>
         </div>
-      </section>
+      </div>
     </>
   );
 }

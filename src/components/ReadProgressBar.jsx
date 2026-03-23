@@ -50,13 +50,13 @@ export default function ReadProgressBar() {
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 h-[3px] bg-border/20 pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-50 h-[2px] bg-transparent pointer-events-none"
       role="progressbar"
       aria-label="Reading progress"
     >
       <div
         ref={progressRef}
-        className="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 dark:from-emerald-400 dark:via-teal-400 dark:to-cyan-400 origin-left will-change-transform shadow-sm"
+        className="h-full bg-black dark:bg-white origin-left will-change-transform"
         style={{ transform: 'scaleX(0)' }}
       />
     </div>
