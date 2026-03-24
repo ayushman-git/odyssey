@@ -9,26 +9,26 @@ const memorySegments = [
     id: "exec",
     label: "EXEC Tables",
     words: 180,
-    color: "#ef4444",
     usage: "OS Kernel",
+    barClass: "bg-gray-800 dark:bg-gray-300",
     description:
-      "The Executive's job table and core sets. Tracks up to 8 concurrent jobs — each entry stores the job's priority level, program counter, and register state. During the 1202 alarm, every one of these 8 slots was occupied, causing the overflow that triggered BAILOUT.",
+      "The Executive's job table and core sets. Tracks up to 8 concurrent jobs, each entry storing the job's priority level, program counter, and register state. During the 1202 alarm, every one of these 8 slots was occupied, causing the overflow that triggered BAILOUT.",
   },
   {
     id: "nav",
     label: "Navigation State",
     words: 420,
-    color: "#f97316",
     usage: "Navigation",
+    barClass: "bg-gray-700 dark:bg-gray-400",
     description:
-      "Current position, velocity, and attitude vectors in three axes. Updated 25 times per second by the Inertial Measurement Unit. This was the most flight-critical data — the BAILOUT routine was specifically designed to preserve navigation state above all else.",
+      "Current position, velocity, and attitude vectors in three axes. Updated 25 times per second by the Inertial Measurement Unit. This was the most flight-critical data. The BAILOUT routine was specifically designed to preserve navigation state above all else.",
   },
   {
     id: "imu",
     label: "IMU & Sensor Data",
     words: 220,
-    color: "#eab308",
     usage: "Sensors",
+    barClass: "bg-gray-600 dark:bg-gray-500",
     description:
       "Raw accelerometer and gyroscope readings from the Inertial Measurement Unit, plus RCS thruster data. Used by the navigation routines to integrate position changes since the last update cycle.",
   },
@@ -36,17 +36,17 @@ const memorySegments = [
     id: "dsky",
     label: "DSKY Interface",
     words: 128,
-    color: "#22c55e",
     usage: "Display / Input",
+    barClass: "bg-gray-500 dark:bg-gray-500",
     description:
-      "Buffers for the Display & Keyboard unit (DSKY) — the crew's only interface to the computer. Stores the current display readout and queued keypresses. The 1202 alarm code was output to this buffer, flashing on the panel to alert Armstrong and Aldrin.",
+      "Buffers for the Display & Keyboard unit (DSKY), the crew's only interface to the computer. Stores the current display readout and queued keypresses. The 1202 alarm code was output to this buffer, flashing on the panel to alert Armstrong and Aldrin.",
   },
   {
     id: "guidance",
     label: "Guidance Programs",
     words: 580,
-    color: "#3b82f6",
     usage: "Guidance",
+    barClass: "bg-gray-400 dark:bg-gray-600",
     description:
       "Working memory for the active guidance program. During lunar descent, Program 63 (Braking) and Program 64 (Approach) used this space to store target landing coordinates, thrust calculations, and throttle commands sent to the engine.",
   },
@@ -54,10 +54,10 @@ const memorySegments = [
     id: "misc",
     label: "Scratch / Misc",
     words: 520,
-    color: "#8b5cf6",
     usage: "General",
+    barClass: "bg-gray-300 dark:bg-gray-700",
     description:
-      "Temporary variables for arithmetic, interpretive routine stacks, error flag registers, and mode bits. Also includes the erasable rope shadow — a small writable mirror of fixed-memory constants that routines could modify at runtime.",
+      "Temporary variables for arithmetic, interpretive routine stacks, error flag registers, and mode bits. Also includes the erasable rope shadow, a small writable mirror of fixed-memory constants that routines could modify at runtime.",
   },
 ];
 
@@ -85,12 +85,12 @@ export default function AGCMemoryMap() {
             <div>
               <p className="text-[10px] text-gray-400 uppercase tracking-widest">ROM</p>
               <p className="text-sm text-gray-700 dark:text-gray-300">36,864 words</p>
-              <p className="text-[10px] text-gray-400 dark:text-gray-500">≈ 72 KB</p>
+              <p className="text-[10px] text-gray-400 dark:text-gray-500">approx. 72 KB</p>
             </div>
             <div>
               <p className="text-[10px] text-gray-400 uppercase tracking-widest">RAM</p>
               <p className="text-sm text-gray-700 dark:text-gray-300">2,048 words</p>
-              <p className="text-[10px] text-gray-400 dark:text-gray-500">≈ 4 KB</p>
+              <p className="text-[10px] text-gray-400 dark:text-gray-500">approx. 4 KB</p>
             </div>
           </div>
         </div>
@@ -104,13 +104,13 @@ export default function AGCMemoryMap() {
           </p>
           <div className="flex h-7 rounded overflow-hidden text-[10px] font-mono">
             <div
-              className="flex items-center justify-center text-white bg-blue-600"
+              className="flex items-center justify-center text-white bg-gray-700 dark:bg-gray-600"
               style={{ width: `${(36864 / 38912) * 100}%` }}
             >
               Core Rope ROM — 36,864 words
             </div>
             <div
-              className="flex items-center justify-center text-white bg-red-500"
+              className="flex items-center justify-center text-white bg-gray-500 dark:bg-gray-500"
               style={{ width: `${(2048 / 38912) * 100}%` }}
             >
               RAM
@@ -131,20 +131,16 @@ export default function AGCMemoryMap() {
           </p>
 
           {/* Segmented bar */}
-          <div
-            className="flex h-10 rounded overflow-hidden mb-3 cursor-pointer"
-            role="list"
-          >
+          <div className="flex h-10 rounded overflow-hidden mb-3 cursor-pointer" role="list">
             {memorySegments.map((seg) => (
               <div
                 key={seg.id}
                 role="listitem"
                 aria-label={seg.label}
                 onClick={() => handleSelect(seg)}
-                className="transition-all duration-150 hover:brightness-110 active:brightness-90"
+                className={`transition-all duration-150 hover:brightness-110 active:brightness-90 ${seg.barClass}`}
                 style={{
                   width: `${(seg.words / TOTAL_ERASABLE) * 100}%`,
-                  backgroundColor: seg.color,
                   opacity: selected && selected.id !== seg.id ? 0.35 : 1,
                 }}
               />
@@ -159,14 +155,9 @@ export default function AGCMemoryMap() {
                 onClick={() => handleSelect(seg)}
                 className="flex items-center gap-1.5 text-[11px] font-mono text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
               >
-                <span
-                  className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
-                  style={{ backgroundColor: seg.color }}
-                />
+                <span className={`w-2.5 h-2.5 rounded-sm flex-shrink-0 ${seg.barClass}`} />
                 {seg.label}
-                <span className="text-gray-400 dark:text-gray-600">
-                  ({seg.words}w)
-                </span>
+                <span className="text-gray-400 dark:text-gray-600">({seg.words}w)</span>
               </button>
             ))}
           </div>
@@ -174,28 +165,13 @@ export default function AGCMemoryMap() {
 
         {/* Detail panel */}
         {selected ? (
-          <div
-            className="rounded-lg p-4 border text-sm transition-all duration-200"
-            style={{
-              borderColor: selected.color + "50",
-              backgroundColor: selected.color + "12",
-            }}
-          >
+          <div className="rounded-lg p-4 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/40">
             <div className="flex flex-wrap items-center gap-2 mb-2.5">
-              <span
-                className="w-2 h-2 rounded-full flex-shrink-0"
-                style={{ backgroundColor: selected.color }}
-              />
+              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${selected.barClass}`} />
               <span className="font-medium text-gray-900 dark:text-gray-100 text-sm">
                 {selected.label}
               </span>
-              <span
-                className="text-[10px] font-mono px-1.5 py-0.5 rounded border"
-                style={{
-                  borderColor: selected.color + "50",
-                  color: selected.color,
-                }}
-              >
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400">
                 {selected.usage}
               </span>
               <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500 ml-auto">

@@ -14,11 +14,11 @@ const PHASES = [
     r1: "+50000",
     r2: "-03100",
     r3: "-00340",
-    lights: {},
+    progAlarm: false,
     verbMeaning: "MAJOR MODE CHANGE",
     nounMeaning: "MAJOR MODE NUMBER",
     description:
-      "The descent engine fires at full throttle. V37 N63 tells the computer to enter Program 63, the Powered Descent Initiation routine. The crew confirms with PRO — and the burn begins.",
+      "V37 N63 commands the computer to enter Program 63, the Powered Descent Initiation routine. The descent engine fires at full throttle. The crew confirms with PRO, and the burn begins.",
   },
   {
     id: "braking",
@@ -31,11 +31,11 @@ const PHASES = [
     r1: "+28000",
     r2: "-02200",
     r3: "-00185",
-    lights: {},
+    progAlarm: false,
     verbMeaning: "MONITOR",
     nounMeaning: "ALT / ALTRATE / VEL",
     description:
-      "V16 N68 is the workhorse of the descent. The AGC holds this display continuously so the crew can watch altitude drop in R1, altitude rate in R2, and horizontal velocity in R3. Everything is nominal.",
+      "V16 N68 is the workhorse display of the descent. The AGC shows altitude in R1, descent rate in R2, and horizontal velocity in R3. It holds this display continuously so the crew can monitor the approach.",
   },
   {
     id: "alarm",
@@ -48,11 +48,11 @@ const PHASES = [
     r1: "+33500",
     r2: "-02145",
     r3: "-00023",
-    lights: { PROG: true },
+    progAlarm: true,
     verbMeaning: "MONITOR",
     nounMeaning: "ALT / ALTRATE / VEL",
     description:
-      "The PROG light flashes. The computer is still showing V16 N68, still navigating — but it has raised alarm 1202 to signal it is overloaded. BAILOUT has already fired and restarted the EXEC. Armstrong says: \"Give us a reading on the 1202.\"",
+      "The PROG light illuminates. The computer is still navigating, still showing V16 N68, but alarm 1202 has fired. BAILOUT has already restarted the EXEC. Armstrong says: \"Give us a reading on the 1202.\"",
   },
   {
     id: "approach",
@@ -65,11 +65,11 @@ const PHASES = [
     r1: "+07200",
     r2: "-00815",
     r3: "+00000",
-    lights: {},
+    progAlarm: false,
     verbMeaning: "MONITOR",
     nounMeaning: "ALT / ALTRATE / VEL",
     description:
-      "Program 64 takes over. The lunar module pitches forward so Armstrong can see the landing zone through the window. He spots a boulder field where the computer wants to land, and takes manual control of horizontal thrust.",
+      "Program 64 takes over. The lunar module pitches forward so Armstrong can see the landing zone. He spots a boulder field and takes manual control of horizontal thrust to fly past it.",
   },
   {
     id: "manual",
@@ -82,80 +82,53 @@ const PHASES = [
     r1: "+00250",
     r2: "-00017",
     r3: "-00004",
-    lights: {},
+    progAlarm: false,
     verbMeaning: "MONITOR",
     nounMeaning: "ALT / ALTRATE / VEL",
     description:
-      "Armstrong flies manually over the boulder field. Program 66 gives him full control of attitude and horizontal velocity while the AGC keeps managing throttle. The computer and the astronaut are now flying together.",
+      "Program 66 gives Armstrong full manual authority over attitude and horizontal velocity while the AGC manages throttle. The astronaut and the computer are now flying together.",
   },
 ];
 
 const ALL_LIGHTS = [
-  "COMP ACTY",
-  "UPLINK ACTY",
-  "NO ATT",
-  "STBY",
-  "KEY REL",
-  "OPR ERR",
-  "TEMP",
-  "GIMBAL LOCK",
-  "PROG",
-  "RESTART",
-  "TRACKER",
-  "ALT",
+  "COMP ACTY", "UPLINK ACTY", "NO ATT",
+  "STBY", "KEY REL", "OPR ERR",
+  "TEMP", "GIMBAL LOCK", "PROG",
+  "RESTART", "TRACKER", "ALT",
 ];
 
-function SegDisplay({ value, digits = 2, glow = "green" }) {
-  const padded = String(value).padStart(digits, "0").slice(-digits);
-  const glowColor = glow === "yellow" ? "#facc15" : "#4ade80";
+function DigitDisplay({ label, value, alarm }) {
+  const padded = String(value).padStart(2, "0");
   return (
-    <div
-      className="flex gap-0.5"
-      style={{ fontFamily: "'Courier New', monospace" }}
-    >
-      {padded.split("").map((ch, i) => (
+    <div className="flex flex-col items-center gap-1.5">
+      <span className="text-[8px] font-mono tracking-widest uppercase text-gray-500">
+        {label}
+      </span>
+      <div className={`px-2 py-1.5 rounded min-w-[44px] text-center border ${
+        alarm ? "border-gray-500 bg-gray-700" : "border-gray-700 bg-gray-800"
+      }`}>
         <span
-          key={i}
-          className="text-[22px] font-bold leading-none"
-          style={{
-            color: glowColor,
-            textShadow: `0 0 6px ${glowColor}88, 0 0 2px ${glowColor}`,
-          }}
+          className="text-[18px] font-mono font-semibold leading-none tracking-[0.15em] text-gray-100"
+          style={{ fontFamily: "'Courier New', monospace" }}
         >
-          {ch}
+          {padded}
         </span>
-      ))}
+      </div>
     </div>
   );
 }
 
-function RegisterDisplay({ label, value }) {
-  const sign = value[0];
-  const digits = value.slice(1);
+function RegisterRow({ label, value }) {
   return (
-    <div className="flex items-center gap-2 px-3 py-1.5 bg-black rounded border border-gray-800">
-      <span className="text-[10px] font-mono text-gray-600 w-4 flex-shrink-0">
-        {label}
-      </span>
-      <div
-        className="flex items-center gap-1"
-        style={{ fontFamily: "'Courier New', monospace" }}
-      >
+    <div className="flex items-center gap-2.5">
+      <span className="text-[9px] font-mono text-gray-600 w-4 flex-shrink-0">{label}</span>
+      <div className="flex-1 px-2.5 py-1.5 bg-gray-800 border border-gray-700 rounded">
         <span
-          className="text-[16px] font-bold leading-none w-4"
-          style={{ color: "#4ade80", textShadow: "0 0 5px #4ade8088" }}
+          className="text-[13px] font-mono text-gray-200 tracking-[0.18em]"
+          style={{ fontFamily: "'Courier New', monospace" }}
         >
-          {sign}
+          {value}
         </span>
-        {digits.split("").map((ch, i) => (
-          <span
-            key={i}
-            className="text-[16px] font-bold leading-none"
-            style={{ color: "#4ade80", textShadow: "0 0 5px #4ade8088" }}
-          >
-            {ch}
-          </span>
-        ))}
       </div>
     </div>
   );
@@ -167,7 +140,6 @@ export default function DSKYPanel() {
 
   return (
     <div className="my-10 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-900">
-      {/* Header */}
       <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/60">
         <p className="text-[10px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-0.5">
           Apollo 11 · July 20, 1969 · Interactive
@@ -178,42 +150,20 @@ export default function DSKYPanel() {
       </div>
 
       <div className="p-5 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 items-start">
-        {/* DSKY Hardware Panel */}
-        <div
-          className="rounded-lg p-4 w-full sm:w-56 flex-shrink-0"
-          style={{
-            background:
-              "linear-gradient(145deg, #1c1c1e 0%, #111113 60%, #0d0d0f 100%)",
-            border: "2px solid #2a2a2e",
-            boxShadow:
-              "inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 32px rgba(0,0,0,0.6)",
-          }}
-        >
-          {/* Indicator lights grid */}
-          <div className="grid grid-cols-3 gap-x-2 gap-y-1.5 mb-4 pb-3 border-b border-gray-800">
+        {/* Hardware panel */}
+        <div className="rounded-lg p-4 w-full sm:w-52 flex-shrink-0 bg-gray-900 border border-gray-700">
+          {/* Indicator lights */}
+          <div className="grid grid-cols-3 gap-x-2 gap-y-2 mb-4 pb-3.5 border-b border-gray-700/60">
             {ALL_LIGHTS.map((light) => {
-              const active = Boolean(phase.lights[light]);
+              const active = light === "PROG" && phase.progAlarm;
               return (
-                <div key={light} className="flex items-center gap-1">
-                  <div
-                    className="w-2 h-2 rounded-full flex-shrink-0 transition-all duration-500"
-                    style={
-                      active
-                        ? {
-                            backgroundColor: "#facc15",
-                            boxShadow:
-                              "0 0 6px 2px #facc1588, 0 0 2px #facc15",
-                          }
-                        : {
-                            backgroundColor: "#1f1f23",
-                            border: "1px solid #333",
-                          }
-                    }
-                  />
-                  <span
-                    className="text-[7px] font-mono tracking-widest uppercase leading-tight"
-                    style={{ color: active ? "#facc15" : "#444" }}
-                  >
+                <div key={light} className="flex items-center gap-1.5">
+                  <div className={`w-2 h-2 rounded-full flex-shrink-0 transition-all duration-500 ${
+                    active ? "bg-gray-300" : "bg-gray-700 border border-gray-600"
+                  }`} />
+                  <span className={`text-[7px] font-mono tracking-widest uppercase leading-tight transition-colors duration-500 ${
+                    active ? "text-gray-300" : "text-gray-600"
+                  }`}>
                     {light}
                   </span>
                 </div>
@@ -221,96 +171,62 @@ export default function DSKYPanel() {
             })}
           </div>
 
-          {/* VERB / NOUN / PROG row */}
-          <div className="flex justify-between mb-3 pb-3 border-b border-gray-800">
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-[8px] font-mono tracking-widest text-gray-600">
-                VERB
-              </span>
-              <SegDisplay value={phase.verb} digits={2} glow="green" />
-            </div>
-            <div className="w-px bg-gray-800" />
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-[8px] font-mono tracking-widest text-gray-600">
-                NOUN
-              </span>
-              <SegDisplay value={phase.noun} digits={2} glow="green" />
-            </div>
-            <div className="w-px bg-gray-800" />
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-[8px] font-mono tracking-widest text-gray-600">
-                PROG
-              </span>
-              <SegDisplay
-                value={phase.prog}
-                digits={2}
-                glow={phase.lights.PROG ? "yellow" : "green"}
-              />
-            </div>
+          {/* VERB / NOUN / PROG */}
+          <div className="flex justify-between mb-4 pb-3.5 border-b border-gray-700/60">
+            <DigitDisplay label="VERB" value={phase.verb} alarm={false} />
+            <DigitDisplay label="NOUN" value={phase.noun} alarm={false} />
+            <DigitDisplay label="PROG" value={phase.prog} alarm={phase.progAlarm} />
           </div>
 
-          {/* Data registers */}
-          <div className="space-y-1.5">
-            <RegisterDisplay label="R1" value={phase.r1} />
-            <RegisterDisplay label="R2" value={phase.r2} />
-            <RegisterDisplay label="R3" value={phase.r3} />
+          {/* Registers */}
+          <div className="space-y-2">
+            <RegisterRow label="R1" value={phase.r1} />
+            <RegisterRow label="R2" value={phase.r2} />
+            <RegisterRow label="R3" value={phase.r3} />
           </div>
 
-          {/* Keypad hint */}
-          <p className="text-[7px] font-mono text-gray-700 text-center mt-3 tracking-widest uppercase">
+          <p className="text-[7px] font-mono text-gray-700 text-center mt-4 tracking-widest uppercase">
             VERB · NOUN · ENTR · CLR · RSET
           </p>
         </div>
 
         {/* Info panel */}
         <div className="space-y-5">
-          {/* Time / altitude */}
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-mono tracking-wide text-gray-400 dark:text-gray-500">
-              {phase.time}
-            </span>
-            <span className="text-gray-300 dark:text-gray-600">·</span>
-            <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500">
-              {phase.altitude} AGL
-            </span>
+            <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500">{phase.time}</span>
+            <span className="text-gray-300 dark:text-gray-600 text-[10px]">·</span>
+            <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500">{phase.altitude} AGL</span>
+            {phase.progAlarm && (
+              <>
+                <span className="text-gray-300 dark:text-gray-600 text-[10px]">·</span>
+                <span className="text-[9px] font-mono tracking-widest uppercase text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 rounded-[2px]">
+                  Alarm 1202
+                </span>
+              </>
+            )}
           </div>
 
-          {/* Description */}
           <div>
-            <p className="text-[13px] font-medium text-gray-900 dark:text-gray-100 mb-2">
-              {phase.label}
-            </p>
-            <p className="text-[13px] text-gray-600 dark:text-gray-400 leading-relaxed">
-              {phase.description}
-            </p>
+            <p className="text-[13px] font-medium text-gray-900 dark:text-gray-100 mb-2">{phase.label}</p>
+            <p className="text-[13px] text-gray-600 dark:text-gray-400 leading-relaxed">{phase.description}</p>
           </div>
 
-          {/* VERB / NOUN decode */}
           <div>
             <p className="text-[10px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-2">
               Decoding the display
             </p>
             <div className="space-y-1.5">
               <div className="flex items-start gap-3">
-                <span className="text-[11px] font-mono text-green-600 dark:text-green-500 w-8 flex-shrink-0">
-                  V{phase.verb}
-                </span>
-                <span className="text-[11px] font-mono text-gray-600 dark:text-gray-400">
-                  {phase.verbMeaning}
-                </span>
+                <span className="text-[11px] font-mono text-gray-500 dark:text-gray-400 w-8 flex-shrink-0">V{phase.verb}</span>
+                <span className="text-[11px] font-mono text-gray-500 dark:text-gray-400">{phase.verbMeaning}</span>
               </div>
               <div className="flex items-start gap-3">
-                <span className="text-[11px] font-mono text-green-600 dark:text-green-500 w-8 flex-shrink-0">
-                  N{phase.noun}
-                </span>
-                <span className="text-[11px] font-mono text-gray-600 dark:text-gray-400">
-                  {phase.nounMeaning}
-                </span>
+                <span className="text-[11px] font-mono text-gray-500 dark:text-gray-400 w-8 flex-shrink-0">N{phase.noun}</span>
+                <span className="text-[11px] font-mono text-gray-500 dark:text-gray-400">{phase.nounMeaning}</span>
               </div>
             </div>
           </div>
 
-          {/* Phase selector */}
           <div>
             <p className="text-[10px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-2">
               Mission phase
@@ -323,7 +239,7 @@ export default function DSKYPanel() {
                   className={`px-2.5 py-1 text-[10px] font-mono rounded border transition-all ${
                     i === phaseIdx
                       ? "border-gray-900 dark:border-gray-100 bg-gray-900 dark:bg-white text-white dark:text-gray-900"
-                      : "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                      : "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-500"
                   }`}
                 >
                   {p.label}
