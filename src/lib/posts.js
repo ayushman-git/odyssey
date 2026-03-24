@@ -118,6 +118,31 @@ export function getArticleTypes() {
   return articleTypesCache;
 }
 
+// Group articles by series, sorted by chapter number
+export function getSeriesGroups(articles) {
+  const map = new Map();
+
+  articles.forEach((article) => {
+    if (!article.series) return;
+    const key = article.seriesSlug || article.series;
+    if (!map.has(key)) {
+      map.set(key, {
+        slug: key,
+        name: article.series,
+        type: article.type,
+        articles: [],
+      });
+    }
+    map.get(key).articles.push(article);
+  });
+
+  map.forEach((group) => {
+    group.articles.sort((a, b) => (a.chapter || 0) - (b.chapter || 0));
+  });
+
+  return Array.from(map.values());
+}
+
 export async function getArticle(slug) {
   const file = path.join(articlesDir, `${slug}.mdx`);
   const fileContent = fs.readFileSync(file, "utf-8");

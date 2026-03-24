@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import { getArticle, getArticles } from "@/lib/posts";
+import ArticleSeriesNav from "@/components/ArticleSeriesNav";
 import { BLUR_DATA_URLS } from "@/data/constants";
 import CustomMDX from "@/components/mdx/mdx-remote";
 import { formatDateString, generatePageMetadata } from "@/utils/index.js";
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
   const { slug, 'article-type': articleType } = await params;
-  const { title, cover_img, type, fileContent, date, showAside, introduction, readingTime } =
+  const { title, cover_img, type, fileContent, date, showAside, introduction, readingTime, series, seriesSlug } =
     await getArticle(slug);
   const formattedDate = formatDateString(date);
   const shareUrl = `https://ayushman.dev/blog/${articleType}/${slug}`;
@@ -56,6 +57,22 @@ export default async function Page({ params }) {
     fileContent.includes("<NetflixEncodingVersions") ||
     fileContent.includes("<NetflixOpenConnectFlow") ||
     fileContent.includes("<Totoro");
+
+  const usesAGCDemos =
+    fileContent.includes("<AGCMemoryMap") ||
+    fileContent.includes("<Alarm1202Simulator") ||
+    fileContent.includes("<DSKYPanel") ||
+    fileContent.includes("<AGCClockComparison");
+
+  // Series nav data
+  const seriesData = series
+    ? {
+        name: series,
+        articles: getArticles()
+          .filter((a) => !a.disabled && a.series === series)
+          .sort((a, b) => (a.chapter || 0) - (b.chapter || 0)),
+      }
+    : null;
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -183,6 +200,11 @@ export default async function Page({ params }) {
               <SocialShare url={shareUrl} title={title} description={introduction} />
             </div>
 
+            {/* Series nav */}
+            {seriesData && seriesData.articles.length > 0 && (
+              <ArticleSeriesNav series={seriesData} currentSlug={slug} />
+            )}
+
             {/* Table of Contents */}
             {showAside && headings.length > 0 && (
               <TableOfContents headings={headings} />
@@ -212,6 +234,7 @@ export default async function Page({ params }) {
                   source={fileContent}
                   showAside={showAside}
                   usesStreamingDemos={usesStreamingDemos}
+                  usesAGCDemos={usesAGCDemos}
                 />
               </section>
 

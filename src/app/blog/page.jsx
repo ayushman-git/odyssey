@@ -1,4 +1,4 @@
-import { getArticles } from "@/lib/posts";
+import { getArticles, getSeriesGroups } from "@/lib/posts";
 import BlogLayout from "@/components/BlogLayout";
 import Script from "next/script";
 import { generatePageMetadata } from "@/utils";
@@ -34,6 +34,9 @@ export default async function BlogPage() {
   
   // Pre-compute article types on server for better performance
   const articleTypes = ["All", ...new Set(activePosts.map(article => article.type))];
+
+  // Series groups for the series showcase
+  const seriesGroups = getSeriesGroups(activePosts);
   
   const blogJsonLd = {
     "@context": "https://schema.org",
@@ -57,10 +60,11 @@ export default async function BlogPage() {
           __html: JSON.stringify(blogJsonLd)
         }}
       />
-      <BlogLayout 
+      <BlogLayout
         initialArticles={activePosts}
         featuredArticle={featuredArticle}
         articleTypes={articleTypes}
+        seriesGroups={seriesGroups}
       />
     </>
   );

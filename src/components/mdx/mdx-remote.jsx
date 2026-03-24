@@ -15,6 +15,7 @@ import {
   NetflixOpenConnectFlow,
   Totoro,
 } from "./StreamingDemos";
+import { AGCMemoryMap, Alarm1202Simulator, DSKYPanel, AGCClockComparison } from "./ApolloAGCDemos";
 
 const components = {
   h1: Heading.H1,
@@ -34,6 +35,7 @@ const components = {
 export default function CustomMDX(props) {
   const {
     usesStreamingDemos = false,
+    usesAGCDemos = false,
     components: customComponents,
     ...mdxProps
   } = props;
@@ -48,6 +50,10 @@ export default function CustomMDX(props) {
       }
     : {};
 
+  const agcComponents = usesAGCDemos
+    ? { AGCMemoryMap, Alarm1202Simulator, DSKYPanel, AGCClockComparison }
+    : {};
+
   const mdx = (
     <MDXRemote
       options={{
@@ -60,6 +66,7 @@ export default function CustomMDX(props) {
         Figcaption,
         Block,
         ...streamingComponents,
+        ...agcComponents,
         MCPConfigTable,
       }}
     />
