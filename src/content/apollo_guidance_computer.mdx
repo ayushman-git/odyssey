@@ -15,11 +15,11 @@ introduction: On July 20, 1969, a computer with less memory than a modern calcul
 <Block>
 # Introduction
 
-It is 102 hours and 45 minutes into the Apollo 11 mission. Neil Armstrong and Buzz Aldrin are sealed inside the *Eagle* lunar module, descending toward the Sea of Tranquility at 3,000 feet per minute. Houston is watching. The world is watching. And then, at 60,000 feet above the Moon, a three-digit number appears on the panel between them.
+It is 102 hours and 45 minutes into the Apollo 11 mission. Neil Armstrong and Buzz Aldrin are sealed inside the *Eagle* lunar module, descending toward the Sea of Tranquility at 3,000 feet per minute. Houston is watching. The world is watching. And then, at 60,000 feet above the Moon, a four-digit number appears on the panel between them.
 
 **1202.**
 
-Neither astronaut had seen that alarm in training. Flight Director Gene Kranz asked his controllers for a GO/NO-GO call in 30 seconds. The answer that came back, "GO, we're GO on that alarm," came from a 24-year-old flight controller named Jack Garman, working from a handwritten cheat sheet of alarm codes tucked under his console.
+Neither astronaut had seen that alarm in training. Flight Director Gene Kranz asked his controllers for a GO/NO-GO call in 30 seconds. The call came back from a 24-year-old flight controller named Jack Garman, working from a handwritten cheat sheet of alarm codes tucked under his console: "GO. We're GO on that alarm."
 
 The computer, he knew, was doing exactly what it was designed to do.
 
@@ -29,7 +29,7 @@ This is the story of that computer. A machine so constrained by today's standard
 <Block>
 # Chapter 1: The Machine
 
-The Apollo Guidance Computer (AGC) was designed in the early 1960s by a team at MIT's Instrumentation Laboratory, led by Charles Stark Draper. The hardware was radical for its time. It was among the first computers ever built using integrated circuits rather than individual transistors, a decision that made it small enough to actually fly.
+The Apollo Guidance Computer (AGC) was designed in the early 1960s by a team at MIT's Instrumentation Laboratory, led by Charles Stark Draper. The hardware was radical for its time. It was among the first computers ever built using integrated circuits rather than individual transistors — a decision that made it small enough to actually fly.
 
 But what makes it remarkable today is not what it had. It is what it did not have.
 
@@ -41,8 +41,8 @@ The Block II AGC used on Apollo 11 operated at **2.048 MHz**, roughly 85,000 ins
 
 Its memory was split into two types:
 
-- **Erasable core memory (RAM):** 2,048 words of 15 bits each, approximately 4 kilobytes. This is where the computer did all its live work: navigation state, current job tables, sensor readings, display buffers.
-- **Fixed core rope memory (ROM):** 36,864 words, approximately 72 kilobytes. This is where the software lived.
+- **erasable core memory (RAM):** 2,048 words of 15 bits each, approximately 4 kilobytes. This is where the computer did all its live work: navigation state, current job tables, sensor readings, display buffers.
+- **fixed core rope memory (ROM):** 36,864 words, approximately 72 kilobytes. This is where the software lived.
 
 The ROM was not a chip. It was a physical object: copper wire, hand-threaded through tiny magnetic cores by factory workers in a process that took months. A wire threaded *through* a core represented a binary 1; a wire looped *around* it represented a 0. The software was literally woven into metal. If you found a bug after the ROM was manufactured, you ordered a new ROM and waited.
 
@@ -62,9 +62,9 @@ It was the most spartan user interface ever used in life-or-death conditions. An
 <Block>
 # Chapter 2: The Operating System
 
-Most people know about the AGC's hardware constraints. Fewer know it ran a real-time operating system, a proper one with a scheduler, priority levels, and concurrent program execution, all inside those 4 kilobytes.
+Most people know the hardware constraints. Fewer know that the AGC ran a real-time operating system — a proper one, with a scheduler, priority levels, and concurrent program execution — all inside those 4 kilobytes.
 
-The OS was called the **Executive**, or EXEC. It was written by a small team at MIT, and it solved a genuinely hard problem: how do you make a computer do many things at once when you only have one processor, and some of those things are much more urgent than others?
+The OS was called the **Executive**, or EXEC. It was written by a small team at MIT, and it solved a genuinely hard problem: how do you make a single processor do many things at once when some of those things are far more urgent than others?
 
 ## Jobs and Tasks
 
@@ -78,9 +78,9 @@ The EXEC's scheduler ran continuously in the background. When a job finished or 
 
 ## Protected State
 
-One of the EXEC's most important design decisions was about what to do when things went wrong.
+One of the EXEC's most important design decisions was what to do when things went wrong.
 
-The team at MIT understood that space was a hostile environment and that software errors were inevitable. So the navigation and attitude state, position, velocity, and orientation, were stored in a dedicated section of erasable memory that was **never overwritten by non-critical programs**. If the computer had to restart, the most important data would survive.
+The team at MIT understood that space was a hostile environment and that software errors were inevitable. So the navigation and attitude state — position, velocity, and orientation — were stored in a dedicated section of erasable memory that was **never overwritten by non-critical programs**. If the computer had to restart, the most important data would survive.
 
 This was not an accident. It was a deliberate engineering choice that would prove its worth on July 20, 1969.
 </Block>
@@ -92,15 +92,15 @@ Everything that happened during the final twelve minutes of the Apollo 11 descen
 
 ## The Rendezvous Radar
 
-The lunar module carried two radar systems. The **landing radar** pointed down, measuring altitude and descent rate during landing. The **rendezvous radar** pointed up, designed to track the command module in orbit during docking. Not during descent.
+The lunar module carried two radar systems. The **landing radar** pointed down, measuring altitude and descent rate during landing. The **rendezvous radar** pointed up, designed to track the command module in orbit during docking — not during descent.
 
-Before the powered descent began, the crew had been asked to set the rendezvous radar to a specific position for a contingency abort scenario. If the descent had to be aborted, the radar would immediately begin searching for Columbia. A sensible precaution. But someone forgot to switch the radar back off after the abort window closed.
+Before the powered descent began, the crew had been asked to set the rendezvous radar to a specific position for a contingency abort scenario. If the descent had to be aborted, the radar would immediately begin searching for Columbia. A sensible precaution. But no one switched it back off after the abort window closed.
 
-With the rendezvous radar active and tracking a target it could not find, it began generating **interrupt requests** at a steady rate, roughly every 20 milliseconds. Each interrupt required the EXEC to spawn a job to process the radar data. The radar data itself was useless. But the interrupt load was not.
+With the rendezvous radar active and pointing at a target it could not find, it began generating **interrupt requests** at a steady rate, roughly every 20 milliseconds. Each interrupt required the EXEC to spawn a job to process the radar data. The data was useless. The interrupt load was not.
 
 ## The Overflow
 
-The EXEC's job table had 8 slots. Under normal descent operations, 5 or 6 were in use. The radar interrupts began filling the remaining slots. At 60,000 feet, the table was full. When a new job, a routine guidance calculation, arrived and found no available slot, the Executive had no safe recourse. It raised alarm **1202: EXECUTIVE OVERFLOW — NO CORE SETS**.
+The EXEC's job table had 8 slots. Under normal descent operations, 5 or 6 were in use. The radar interrupts began filling the remaining slots. At 60,000 feet, the table was full. When a new job — a routine guidance calculation — arrived and found no available slot, the Executive had no safe recourse. It raised alarm **1202: EXECUTIVE OVERFLOW — NO CORE SETS**.
 
 The alarm did not mean the computer had crashed. It meant the computer had detected it was overloaded and was about to do something about it.
 
@@ -114,7 +114,7 @@ Buried in the AGC's fixed memory was a routine called **BAILOUT**. When the Exec
 2. Reinitialised the Executive from scratch
 3. Restored the navigation and guidance state from protected memory
 4. Restarted only the flight-critical programs: navigation, guidance, engine control, and display
-5. Left the lower-priority programs, and crucially the radar interrupt handlers, out of the new job table
+5. Left the lower-priority programs — and crucially, the radar interrupt handlers — out of the new job table
 
 The computer was back to normal guidance within **1.5 seconds**. It had not forgotten where it was. It had not lost attitude. It had not stopped flying the spacecraft. It had simply shed the unnecessary work and continued with what mattered.
 
@@ -126,9 +126,9 @@ Back in Houston, the decision to continue fell to two people. **Steve Bales**, t
 
 1202 was on that list.
 
-Garman's call to Bales was decisive: *"Go. We're GO on that alarm."* Bales passed it up the chain. Kranz gave the GO. Eagle kept descending.
+Garman's call was decisive: *"GO. We're GO on that alarm."* Bales passed it up the chain. Kranz gave the GO. Eagle kept descending.
 
-It is worth pausing on this moment. The software had been designed by engineers at MIT who had anticipated exactly this failure mode. They had built BAILOUT. They had tested it. And then, when it fired for real, with two astronauts 60,000 feet above the Moon, the humans in the loop had to decide whether to trust the machine.
+It is worth pausing on this moment. The software had been designed by engineers at MIT who had anticipated exactly this failure mode. They had built BAILOUT. They had tested it. And then, when it fired for real — with two astronauts 60,000 feet above the Moon — the humans in the loop had to decide whether to trust the machine.
 
 They did.
 </Block>
@@ -136,21 +136,21 @@ They did.
 <Block>
 # Chapter 4: The People Who Wrote It
 
-The AGC software was not a small project. By the time of Apollo 11, the software team at MIT had written approximately **4,000 distinct programs** across the mission phases, totalling roughly 145,000 lines of assembly code. The team had found and fixed over 1,700 bugs before flight. They had run more simulation hours on the software than the astronauts had spent in the physical simulator.
+The AGC software was not a modest undertaking. By the time of Apollo 11, the software team at MIT had written approximately **4,000 distinct programs** across the mission phases, totalling roughly 145,000 lines of assembly code. The team had found and fixed over 1,700 bugs before flight. They had run more simulation hours on the software than the astronauts had spent in the physical simulator.
 
-Leading the software effort was **Margaret Hamilton**, then 33 years old.
+Leading the effort was **Margaret Hamilton**, then 33 years old.
 
 ## Software Engineering as a Discipline
 
-Hamilton joined the MIT Instrumentation Laboratory in 1963, intending it as a temporary job before graduate school. She stayed for Apollo. By the time the program reached its peak, she was director of the Software Engineering Division, a title she had, in part, invented.
+Hamilton joined the MIT Instrumentation Laboratory in 1963, intending it as a temporary job before graduate school. She stayed for Apollo. By the time the program reached its peak, she was director of the Software Engineering Division — a title she had, in part, invented.
 
 Before Hamilton's team, the word *software* was not taken seriously in engineering circles. Hardware was real. Software was something you wrote to make the hardware go. Hamilton pushed back. She argued, and demonstrated, that software required the same rigour, the same documentation, the same disciplined error-checking as any physical system. She coined the term **"software engineering"** deliberately, to demand that the discipline be treated as an engineering practice.
 
-One of her most important contributions was the concept of **priority displays**, a class of display programs that could interrupt lower-priority work to show the crew critical information immediately. The display of the 1202 alarm code on the DSKY was a priority display. Without it, Armstrong and Aldrin might not have known there was a problem at all.
+One of her most important contributions was the concept of **priority displays** — a class of display programs that could interrupt lower-priority work to show the crew critical information immediately. The display of the 1202 alarm code on the DSKY was a priority display. Without it, Armstrong and Aldrin might not have known there was a problem at all.
 
 ## The Rope Mothers
 
-The people who physically manufactured the core rope memory were known informally as the **Rope Mothers**, mostly women working in factories in Waltham, Massachusetts, hand-weaving wire through cores under magnification. Each core was about the size of a pinhead. A completed rope memory module looked like a woven textile. One mistake in the weaving meant a wrong bit, which meant a wrong instruction, which could mean mission failure.
+The people who physically manufactured the core rope memory were known informally as the **Rope Mothers** — mostly women working in factories in Waltham, Massachusetts, hand-weaving wire through cores under magnification. Each core was about the size of a pinhead. A completed rope memory module looked like a woven textile. One mistake in the weaving meant a wrong bit, which meant a wrong instruction, which could mean mission failure.
 
 The rope mothers checked their work obsessively. The final Apollo ROMs had an error rate close to zero.
 
@@ -158,7 +158,7 @@ The rope mothers checked their work obsessively. The final Apollo ROMs had an er
 
 In 2016, a software engineer named Chris Garry uploaded the complete source code of the Apollo 11 AGC software to GitHub. Within hours, it was trending. The repository has since received thousands of stars from developers who opened the files expecting history and found something unexpected: readable, commented, sometimes humorous assembly code.
 
-One file is titled `BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc`. The routine names read like documentation, because Hamilton's team had insisted they be named clearly enough that anyone could understand the intent without a manual.
+One file is titled `BURN_BABY_BURN--MASTER_IGNITION_ROUTINE.agc`. The routine names read like documentation — because Hamilton's team had insisted they be named clearly enough that anyone could understand the intent without a manual.
 
 The code is a time capsule of engineering discipline under impossible constraints.
 </Block>
@@ -168,7 +168,9 @@ The code is a time capsule of engineering discipline under impossible constraint
 
 The Apollo Guidance Computer was not impressive despite its limitations. It was impressive *because of them*.
 
-Every design decision, the priority scheduler, the protected navigation state, the BAILOUT restart routine, the discipline of the programming team, was a consequence of operating at the absolute edge of what was physically possible. There was no room for inefficiency. There was no margin for sloppy design. The software had to be correct, and it had to be correct in ways that could survive the specific, foreseeable failure modes of its environment.
+Every design decision — the priority scheduler, the protected navigation state, the BAILOUT restart routine, the discipline of the programming team — was a direct consequence of operating at the absolute edge of what was physically possible. There was no room for inefficiency. There was no margin for sloppy design. The software had to be correct, and it had to be correct in ways that could survive the specific, foreseeable failure modes of its environment.
 
-That is still the standard in safety-critical software today. The AGC's influence runs through the design of modern real-time operating systems, fault-tolerant systems on aircraft and spacecraft, and the culture of rigorous software testing. The idea that software requires engineering, not just coding, began in a meaningful way with a team of people in Cambridge, Massachusetts, threading wire through magnetic cores and writing assembly code by hand.
+That standard has not gone away. The AGC's influence runs through modern real-time operating systems, fault-tolerant avionics, and the culture of rigorous software testing. More fundamentally, the idea that software requires engineering — not just coding — began in a meaningful way with a team of people in Cambridge, Massachusetts, threading wire through magnetic cores and writing assembly code by hand.
+
+They did not have enough memory to be careless. It turns out that was the point.
 </Block>

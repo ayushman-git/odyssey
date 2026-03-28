@@ -1,141 +1,135 @@
 export const skillTreeData = {
   name: "Skills",
   description: "My professional toolkit",
-  level: 100,
   children: [
     {
       name: "Frontend",
-      color: "#3B82F6", // Blue-500
+      color: "#3B82F6",
       description: "User interface development",
-      level: 90,
       children: [
         {
           name: "React.js",
-          color: "#60A5FA", // Blue-400
+          icon: "react",
+          color: "#60A5FA",
           description: "Component-based UI library",
-          level: 95,
           children: [
-            { name: "Hooks", labelColor: "#93C5FD", description: "State & lifecycle management", level: 90 },
-            { name: "Context API", labelColor: "#93C5FD", description: "State management solution", level: 85 },
-            { name: "Redux", labelColor: "#93C5FD", description: "State container for JavaScript apps", level: 80 }
+            { name: "Hooks", labelColor: "#93C5FD", description: "State & lifecycle management" },
+            { name: "Context API", labelColor: "#93C5FD", description: "State management solution" },
+            { name: "Redux", icon: "redux", labelColor: "#93C5FD", description: "State container for JavaScript apps" }
           ]
         },
         {
           name: "Next.js",
+          icon: "nextdotjs",
           color: "#60A5FA",
           description: "React framework with SSR/SSG",
-          level: 85,
           children: [
-            { name: "SSR", labelColor: "#93C5FD", description: "Server-side rendering", level: 85 },
-            { name: "API Routes", labelColor: "#93C5FD", description: "Backend functionality", level: 80 },
-            { name: "App Router", labelColor: "#93C5FD", description: "New routing system", level: 80 }
+            { name: "App Router", labelColor: "#93C5FD", description: "File-based routing system" },
+            { name: "SSR / SSG", labelColor: "#93C5FD", description: "Server & static rendering" },
+            { name: "API Routes", labelColor: "#93C5FD", description: "Backend functionality" }
           ]
         },
         {
           name: "Styling",
           color: "#60A5FA",
           description: "UI presentation techniques",
-          level: 90,
           children: [
-            { name: "Tailwind", labelColor: "#93C5FD", description: "Utility-first CSS framework", level: 95 },
-            { name: "CSS-in-JS", labelColor: "#93C5FD", description: "Component-scoped styling", level: 85 },
-            { name: "SASS", labelColor: "#93C5FD", description: "CSS preprocessor", level: 80 }
+            { name: "Tailwind CSS", icon: "tailwindcss", labelColor: "#93C5FD", description: "Utility-first CSS framework" },
+            { name: "Framer Motion", icon: "framer", labelColor: "#93C5FD", description: "Production-ready animation library" },
+            { name: "SASS", icon: "sass", labelColor: "#93C5FD", description: "CSS preprocessor" }
           ]
         },
         {
           name: "UI/UX",
           color: "#60A5FA",
           description: "User experience design",
-          level: 85,
           children: [
-            { name: "Figma", labelColor: "#93C5FD", description: "Design & prototyping tool", level: 75 },
-            { name: "Animations", labelColor: "#93C5FD", description: "Interactive motion design", level: 90 },
-            { name: "Responsive", labelColor: "#93C5FD", description: "Multi-device layouts", level: 95 }
+            { name: "Figma", icon: "figma", labelColor: "#93C5FD", description: "Design & prototyping tool" },
+            { name: "Responsive Design", labelColor: "#93C5FD", description: "Multi-device layouts" },
+            { name: "Accessibility", labelColor: "#93C5FD", description: "Inclusive design principles" }
           ]
         }
       ]
     },
     {
       name: "Backend",
-      color: "#8B5CF6", // Violet-500
+      color: "#8B5CF6",
       description: "Server-side development",
-      level: 85,
       children: [
         {
           name: "Node.js",
-          color: "#A78BFA", // Violet-400
+          icon: "nodedotjs",
+          color: "#A78BFA",
           description: "JavaScript runtime environment",
-          level: 85,
           children: [
-            { name: "Express", labelColor: "#C4B5FD", description: "Web application framework", level: 90 },
-            { name: "REST API", labelColor: "#C4B5FD", description: "RESTful service design", level: 90 },
-            { name: "Authentication", labelColor: "#C4B5FD", description: "User identity management", level: 80 }
+            { name: "Express", icon: "express", labelColor: "#C4B5FD", description: "Web application framework" },
+            { name: "tRPC", icon: "trpc", labelColor: "#C4B5FD", description: "End-to-end typesafe APIs" },
+            { name: "GraphQL", icon: "graphql", labelColor: "#C4B5FD", description: "Query language for APIs" },
+            { name: "REST API", labelColor: "#C4B5FD", description: "RESTful service design" }
           ]
         },
         {
           name: "Databases",
           color: "#A78BFA",
           description: "Data storage solutions",
-          level: 80,
           children: [
-            { name: "MongoDB", labelColor: "#C4B5FD", description: "NoSQL document database", level: 85 },
-            { name: "PostgreSQL", labelColor: "#C4B5FD", description: "Relational database", level: 75 },
-            { name: "Redis", labelColor: "#C4B5FD", description: "In-memory data structure store", level: 70 }
+            { name: "PostgreSQL", icon: "postgresql", labelColor: "#C4B5FD", description: "Relational database" },
+            { name: "MongoDB", icon: "mongodb", labelColor: "#C4B5FD", description: "NoSQL document database" },
+            { name: "Supabase", icon: "supabase", labelColor: "#C4B5FD", description: "Open source Firebase alternative" },
+            { name: "Prisma", icon: "prisma", labelColor: "#C4B5FD", description: "Next-gen ORM for Node.js" },
+            { name: "Redis", icon: "redis", labelColor: "#C4B5FD", description: "In-memory data store" }
           ]
         }
       ]
     },
     {
       name: "DevOps",
-      color: "#10B981", // Emerald-500
+      color: "#10B981",
       description: "Development operations",
-      level: 75,
       children: [
-        { 
-          name: "Git", 
-          color: "#34D399", // Emerald-400
+        {
+          name: "Git",
+          icon: "git",
+          color: "#34D399",
           description: "Version control system",
-          level: 90,
           children: [
-            { name: "GitHub", labelColor: "#6EE7B7", description: "Git repository hosting", level: 90 },
-            { name: "CI/CD", labelColor: "#6EE7B7", description: "Continuous integration/delivery", level: 80 }
+            { name: "GitHub", icon: "github", labelColor: "#6EE7B7", description: "Git repository hosting" },
+            { name: "CI/CD", labelColor: "#6EE7B7", description: "Continuous integration & delivery" }
           ]
         },
-        { 
-          name: "Deployment", 
+        {
+          name: "Deployment",
           color: "#34D399",
           description: "Application hosting & delivery",
-          level: 80,
           children: [
-            { name: "Vercel", labelColor: "#6EE7B7", description: "Frontend deployment platform", level: 90 },
-            { name: "AWS", labelColor: "#6EE7B7", description: "Cloud computing platform", level: 75 },
-            { name: "Docker", labelColor: "#6EE7B7", description: "Containerization platform", level: 70 }
+            { name: "Vercel", icon: "vercel", labelColor: "#6EE7B7", description: "Frontend deployment platform" },
+            { name: "Docker", icon: "docker", labelColor: "#6EE7B7", description: "Containerization platform" },
+            { name: "AWS", icon: "amazonwebservices", labelColor: "#6EE7B7", description: "Cloud computing platform" },
+            { name: "Turborepo", icon: "turborepo", labelColor: "#6EE7B7", description: "High-performance monorepo build system" }
           ]
         }
       ]
     },
     {
       name: "Tools",
-      color: "#F59E0B", // Amber-500
+      color: "#F59E0B",
       description: "Development utilities",
-      level: 85,
       children: [
-        { name: "VS Code", color: "#FBBF24", labelColor: "#FCD34D", description: "Code editor", level: 95 },
-        { name: "Postman", color: "#FBBF24", labelColor: "#FCD34D", description: "API testing tool", level: 85 },
-        { name: "Webpack", color: "#FBBF24", labelColor: "#FCD34D", description: "Module bundler", level: 75 },
-        { name: "Jest", color: "#FBBF24", labelColor: "#FCD34D", description: "Testing framework", level: 80 }
+        { name: "VS Code", icon: "visualstudiocode", color: "#FBBF24", labelColor: "#FCD34D", description: "Code editor" },
+        { name: "pnpm", icon: "pnpm", color: "#FBBF24", labelColor: "#FCD34D", description: "Fast, disk-efficient package manager" },
+        { name: "Postman", icon: "postman", color: "#FBBF24", labelColor: "#FCD34D", description: "API testing tool" },
+        { name: "Jest", icon: "jest", color: "#FBBF24", labelColor: "#FCD34D", description: "JavaScript testing framework" }
       ]
     },
     {
       name: "Languages",
-      color: "#EF4444", // Red-500
+      color: "#EF4444",
       description: "Programming languages",
-      level: 90,
       children: [
-        { name: "TypeScript", color: "#F87171", labelColor: "#FCA5A5", description: "Typed JavaScript", level: 85 },
-        { name: "JavaScript", color: "#F87171", labelColor: "#FCA5A5", description: "Web programming language", level: 95 },
-        { name: "Python", color: "#F87171", labelColor: "#FCA5A5", description: "General-purpose language", level: 75 },
-        { name: "HTML/CSS", color: "#F87171", labelColor: "#FCA5A5", description: "Web markup & styling", level: 95 }
+        { name: "TypeScript", icon: "typescript", color: "#F87171", labelColor: "#FCA5A5", description: "Typed JavaScript superset" },
+        { name: "JavaScript", icon: "javascript", color: "#F87171", labelColor: "#FCA5A5", description: "Web programming language" },
+        { name: "Python", icon: "python", color: "#F87171", labelColor: "#FCA5A5", description: "General-purpose language" },
+        { name: "HTML / CSS", icon: "html5", color: "#F87171", labelColor: "#FCA5A5", description: "Web markup & styling" }
       ]
     }
   ]

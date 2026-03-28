@@ -36,38 +36,28 @@ const Tooltip = ({ data }) => {
             />
 
             <div className="px-3.5 py-3">
-              {/* Name */}
-              <p className="text-white font-semibold text-sm leading-tight mb-1">
-                {data.name}
-              </p>
+              {/* Name + Icon */}
+              <div className="flex items-center gap-2 mb-1">
+                {data.icon && (
+                  <img
+                    src={`https://cdn.simpleicons.org/${data.icon}`}
+                    alt=""
+                    className="w-4 h-4 object-contain flex-shrink-0"
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                )}
+                <p className="text-white font-semibold text-sm leading-tight">
+                  {data.name}
+                </p>
+              </div>
 
               {/* Description */}
               {data.description && (
-                <p className="text-gray-400 text-xs leading-snug mb-2.5">
+                <p className="text-gray-400 text-xs leading-snug">
                   {data.description}
                 </p>
               )}
 
-              {/* Proficiency bar */}
-              {data.level != null && (
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-[10px] text-gray-500 uppercase tracking-wider">Proficiency</span>
-                    <span className="text-[10px] font-medium" style={{ color: data.color }}>
-                      {data.level}%
-                    </span>
-                  </div>
-                  <div className="h-[3px] w-full rounded-full bg-white/10 overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full"
-                      style={{ background: `linear-gradient(90deg, ${data.color}bb, ${data.color})` }}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${data.level}%` }}
-                      transition={{ duration: 0.4, ease: 'easeOut', delay: 0.05 }}
-                    />
-                  </div>
-                </div>
-              )}
             </div>
           </div>
 

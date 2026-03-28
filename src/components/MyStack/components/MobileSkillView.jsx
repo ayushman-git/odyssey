@@ -4,6 +4,8 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const MobileSkillView = ({ data }) => {
+  const ICON_CDN = (slug) => `https://cdn.simpleicons.org/${slug}`;
+
   // Process categories
   const categories = data.children.map(category => ({
     name: category.name,
@@ -83,20 +85,36 @@ const MobileSkillView = ({ data }) => {
                   variants={itemVariants}
                 >
                   {/* Skill Header */}
-                  <div className="mb-3">
+                  <div className="mb-3 flex items-center gap-2">
+                    {skill.icon && (
+                      <img
+                        src={ICON_CDN(skill.icon)}
+                        alt={skill.name}
+                        className="w-4 h-4 object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                    )}
                     <h3 className="text-sm font-medium text-black dark:text-white tracking-wide uppercase">
                       {skill.name}
                     </h3>
                   </div>
-                  
+
                   {/* Sub-skills as Clean Chips */}
                   {skill.children && skill.children.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {skill.children.map(subSkill => (
-                        <span 
+                        <span
                           key={subSkill.name}
-                          className="inline-flex items-center px-3 py-1 text-xs font-medium bg-gray-50 dark:bg-gray-800/30 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors duration-200"
+                          className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium bg-gray-50 dark:bg-gray-800/30 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors duration-200"
                         >
+                          {subSkill.icon && (
+                            <img
+                              src={ICON_CDN(subSkill.icon)}
+                              alt=""
+                              className="w-3 h-3 object-contain"
+                              onError={(e) => { e.target.style.display = 'none'; }}
+                            />
+                          )}
                           {subSkill.name}
                         </span>
                       ))}

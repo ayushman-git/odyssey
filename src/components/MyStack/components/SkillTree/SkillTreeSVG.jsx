@@ -105,7 +105,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
         name: d.data.name,
         description: d.data.description || null,
         color: d.data.color || d.data.labelColor || "#3B82F6",
-        level: d.data.level || null,
+        icon: d.data.icon || null,
         x: tooltipX,
         y: tooltipY
       });
