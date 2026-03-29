@@ -149,16 +149,16 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
           {/* Category Filters */}
           {articleTypes.length > 1 && (
-            <div className="flex sm:inline-flex items-stretch border border-gray-200 dark:border-gray-700">
+            <div className="flex flex-wrap gap-2 w-full sm:inline-flex sm:flex-nowrap sm:gap-0 sm:w-auto sm:border sm:border-gray-200 sm:dark:border-gray-700">
               {articleTypes.map((type, index) => (
                 <motion.button
                   key={type}
                   onClick={() => handleFilterChange(type)}
-                  className={`flex-1 sm:flex-initial px-3 py-2 text-xs font-medium tracking-[0.1em] uppercase transition-all duration-300 relative whitespace-nowrap ${
+                  className={`flex-1 sm:flex-initial px-3 py-2 text-xs font-medium tracking-[0.1em] uppercase transition-all duration-300 whitespace-nowrap border sm:border-0 ${
                     filter === type
-                      ? 'bg-black dark:bg-white text-white dark:text-black'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
-                  } ${index > 0 ? 'border-l border-gray-200 dark:border-gray-700' : ''}`}
+                      ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white'
+                      : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                  } ${index > 0 ? 'sm:border-l sm:border-gray-200 sm:dark:border-gray-700' : ''}`}
                   whileHover={{ y: -1 }}
                   whileTap={{ y: 0 }}
                   transition={{ duration: 0.2 }}
