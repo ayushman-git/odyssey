@@ -5,15 +5,23 @@ import topographyBg from "@/assets/svgs/topography.svg";
 import SocialLinks from "../SocialLinks";
 import Newsletter from "../Newsletter";
 import WhatImListeningTo from "../WhatImListeningTo";
-import { motion, useAnimation, useInView, useMotionValue, useSpring } from "framer-motion";
+import { motion, useAnimation, useInView, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import Link from "next/link";
+
+const footerWavePaths = {
+  flat: "M 0 100 V 100 Q 50 100 100 100 V 100 z",
+  crest: "M 0 100 V 52 Q 50 4 100 52 V 100 z",
+  filled: "M 0 100 V 0 Q 50 0 100 0 V 100 z",
+};
 
 function CosmicFooter({ variant = "default" }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [waveActive, setWaveActive] = useState(false);
   const footerRef = useRef(null);
   const footerInView = useInView(footerRef, { once: true, amount: 0.2 });
   const controls = useAnimation();
   const [bgLoaded, setBgLoaded] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   // Framer Motion values for pattern parallax
   const patternX = useMotionValue(0);
@@ -53,6 +61,9 @@ function CosmicFooter({ variant = "default" }) {
     const { left, top, width, height } = footerRef.current.getBoundingClientRect();
     patternX.set(((e.clientX - left) / width - 0.5) * 25);
     patternY.set(((e.clientY - top) / height - 0.5) * 25);
+
+    const bottomHoverDepth = Math.min(150, height * 0.42);
+    setWaveActive(e.clientY - top > height - bottomHoverDepth);
   };
 
   // Lazy load the background pattern (only for default variant)
@@ -140,7 +151,10 @@ function CosmicFooter({ variant = "default" }) {
           variant === "editorial" ? "transition-all duration-300" : ""
         }`}
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setWaveActive(false);
+        }}
         onMouseMove={handleMouseMove}
       >
         {/* Background div with repeating pattern - only for default variant */}
@@ -160,6 +174,68 @@ function CosmicFooter({ variant = "default" }) {
             }}
           />
         )}
+
+        <motion.svg
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="xMidYMin slice"
+        >
+          <defs>
+            <linearGradient
+              id={`footer-wave-gradient-${variant}`}
+              x1="0"
+              y1="0"
+              x2="99"
+              y2="99"
+              gradientUnits="userSpaceOnUse"
+            >
+              {variant === "editorial" ? (
+                <>
+                  <stop offset="0.18" stopColor="rgb(15, 23, 42)" />
+                  <stop offset="0.72" stopColor="rgb(37, 99, 235)" />
+                </>
+              ) : (
+                <>
+                  <stop offset="0.2" stopColor="rgb(255, 135, 9)" />
+                  <stop offset="0.7" stopColor="rgb(247, 189, 248)" />
+                </>
+              )}
+            </linearGradient>
+          </defs>
+          <motion.path
+            fill={`url(#footer-wave-gradient-${variant})`}
+            stroke={`url(#footer-wave-gradient-${variant})`}
+            strokeWidth="2"
+            vectorEffect="non-scaling-stroke"
+            initial={false}
+            animate={
+              waveActive
+                ? {
+                    d: shouldReduceMotion
+                      ? footerWavePaths.filled
+                      : [footerWavePaths.flat, footerWavePaths.crest, footerWavePaths.filled],
+                    opacity: variant === "editorial" ? 0.92 : 0.86,
+                  }
+                : {
+                    d: footerWavePaths.flat,
+                    opacity: 0,
+                  }
+            }
+            transition={
+              waveActive
+                ? {
+                    d: { duration: shouldReduceMotion ? 0 : 0.72, times: [0, 0.48, 1], ease: ["easeIn", "easeOut"] },
+                    opacity: { duration: shouldReduceMotion ? 0 : 0.18 },
+                  }
+                : {
+                    d: { duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" },
+                    opacity: { duration: shouldReduceMotion ? 0 : 0.25 },
+                  }
+            }
+            d={footerWavePaths.flat}
+          />
+        </motion.svg>
 
         <div className={`relative z-10 ${theme.textColor}`}>
           {/* Main Content Section - Streamlined */}
