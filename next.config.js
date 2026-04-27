@@ -1,3 +1,6 @@
+const { validateMdxContent } = require("./lib/validate-mdx-content.cjs");
+validateMdxContent();
+
 const withMDX = require("@next/mdx")();
 
 /** @type {import('next').NextConfig} */
