@@ -33,7 +33,7 @@ function Layout({ children }) {
         }}
       />
       <Navbar />
-      <main className="w-full pb-32">
+      <main id="main-content" tabIndex={-1} className="w-full pb-32">
         <section className="w-full grid place-items-center">{children}</section>
       </main>
       <CosmicFooter variant="editorial" />

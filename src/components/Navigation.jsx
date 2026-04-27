@@ -26,7 +26,10 @@ const Navigation = ({ logo }) => {
   };
 
   return (
-    <nav className="flex items-center justify-between relative z-30">
+    <nav
+      className="flex items-center justify-between relative z-30"
+      aria-label="Primary"
+    >
       <div>{logo}</div>
 
       {!isMobile && (
@@ -54,10 +57,12 @@ const Navigation = ({ logo }) => {
 
       {isMobile && (
         <button
+          type="button"
           className="z-40 p-1"
           onClick={() => setIsOpen((prev) => !prev)}
-          aria-label="Toggle menu"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
+          aria-controls="mobile-menu"
         >
           <HamburgerIcon isOpen={isOpen} />
         </button>
@@ -65,9 +70,11 @@ const Navigation = ({ logo }) => {
 
       {isMobile && (
         <div
+          id="mobile-menu"
           className={`fixed inset-0 z-30 bg-black/95 flex items-center justify-center transition-all duration-300 ${
             isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
+          aria-hidden={!isOpen}
         >
           <ul
             className={`flex flex-col items-center space-y-6 transform transition-all duration-300 ${

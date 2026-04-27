@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
+const NEWSLETTER_EMAIL_ID = "newsletter-email";
+
 function Newsletter({ variant = "default" }) {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -104,15 +106,19 @@ function Newsletter({ variant = "default" }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <motion.p 
-          className={`text-sm ${theme.textColor} mb-3 ${variant === "editorial" ? "font-light" : ""}`}
-        >
-          Stay updated with latest posts
-        </motion.p>
-        
-        <form onSubmit={handleSubmit} className="flex gap-2 mb-2">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2 mb-2">
+          <label
+            htmlFor={NEWSLETTER_EMAIL_ID}
+            className={`text-sm ${theme.textColor} ${variant === "editorial" ? "font-light" : ""}`}
+          >
+            Stay updated with latest posts
+          </label>
+          <div className="flex gap-2">
           <motion.input
+            id={NEWSLETTER_EMAIL_ID}
             type="email"
+            name="email"
+            autoComplete="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -137,11 +143,14 @@ function Newsletter({ variant = "default" }) {
           >
             {isLoading ? 'Subscribing...' : 'Subscribe'}
           </motion.button>
+          </div>
         </form>
 
         {/* Status Message */}
         {statusMessage && (
           <motion.p
+            role="status"
+            aria-live="polite"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`text-xs ${statusMessage.color} ${variant === "editorial" ? "font-light" : ""}`}

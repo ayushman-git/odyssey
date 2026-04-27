@@ -125,6 +125,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={`${inter.className} bg-white dark:bg-black min-h-screen`}>
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <GoogleAnalytics />
         <Analytics />
         <SpeedInsights />
