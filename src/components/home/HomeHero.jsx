@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Meow_Script } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import HomeContent from "@/components/HomeContent";
 
+/** Homepage hero WebGL: not on first paint — see docs/webgl-performance.md */
 const ClientStars = dynamic(() => import("@/components/ClientStars"), {
   ssr: false,
+  loading: () => null,
 });
 
 const meowScript = Meow_Script({
@@ -54,7 +56,11 @@ export default function HomeHero() {
       />
 
       <Navigation logo={logoElement} />
-      {showStars ? <ClientStars /> : null}
+      {showStars ? (
+        <Suspense fallback={null}>
+          <ClientStars />
+        </Suspense>
+      ) : null}
       <HomeContent />
     </section>
   );
