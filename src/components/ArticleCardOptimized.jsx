@@ -34,7 +34,7 @@ export default function ArticleCard({ details, index }) {
           {details.cover_img && (
             <Image
               src={details.cover_img}
-              alt={details.title}
+              alt={`Cover image for article: ${details.title}`}
               width={500}
               height={333}
               className="w-full h-full object-cover"
@@ -74,7 +74,7 @@ export default function ArticleCard({ details, index }) {
         {details.cover_img && (
           <Image
             src={details.cover_img}
-            alt={details.title}
+            alt={`Cover image for article: ${details.title}`}
             width={500}
             height={333}
             className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700"

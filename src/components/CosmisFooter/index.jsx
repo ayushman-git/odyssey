@@ -271,39 +271,42 @@ function CosmicFooter({ variant = "default" }) {
 
             {/* Navigation Links Column */}
             <motion.div variants={itemVariants}>
-              <motion.h3
-                variants={itemVariants}
-                className={`text-xl ${variant === "editorial" ? "font-light" : "font-bold"} mb-4 tracking-tight`}
-              >
-                Navigate
-              </motion.h3>
-              <motion.ul
-                variants={containerVariants}
-                className={`space-y-2 text-sm ${theme.textSecondary}`}
-              >
-                {navItems.map((item, i) => (
-                  <motion.li
-                    key={item.name}
-                    variants={itemVariants}
-                    custom={i}
-                    className="relative flex items-center group"
-                  >
-                    <span
-                      className={`absolute left-0 w-0 h-[2px] ${theme.accentColor} rounded-full opacity-0 
+              <nav aria-label="Footer">
+                <motion.h3
+                  variants={itemVariants}
+                  className={`text-xl ${variant === "editorial" ? "font-light" : "font-bold"} mb-4 tracking-tight`}
+                >
+                  Navigate
+                </motion.h3>
+                <motion.ul
+                  variants={containerVariants}
+                  className={`space-y-2 text-sm ${theme.textSecondary}`}
+                >
+                  {navItems.map((item, i) => (
+                    <motion.li
+                      key={item.name}
+                      variants={itemVariants}
+                      custom={i}
+                      className="relative flex items-center group"
+                    >
+                      <span
+                        className={`absolute left-0 w-0 h-[2px] ${theme.accentColor} rounded-full opacity-0 
                       group-hover:w-2 group-hover:opacity-100 transition-all duration-300 ease-out`}
-                    />
-                    <Link
-                      href={item.href}
-                      className={`${theme.linkHoverColor} inline-block py-1 pl-0 
+                        aria-hidden
+                      />
+                      <Link
+                        href={item.href}
+                        className={`${theme.linkHoverColor} inline-block py-1 pl-0 
                       group-hover:pl-3 transition-all duration-300 ease-in-out transform
                       text-left cursor-pointer ${variant === "editorial" ? "font-light" : ""}`}
-                      style={{ transformOrigin: "left center" }}
-                    >
-                      {item.name}
-                    </Link>
-                  </motion.li>
-                ))}
-              </motion.ul>
+                        style={{ transformOrigin: "left center" }}
+                      >
+                        {item.name}
+                      </Link>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+              </nav>
             </motion.div>
 
             {/* Connect Column */}

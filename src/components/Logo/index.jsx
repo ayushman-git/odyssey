@@ -11,9 +11,9 @@ const meowScript = Meow_Script({
 function Logo() {
   return (
     <Link href="/">
-      <h1 className={`cursor-pointer text-2xl ${meowScript.className} hover:opacity-80 transition-opacity duration-200`}>
+      <span className={`block cursor-pointer text-2xl ${meowScript.className} hover:opacity-80 transition-opacity duration-200`}>
         Ayushman
-      </h1>
+      </span>
     </Link>
   );
 }

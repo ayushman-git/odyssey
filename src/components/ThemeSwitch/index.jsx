@@ -23,8 +23,9 @@ function ThemeSwitch() {
           data-theme={resolvedTheme}
           id="theme-toggle"
           title="Toggles light & dark"
-          aria-label={resolvedTheme}
-          aria-live="polite"
+          aria-label={
+            resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+          }
           onClick={handleThemeToggler}
         >
           <svg
