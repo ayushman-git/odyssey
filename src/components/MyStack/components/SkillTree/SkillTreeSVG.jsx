@@ -1,5 +1,9 @@
 import { useEffect, useRef } from 'react';
-import * as d3 from 'd3';
+import { select, selectAll } from 'd3-selection';
+import { tree, hierarchy } from 'd3-hierarchy';
+import { ascending } from 'd3-array';
+import { linkRadial } from 'd3-shape';
+import 'd3-transition';
 import { getPathToRoot, createGlowFilters } from './utils';
 
 const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
@@ -16,7 +20,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
     if (!data || !svgRef.current) return;
     
     // Clear any existing SVG content and animations
-    const svg = d3.select(svgRef.current);
+    const svg = select(svgRef.current);
     svg.selectAll("*").remove();
     
     // Set up dimensions with extra padding to prevent cropping
@@ -34,13 +38,13 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
     const radius = Math.min(width, height) / 2.2;
 
     // Create a radial tree layout
-    const tree = d3.tree()
+    const treeLayout = tree()
       .size([2 * Math.PI, radius])
       .separation((a, b) => (a.parent == b.parent ? 1.2 : 2.2) / a.depth);
 
     // Process the data with d3 hierarchy
-    const root = tree(d3.hierarchy(data)
-      .sort((a, b) => d3.ascending(a.data.name, b.data.name)));
+    const root = treeLayout(hierarchy(data)
+      .sort((a, b) => ascending(a.data.name, b.data.name)));
 
     // Create the SVG container with a larger viewBox to prevent cropping
     svg.attr("width", width)
@@ -53,10 +57,8 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
 
     // Create shared mouseover handler for both nodes and labels
     const handleMouseOver = function(event, d) {
-      const element = d3.select(this);
-      
       // Highlight the associated node
-      d3.selectAll(".skill-node")
+      selectAll(".skill-node")
         .filter(n => n.data.name === d.data.name)
         .transition()
         .duration(200)
@@ -68,7 +70,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
       const ancestorSet = new Set([d.data.name, ...pathToRoot.map(n => n.data.name)]);
 
       // Highlight only ancestor nodes on the path to root
-      d3.selectAll(".skill-node")
+      selectAll(".skill-node")
         .filter(n => ancestorSet.has(n.data.name))
         .transition()
         .duration(200)
@@ -76,9 +78,9 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
         .attr("filter", "url(#hover-glow)");
 
       // Highlight only links where BOTH endpoints are on the ancestor path
-      d3.selectAll("path")
+      selectAll("path")
         .filter(function() {
-          const link = d3.select(this);
+          const link = select(this);
           const source = link.attr("data-source");
           const target = link.attr("data-target");
           return ancestorSet.has(source) && ancestorSet.has(target);
@@ -90,7 +92,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
         .attr("stroke-opacity", 0.9);
       
       // Highlight the label
-      d3.selectAll(".skill-label")
+      selectAll(".skill-label")
         .filter(n => n.data.name === d.data.name)
         .transition()
         .duration(200)
@@ -114,14 +116,14 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
     // Create shared mouseout handler for both nodes and labels
     const handleMouseOut = function(event, d) {
       // Reset this node
-      d3.selectAll(".skill-node")
+      selectAll(".skill-node")
         .transition()
         .duration(300)
         .attr("r", n => n.data.size || (n.children ? 4 : 3))
         .attr("filter", "url(#glow)");
       
       // Reset all links
-      d3.selectAll("path")
+      selectAll("path")
         .transition()
         .duration(300)
         .attr("stroke", "#4B5563")
@@ -129,7 +131,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
         .attr("stroke-opacity", 0.6);
       
       // Reset all labels
-      d3.selectAll(".skill-label")
+      selectAll(".skill-label")
         .transition()
         .duration(300)
         .style("font-weight", "normal")
@@ -148,7 +150,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
       .data(root.links())
       .join("path")
       .attr("stroke", "#4B5563") // Gray-600
-      .attr("d", d3.linkRadial()
+      .attr("d", linkRadial()
         .angle(d => d.x)
         .radius(d => d.y))
       .attr("data-source", d => d.source.data.name)
@@ -169,7 +171,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
       .on("mouseout", handleMouseOut)
       .on("click", function(event, d) {
         // Pulse animation on click
-        d3.select(this)
+        select(this)
           .transition()
           .duration(100)
           .attr("r", d.data.size ? d.data.size * 1.5 : (d.children ? 8 : 6))
@@ -207,7 +209,7 @@ const SkillTreeSVG = ({ data, onNodeHover, onNodeLeave }) => {
       const newWidth = entries[0].contentRect.width;
       const newHeight = newWidth; // Maintain square aspect
       
-      d3.select(svgRef.current)
+      select(svgRef.current)
         .attr("width", newWidth)
         .attr("height", newHeight)
         .attr("viewBox", [
