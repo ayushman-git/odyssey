@@ -14,11 +14,15 @@
  *   node send-article-to-subscribers.js path/to/article.mdx --dry-run
  */
 import dotenv from 'dotenv';
+import { createRequire } from 'module';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+
+const require = createRequire(import.meta.url);
+const { assertCoreServerEnv } = require('../lib/env-core.cjs');
 
 // Load environment variables from .env.local file
 dotenv.config({ path: path.join(process.cwd(), '.env.local') });
@@ -168,8 +172,10 @@ async function main() {
     process.exit(1);
   }
 
-  if (!process.env.RESEND_KEY || !process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    console.error('Missing environment configuration');
+  try {
+    assertCoreServerEnv();
+  } catch (e) {
+    console.error(e.message);
     process.exit(1);
   }
 

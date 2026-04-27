@@ -1,3 +1,6 @@
+const { ensureProductionServerEnv } = require("./lib/env-core.cjs");
+ensureProductionServerEnv();
+
 const withMDX = require("@next/mdx")();
 
 /** @type {import('next').NextConfig} */

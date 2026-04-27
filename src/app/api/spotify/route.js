@@ -1,23 +1,20 @@
 import { NextResponse } from 'next/server';
+import { getSpotifyEnv } from '@/lib/env';
 
 // Route segment config for caching
 export const revalidate = 1800; // Revalidate every 30 minutes (1800 seconds)
 export const dynamic = 'force-dynamic'; // Ensure we can use dynamic data
 
-const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-const SPOTIFY_REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
-
-async function getAccessToken() {
+async function getAccessToken(clientId, clientSecret, refreshToken) {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString('base64')}`,
+      'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
     },
     body: new URLSearchParams({
       grant_type: 'refresh_token',
-      refresh_token: SPOTIFY_REFRESH_TOKEN,
+      refresh_token: refreshToken,
     }),
   });
 
@@ -59,15 +56,15 @@ async function getTopTracks(accessToken) {
 
 export async function GET() {
   try {
-    // Check if environment variables are set
-    if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
+    const { clientId, clientSecret, refreshToken } = getSpotifyEnv();
+    if (!clientId || !clientSecret || !refreshToken) {
       return NextResponse.json(
         { error: 'Spotify credentials not configured' },
         { status: 500 }
       );
     }
 
-    const accessToken = await getAccessToken();
+    const accessToken = await getAccessToken(clientId, clientSecret, refreshToken);
     
     const [artistsData, tracksData] = await Promise.all([
       getTopArtists(accessToken),

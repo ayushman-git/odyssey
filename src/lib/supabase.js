@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { getCoreServerEnv } from "@/lib/env";
 
 let supabaseClient = null;
 
@@ -7,15 +8,7 @@ export function getSupabaseAdminClient() {
     return supabaseClient;
   }
 
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error(
-      "Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY environment variables."
-    );
-  }
-
-  supabaseClient = createClient(supabaseUrl, serviceRoleKey);
+  const { supabaseUrl, supabaseServiceRoleKey } = getCoreServerEnv();
+  supabaseClient = createClient(supabaseUrl, supabaseServiceRoleKey);
   return supabaseClient;
 }
