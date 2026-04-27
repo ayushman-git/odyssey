@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { getCoreServerEnv } from "@/lib/env";
 import { generateDynamicWelcomeEmail, EMAIL_CONFIG } from "./email-service";
 
 let resendClient = null;
@@ -8,11 +9,7 @@ function getResendClient() {
     return resendClient;
   }
 
-  const resendKey = process.env.RESEND_KEY;
-  if (!resendKey) {
-    throw new Error("Missing RESEND_KEY environment variable.");
-  }
-
+  const { resendKey } = getCoreServerEnv();
   resendClient = new Resend(resendKey);
   return resendClient;
 }
