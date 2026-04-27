@@ -20,6 +20,14 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Tests
+
+```bash
+npm test
+```
+
+Runs [Vitest](https://vitest.dev/) in CI-friendly mode (single pass, `vitest run`). In development you can use `npx vitest` for watch mode. The suite uses mocks for network-backed modules (e.g. Supabase, Resend) so it stays offline. **Recommended for CI:** run `npm test` (and your existing `npm run lint` / `npm run build`) on every pull request; an optional follow-up is a GitHub Action that runs the same script on `pull_request` events.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
