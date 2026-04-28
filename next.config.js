@@ -5,6 +5,17 @@ const withMDX = require("@next/mdx")();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Strip console.* in production (keeps error/warn) for smaller JS and less main-thread work
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === "production"
+        ? { exclude: ["error", "warn"] }
+        : false,
+  },
+  experimental: {
+    // Tree-shake icon and motion imports to the symbols each file uses
+    optimizePackageImports: ["lucide-react", "framer-motion"],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "m.media-amazon.com" },

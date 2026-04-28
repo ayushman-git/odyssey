@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { getArticles } from '@/lib/posts';
 import RSS from 'rss';
@@ -128,6 +129,7 @@ export async function GET(request) {
 
     // Generate RSS XML with dynamic URL based on request
     const rssXml = generateRSSFeed(articles, request.url);
+    const etag = `"${createHash('sha1').update(rssXml).digest('hex')}"`;
 
     // Return RSS feed with proper headers for SEO and caching
     return new NextResponse(rssXml, {
@@ -147,7 +149,7 @@ export async function GET(request) {
         // Additional SEO headers
         'X-Robots-Tag': 'index, follow',
         'Last-Modified': new Date().toUTCString(),
-        'ETag': `"rss-${Date.now()}"`,
+        ETag: etag,
       },
     });
 
