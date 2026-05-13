@@ -42,14 +42,14 @@ export const metadata = {
     images: [
       {
         url: '/cover.jpg',
-        width: 1200,
-        height: 630,
+        width: 1004,
+        height: 1004,
         alt: 'Ayushman Gupta Portfolio',
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: 'Ayushman Gupta | Fullstack Engineer',
     description: 'Personal portfolio and blog of Ayushman Gupta, a developer and designer specializing in web development and creative solutions.',
     images: ['/cover.jpg'],
