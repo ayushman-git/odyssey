@@ -45,7 +45,7 @@ export default function ArticleCard({ details, index }) {
           )}
         </div>
         <div className="p-6 md:p-8">
-          <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-gray-400 dark:text-gray-500">
+          <span className="text-xs font-mono tracking-[0.16em] uppercase text-gray-400 dark:text-gray-500">
             In Development
           </span>
           <h3
@@ -65,7 +65,7 @@ export default function ArticleCard({ details, index }) {
     >
       {/* Article index badge */}
       <div className="absolute top-3 left-3 z-10">
-        <span className="text-[9px] font-mono tracking-[0.2em] text-gray-500 dark:text-gray-400 bg-white/85 dark:bg-black/80 backdrop-blur-sm px-2 py-0.5">
+        <span className="text-xs font-mono tracking-[0.16em] text-gray-600 dark:text-gray-400 bg-white/85 dark:bg-black/80 backdrop-blur-sm px-2 py-0.5">
           {indexStr}
         </span>
       </div>
@@ -88,10 +88,10 @@ export default function ArticleCard({ details, index }) {
       <div className="p-6 md:p-8">
         {/* Meta row */}
         <div className="flex items-center justify-between mb-4">
-          <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors duration-200">
+          <span className="text-xs font-mono tracking-[0.16em] uppercase text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors duration-200">
             {details.type}
           </span>
-          <div className="flex items-center gap-2 text-[9px] font-mono text-gray-400 dark:text-gray-500">
+          <div className="flex items-center gap-2 text-xs font-mono text-gray-500 dark:text-gray-500">
             {details.readingTime && (
               <>
                 <span>{formatReadingTime(details.readingTime)}</span>
@@ -110,7 +110,7 @@ export default function ArticleCard({ details, index }) {
         </h3>
 
         {details.introduction && (
-          <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed line-clamp-3 font-light">
+          <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed line-clamp-3 font-light">
             {details.introduction}
           </p>
         )}
