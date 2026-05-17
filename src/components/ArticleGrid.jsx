@@ -10,7 +10,7 @@ export default function ArticleGrid({ articles }) {
           <h3 className="text-xl font-light text-black dark:text-white mb-3 tracking-wide">
             No Articles Found
           </h3>
-          <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed max-w-sm font-light">
+          <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed max-w-sm font-light">
             No articles are currently available in this selection.
           </p>
         </div>

@@ -35,7 +35,7 @@ function HeroBanner() {
       >
         <div className="h-[2px] flex-1 bg-black dark:bg-white" />
         <div className="px-5">
-          <span className="text-[9px] tracking-[0.35em] font-mono text-gray-500 dark:text-gray-400 uppercase">
+          <span className="text-xs tracking-[0.22em] font-mono text-gray-500 dark:text-gray-400 uppercase">
             Vol. I &mdash; 2025
           </span>
         </div>
@@ -85,7 +85,7 @@ function HeroBanner() {
               {i > 0 && (
                 <span className="text-gray-300 dark:text-gray-600 text-sm">&middot;</span>
               )}
-              <span className="text-[9px] tracking-[0.25em] font-mono text-gray-400 dark:text-gray-500 uppercase">
+              <span className="text-xs tracking-[0.16em] font-mono text-gray-400 dark:text-gray-500 uppercase">
                 {tag}
               </span>
             </React.Fragment>
@@ -101,7 +101,7 @@ function HeroBanner() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.6 }}
       >
-        <span className="text-[9px] tracking-[0.25em] font-mono text-gray-400 dark:text-gray-500 uppercase">
+        <span className="text-xs tracking-[0.16em] font-mono text-gray-400 dark:text-gray-500 uppercase">
           Written by
         </span>{" "}
         <span

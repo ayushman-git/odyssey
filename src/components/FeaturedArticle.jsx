@@ -50,7 +50,7 @@ export default function FeaturedArticle({ article }) {
           <div className="relative p-8 md:p-10 lg:p-14 flex flex-col justify-between order-2 md:order-1 min-h-[280px]">
             <div>
               {/* Meta row */}
-              <div className="flex flex-wrap items-center gap-2 mb-6 text-[10px] font-mono tracking-[0.18em] uppercase text-gray-500 dark:text-gray-400">
+              <div className="flex flex-wrap items-center gap-2 mb-6 text-sm font-mono tracking-[0.12em] uppercase text-gray-600 dark:text-gray-400">
                 <span>{article.type}</span>
                 <span className="text-gray-300 dark:text-gray-600">&middot;</span>
                 <span>{formatDate(article.date)}</span>
@@ -71,14 +71,14 @@ export default function FeaturedArticle({ article }) {
 
               {/* Introduction */}
               {article.introduction && (
-                <p className="text-sm md:text-base leading-relaxed text-gray-600 dark:text-gray-400 font-light line-clamp-3">
+                <p className="text-base md:text-lg leading-relaxed text-gray-700 dark:text-gray-300 font-light line-clamp-3">
                   {article.introduction}
                 </p>
               )}
             </div>
 
             {/* CTA */}
-            <div className="flex items-center gap-3 mt-8 text-[10px] font-mono tracking-[0.18em] uppercase text-black dark:text-white">
+            <div className="flex items-center gap-3 mt-8 text-sm font-mono tracking-[0.12em] uppercase text-black dark:text-white">
               <span>Read article</span>
               <div className="h-px w-8 bg-current group-hover:w-14 transition-all duration-300" />
               <svg

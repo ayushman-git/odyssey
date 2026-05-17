@@ -134,7 +134,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
               placeholder="Search archives..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full h-10 pl-12 pr-4 text-sm bg-transparent border border-gray-200 dark:border-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-black dark:focus:border-white transition-colors duration-300"
+              className="w-full h-10 pl-12 pr-4 text-base bg-transparent border border-gray-200 dark:border-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-black dark:focus:border-white transition-colors duration-300"
             />
             <motion.div
               className="absolute bottom-0 left-0 h-px bg-black dark:bg-white origin-left"
@@ -154,7 +154,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
                 <motion.button
                   key={type}
                   onClick={() => handleFilterChange(type)}
-                  className={`flex-1 sm:flex-initial px-3 py-2 text-xs font-medium tracking-[0.1em] uppercase transition-all duration-300 whitespace-nowrap border sm:border-0 ${
+                  className={`flex-1 sm:flex-initial px-4 py-2.5 text-sm font-medium tracking-[0.1em] uppercase transition-all duration-300 whitespace-nowrap border sm:border-0 ${
                     filter === type
                       ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white'
                       : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
@@ -172,7 +172,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
           {/* Sort Control */}
           <motion.button
             onClick={() => setSortOrder(sortOrder === "newest" ? "oldest" : "newest")}
-            className="inline-flex items-center justify-center gap-2 px-3 py-2 border border-gray-200 dark:border-gray-700 text-xs font-medium tracking-[0.1em] uppercase text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:border-black dark:hover:border-white transition-all duration-300 w-full sm:w-auto"
+            className="inline-flex items-center justify-center gap-2 px-3 py-2 border border-gray-200 dark:border-gray-700 text-sm font-medium tracking-[0.08em] uppercase text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:border-black dark:hover:border-white transition-all duration-300 w-full sm:w-auto"
             whileHover={{ y: -1 }}
             whileTap={{ y: 0 }}
           >
@@ -191,7 +191,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
         className="text-center mb-6"
         variants={itemVariants}
       >
-        <div className="inline-flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400 font-mono">
+        <div className="inline-flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 font-mono">
           <div className="h-px w-4 bg-current" />
           <span>
             {filteredArticles.length} ARTICLE{filteredArticles.length !== 1 ? 'S' : ''}
@@ -212,7 +212,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
             <h3 className="text-3xl font-light text-black dark:text-white mb-4">
               No Results Found
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+            <p className="text-base text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
               The archives don't contain any articles matching your current search criteria.
             </p>
             <motion.button
@@ -220,7 +220,7 @@ export default function ArticleSearchAndFilter({ initialArticles = [], articleTy
                 setSearchTerm("");
                 handleFilterChange("All");
               }}
-              className="inline-flex items-center gap-3 px-8 py-3 border border-gray-200 dark:border-gray-700 text-sm font-medium tracking-[0.1em] uppercase text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300"
+              className="inline-flex items-center gap-3 px-8 py-3 border border-gray-200 dark:border-gray-700 text-base font-medium tracking-[0.08em] uppercase text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300"
               whileHover={{ y: -2 }}
               whileTap={{ y: 0 }}
             >
