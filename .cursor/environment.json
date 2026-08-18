@@ -1,0 +1,17 @@
+{
+  "name": "Odyssey",
+  "install": "npm ci",
+  "ports": [
+    {
+      "name": "next-dev",
+      "port": 3000
+    }
+  ],
+  "terminals": [
+    {
+      "name": "dev-server",
+      "command": "npm run dev",
+      "description": "Next.js development server at http://localhost:3000"
+    }
+  ]
+}
